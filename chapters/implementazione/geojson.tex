@@ -1,0 +1,43 @@
+\chapter{GeoJSON}
+
+\section{Introduzione}
+GeoJSON è un formato aperto per lo scambio di dati geografici basato su JSON (JavaScript Object Notation) che definisce oggetti standardizzati per rappresentare entità spaziali e i loro attributi non spaziali \cite{rfc7946}. Si caratterizza per la semplicità sintattica e per l'adozione universale del sistema di riferimento WGS84, espresso in gradi decimali di longitudine e latitudine \cite{rfc7946}. La sua diffusione lo ha reso uno degli standard de facto per applicazioni web e GIS, grazie alla perfetta integrazione con librerie di mapping e piattaforme di analisi spaziale \cite{geojson-spec}.
+
+\section{Origini e Standardizzazione}
+La prima versione ufficiale di GeoJSON fu pubblicata nel 2008 sul sito geojson.org e raggiunse rapidamente una comunità di utilizzatori grazie alla sua natura testuale e leggibile \cite{geojson-first}. Successivamente, nel gennaio 2014, è stato pubblicato un Internet Draft presso l'IETF, che ha posto le basi per la standardizzazione formale \cite{geojson-first}. Infine, nell'agosto 2016, il gruppo di lavoro GeoJSON WG dell'IETF ha pubblicato la specifica definitiva come RFC 7946, sancendo la stabilità del formato e definendo regole più rigorose per le coordinate e i metadati \cite{rfc7946}.
+
+\section{Struttura e Tipi di Geometria}
+Un documento GeoJSON è un oggetto JSON che può rappresentare una singola \texttt{Feature}, una collezione di feature (\texttt{FeatureCollection}) o una \texttt{Geometry} autonoma \cite{geojson-spec}.  
+I tipi di geometria supportati comprendono:
+\begin{itemize}
+  \item \textbf{Point}: un singolo punto con coordinate \texttt{[lon, lat]} \cite{geojson-wiki};
+  \item \textbf{LineString}: una sequenza ordinata di due o più punti connessi linearmente \cite{geojson-wiki};
+  \item \textbf{Polygon}: un anello chiuso di coordinate, con eventuali fori interni specificati da anelli aggiuntivi \cite{geojson-wiki};
+  \item \textbf{MultiPoint}, \textbf{MultiLineString}, \textbf{MultiPolygon}: raccolte omogenee di punti, linee o poligoni \cite{geojson-wiki};
+  \item \textbf{GeometryCollection}: insieme arbitrario di geometrie di vario tipo \cite{geojson-spec}.
+\end{itemize}
+
+\section{Sistema di Coordinate}
+Conforme a RFC 7946, GeoJSON impiega esclusivamente il sistema di riferimento geografico WGS84 (EPSG:4326), con le coordinate espresse in gradi decimali di longitudine e latitudine \cite{rfc7946}. Non è previsto l'uso di altri sistemi di riferimento o unità di misura, per garantire interoperabilità e semplicità d'implementazione in diversi ambienti software \cite{ibm-geojson}.
+
+\section{Feature e Proprietà}
+Una \texttt{Feature} in GeoJSON associa una geometria a un insieme di proprietà non spaziali definite come coppie chiave-valore all'interno dell'oggetto \texttt{properties} \cite{geojson-spec}. Tale flessibilità consente di arricchire ogni entità geografica con informazioni descrittive, statistiche o di collegamento a risorse esterne, come URL o riferimenti a database \cite{geojson-wiki}.
+
+\section{Applicazioni}
+GeoJSON è ampiamente supportato da librerie di mapping come Leaflet e OpenLayers, che permettono di creare mappe interattive caricando direttamente file o stringhe GeoJSON \cite{leaflet-geojson,openlayers-geojson}. Il formato è altresì utilizzato da numerosi servizi di geocoding, routing e analisi spaziale, nonché da software GIS desktop quali QGIS e ArcGIS, che ne garantiscono import/export nativi \cite{arcgis-geojson}.
+
+\section{Vantaggi e Limitazioni}
+Tra i principali vantaggi di GeoJSON vi sono:
+\begin{itemize}
+  \item \emph{Semplicità e leggibilità}: formato testuale di rapida comprensione e modifica \cite{when-use-geojson}.
+  \item \emph{Compatibilità}: supporto nativo in ogni linguaggio di programmazione che gestisca JSON \cite{geojson-spec}.
+  \item \emph{Adozione diffusa}: standard de facto per il web mapping e l'interoperabilità GIS \cite{gdal-geojson}.
+\end{itemize}
+Le limitazioni principali interessano invece:
+\begin{itemize}
+  \item \emph{Scalabilità}: inefficiente per dataset di grandi dimensioni, per i quali sono preferibili formati binari come GeoPackage o TopoJSON \cite{when-use-geojson}.
+  \item \emph{Ridondanza strutturale}: ripetizione di tag JSON in collezioni estese può aumentare il peso complessivo del file \cite{when-use-geojson}.
+\end{itemize}
+
+\section{Conclusioni}
+GeoJSON rappresenta un equilibrio ottimale tra semplicità d'uso e potenza espressiva per la rappresentazione di dati geografici, confermandosi uno standard imprescindibile per lo sviluppo di applicazioni geospaziali sia sul web sia in ambito desktop. La sua formalizzazione in RFC 7946 ne garantisce la stabilità futura e l'interoperabilità tra piattaforme eterogenee.

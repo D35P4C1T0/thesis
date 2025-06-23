@@ -1,0 +1,58 @@
+\chapter{Il sistema M-NAT: un approccio integrato per la predizione acustica e navale}
+
+Il progetto \textbf{M-NAT} rappresenta un'iniziativa di ricerca avanzata che combina la modellazione acustica sottomarina con algoritmi di intelligenza artificiale, includendo il monitoraggio e la predizione del comportamento navale al fine di una modellazione più accurata.
+
+M-NAT innova integrando modellazione fisica e tecniche \textit{data-driven} all'interno di un framework scalabile e configurabile. La combinazione di BellHop e TrAISformer offre uno strumento per applicazioni marine, monitoraggio ambientale e \textit{intelligence} navale.
+
+\section{Componenti principali}
+
+\subsection{Modellazione acustica sottomarina}
+
+Il sistema si basa su \textbf{BellHop}, un programma di ray-tracing acustico estremamente affidabile, originariamente sviluppato in FORTRAN per simulazioni di campo acustico in oceano \cite{porter2011bellhop,long2012bellhop}. BellHop è stato ampiamente adottato con interfacce Python, per facilitare integrazioni nei workflow moderni \cite{fang2024bellhop}. In M-NAT, BellHop gestisce sorgenti acustiche come navi e \textit{airgun}, modellando la propagazione sonora tenendo conto della batimetria (mappatura delle profondità marine), profili di velocità del suono e linee costiere.
+
+\subsection{Predizione delle traiettorie navali}
+
+Il componente \textit{AIS} si fonda sul modello \textbf{TrAISformer}, un \textit{transformer} generativo adattato alla predizione delle traiettorie navali da dati AIS \cite{nguyen2021traisformer}. 
+
+L'AIS, acronimo di \textit{Automatic Identification System}, è un sistema che permette alle imbarcazioni di identificarsi reciprocamente e di scambiare dati cruciali con altre navi, stazioni terrestri e centri di controllo del traffico costiero.
+
+\noindent Il modello:
+\begin{itemize}
+  \item codifica latitudine, longitudine, velocità e rotta in \textit{embedding} separati;
+  \item utilizza una \textit{loss} a base di entropia incrociata per gestire la natura multimodale dei dati;
+  \item sfrutta l'architettura \textit{transformer} per estrarre dipendenze temporali a medio-lungo termine \cite{nguyen2021traisformer}.
+\end{itemize}
+
+\section{Tecnologie e performance}
+
+La struttura modulare del progetto consente:
+\begin{itemize}
+  \item parametrizzazione completa via configurazione JSON (frequenze, profondità, risoluzioni);
+  \item compatibilità con strumenti esterni grazie a input multidimensionali (NetCDF, HDF5).
+\end{itemize}
+
+Il progetto M‑NAT si fonda su un ecosistema tecnologico moderno e consolidato, che garantisce flessibilità, prestazioni e scalabilità:
+
+\begin{itemize}
+  \item \textbf{PyTorch, NumPy e SciPy} per il calcolo numerico e il \textit{machine learning}. 
+    NumPy costituisce la base per l'elaborazione efficiente di array N‑dimensionali, permettendo operazioni di algebra lineare, trasformate e indicizzazione avanzate \cite{walt2011numpy}. SciPy amplia le capacità di NumPy con moduli specializzati nell'ottimizzazione, nell'interpolazione, nell'elaborazione di segnali e solutori ODE \cite{virtanen2020scipy}. PyTorch, infine, fornisce un framework GPU‑accelerato per la computazione tensoriale e l'apprendimento profondo, con supporto ad autograd e modelli neurali dinamici \cite{paszke2019pytorch}.
+
+  \item \textbf{GeoPandas, GDAL e Shapely} per le elaborazioni geospaziali. Pandas è una delle librerie più importanti e utilizzate per la manipolazione e l'analisi dei dati. È uno strumento open-source, veloce, flessibile ed espressivo, costruito sul linguaggio di programmazione Python; GeoPandas estende Pandas per gestire dati geografici tramite GeoDataFrame, integrando funzionalità di Shapely per operazioni geometriche e GDAL/PROJ per lettura, scrittura e trasformazioni dei sistemi di coordinate \cite{geopandas2025}. Questo consente di effettuare analisi complesse come intersezioni, \textit{buffering}, \textit{overlay} e calcolo di aree in modo efficiente.
+
+  \item \textbf{Xarray, NetCDF4 e HDF5} per la gestione di dati ambientali multidimensionali. Queste librerie permettono la lettura/scrittura di formati standard come NetCDF e HDF5, fondamentali quando si lavora con dati oceanografici quali profili di velocità del suono, batimetria e mappe \textit{raster}.
+
+  \item \textbf{Numba e accelerazione GPU} per ottimizzare le prestazioni. Numba permette di compilare al volo porzioni di codice Python in codice macchina ottimizzato, riducendo significativamente i tempi di calcolo numerico. L'uso di GPU permette di accelerare sia PyTorch sia librerie compatibili come CuPy, estendendo l'efficienza alle operazioni massivamente parallele.
+\end{itemize}
+
+Insieme, queste tecnologie offrono una suite completa per acquisire e processare grandi quantità di dati scientifici e ambientali, permettendo di addestrare e ottimizzare modelli neurali complessi per la previsione di traiettorie. Così facendo è possibile eseguire elaborazioni geospaziali e garantire alte prestazioni su CPU e GPU con \textit{workflow} paralleli e modulari.
+
+\section{Applicazioni e impatto}
+
+M-NAT è fruibile in scenari operativi come:
+\begin{itemize}
+  \item valutazione del rumore antropico in ambiente marino;
+  \item pianificazione di rotte minimizzanti il disturbo acustico;
+  \item supporto alla trasmissione di dati utilizzando acque marine/oceaniche.
+\end{itemize}
+
+\include{chapters/MNAT/airgun}

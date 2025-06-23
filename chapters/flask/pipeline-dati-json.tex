@@ -1,0 +1,119 @@
+
+\subsection{Introduzione al Flusso Dati}
+
+Durante lo studio delle svariate librerie di cartografia web, può emergere una falsa assunzione: i dati geospaziali in formato CSV, per essere importati all'interno di una libreria cartografica, debbano essere rigorosamente convertiti in \textbf{GeoJSON} per la visualizzazione, a prescindere dalla mappa scelta. Nel contesto di questo sistema, tale conversione \textbf{non avviene}; è stata esplicitamente evitata. La decisione non è frutto del caso, bensì di un ragionamento tecnico consapevole legato all'efficienza, alla semplicità e all'adattabilità dell'architettura.
+Segue una tabella contenente informazioni riguardo la necessità di convertire i dati in formato GeoJSON per ogni libreria presa in esame:
+\begin{table}[H]
+\centering
+\caption{Heatmap e supporto GeoJSON nelle librerie considerate}
+\label{tab:geojson-heatmap-compact}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Libreria} & \textbf{GeoJSON richiesto} & \textbf{Formato dati accettato} \\ \midrule
+Leaflet & No & Array \texttt{[lat, lng, weight]} (via plugin) \\
+Deck.gl & No & Oggetti JS con coordinate e peso \\
+Folium & No & Lista o DataFrame (via Python) \\
+Mapbox GL JS & Sì & \texttt{GeoJSON} con \texttt{type: \say{Feature}} \\
+OpenLayers & Raccomandato & GeoJSON o oggetti \texttt{ol.Feature} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+Andando quindi per esclusione abbiamo 3 librerie dove GeoJSON non è strettamente richiesto (Leaflet, Deck.gl, Folium). Tra tutte, Deck.gl e Folium supportano nativamente un formato di dati minimale, mentre Leaflet richiede software aggiuntivo. \cite{leaflet-doc, deckgl-docs, folium-doc, mapbox-docs, openlayers-doc}
+
+\textbf{GeoJSON} è un formato aperto per lo scambio di dati geografici basato su JSON (JavaScript Object Notation) che definisce oggetti standardizzati per rappresentare entità spaziali e i loro attributi non spaziali. Si caratterizza per la semplicità sintattica e per l'adozione universale del sistema di riferimento WGS84, espresso in gradi decimali di longitudine e latitudine. La sua diffusione lo ha reso uno degli standard de facto per applicazioni web e GIS, grazie alla buona integrazione con librerie di \textit{mapping} e piattaforme di analisi spaziale \cite{geojson-spec,rfc7946}.
+
+Il cuore operativo del backend è rappresentato dall'endpoint \texttt{/data/<csv\_key>}, che gestisce il caricamento, la validazione e l'esposizione dei dati al frontend. Quando si invoca questo endpoint, il sistema esegue una serie di operazioni concatenate:
+
+\begin{itemize}
+  \item verifica che il file esista e che l'utente abbia i permessi per accedervi;
+  \item caricamento tramite la funzione \texttt{pandas.read\_csv(..., index\_col=0)}, che consente di interpretare correttamente file con indici espliciti; \cite{pandas-readcsv}
+  \item calcolo del range dei valori, necessario per una visualizzazione corretta della \textit{heatmap};
+  \item selezione e applicazione della palette di colori per la \textit{heatmap}, con un fallback automatico se il file specificato non è disponibile.
+\end{itemize}
+
+Il risultato finale è un oggetto JSON già pronto per l'elaborazione da parte del frontend, senza necessità di ulteriori trasformazioni.
+
+\newpage
+
+\subsection{Benefici della Struttura Piatta}
+\label{ss:why-not-geojson}
+
+La trasformazione dei dati da DataFrame a JSON viene eseguita con una singola chiamata a \texttt{to\_dict()}, una funzione ottimizzata internamente dalla libreria \textit{Pandas}. Questo metodo sfrutta ottimizzazioni tali da evitare cicli espliciti \cite{pandas-performance}. La decisione di non utilizzare GeoJSON è stata dettata da un'attenta valutazione dei compromessi; è emersa la necessità di mantenere alta la performance, ridurre la complessità del codice e facilitare lo sviluppo e il debugging. L'uso di GeoJSON avrebbe richiesto di iterare il dataset riga per riga, creare manualmente le geometrie, sviluppare una serializzazione personalizzata e includere una validazione della struttura GeoJSON. Questo avrebbe complicato il codice e aumentato i tempi di risposta.
+
+Il formato attuale è adatto non solo per heatmap, ma anche per visualizzazioni alternative come scatter plot, grafici a bolle o rappresentazioni tridimensionali. L'assenza di un formato rigido consente inoltre una rapida sperimentazione nel frontend.
+Questo esempio mette in luce un aspetto importante dell'ingegneria del software: saper adattare le scelte tecniche al contesto, anche quando ciò significa discostarsi da soluzioni generalmente consigliate. Non si tratta di ignorare uno standard consolidato, ma di riconoscerne i limiti e valutare in modo critico la sua applicabilità. L'adozione di un formato piatto e compatto, invece del più articolato GeoJSON, è risultata in un'architettura più leggera, efficiente e perfettamente aderente agli obiettivi progettuali.
+
+Nel corso dello sviluppo e dei test, il formato piatto si è rivelato estremamente utile: è immediatamente leggibile, sia nella console del browser che durante il \textit{logging} lato server. Questo ha permesso di ridurre il tempo necessario all'identificazione di problemi nei dati o nella mia implementazione.
+
+
+\subsection{Flusso dei Dati nel Backend}
+
+Riprendendo le rotte presenti in sezione \ref{ss:endpoints}, all'interno dell'endpoint \texttt{/data/<csv\_key>}, i dati vengono letti da file CSV tramite la libreria \texttt{pandas}. Il codice seguente evidenzia il comportamento effettivo del backend:
+
+\begin{listing}[H]
+\caption{Lettura e serializzazione dei dati CSV}
+\label{lst:csv_reading_serialization} % Ho aggiunto un'etichetta per riferimento
+\begin{minted}{python}
+df = pd.read_csv(csv_file, index_col=0)
+data = df[config.REQUIRED_COLUMNS].to_dict(orient='records')
+
+response_data = {
+    'data': data,
+    'valueRange': value_range,
+    'colorScale': colors,
+    'csvKey': csv_key,
+    'csvFile': csv_file
+}
+return jsonify(response_data)
+\end{minted}
+\end{listing}
+
+I dati vengono poi convertiti in una lista di dizionari Python utilizzando il metodo\\ \texttt{to\_dict(orient='records')} e serializzati in formato JSON. Tale passaggio risulta efficiente per la serializzazione \cite{pandas-todict}. La struttura risultante è piatta e leggibile; segue un esempio di un singolo datapoint in formato JSON:
+
+\begin{listing}[H]
+\caption{Formato semplificato JSON}
+\label{lst:simplified_json_format} % Added a label for reference
+\begin{minted}{json}
+{
+  "Latitude": 37.2589,
+  "Longitude": -59.3,
+  "Value": 88.046
+}
+\end{minted}
+\end{listing}
+
+\subsubsection{GeoJSON: Quando e Perché Non Usarlo}
+
+Il formato GeoJSON è largamente utilizzato per rappresentare entità geografiche complesse come poligoni, linee o feature collection. Tuttavia, nel caso specifico di dataset composti esclusivamente da punti con attributi numerici, GeoJSON introduce un overhead strutturale che non è necessario:
+
+\begin{listing}[H]
+\caption{Struttura GeoJSON equivalente}
+\label{lst:geojson_equivalent_structure} % Added a label for reference
+\begin{minted}{json}
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-59.3, 37.2589]
+  },
+  "properties": {
+    "Value": 88.046
+  }
+}
+\end{minted}
+\end{listing}
+
+La struttura semplificata usata nel progetto si è dimostrata, in termini di dimensione del JSON e della sua versione GeoJSON, fino al 70\% più compatta. Questo è particolarmente importante quando si lavora con decine di migliaia di punti da trasmettere al client. Nella sezione \ref{ss:why-not-geojson} si parla in maniera più dettagliata del motivo dietro a tale scelta implementativa.
+
+GeoJSON rimane comunque un formato valido in molti contesti. La sua adozione sarebbe raccomandabile in scenari in cui è necessario rappresentare:
+
+\begin{itemize}
+  \item Poligoni e aree di interesse geospaziale;
+  \item Linee di migrazione, rotte o percorsi;
+  \item Confini amministrativi;
+  \item Collezioni eterogenee di oggetti geografici.
+\end{itemize}
+
+Nel caso in esame, tuttavia, i dati consistono esclusivamente in punti con attributi associati, per cui un formato più leggero è preferibile.

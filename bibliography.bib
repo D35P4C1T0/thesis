@@ -1,47 +1,861 @@
-% Website
-% Required fields: 'title' | 'author' | 'howpublished' | 'note'
-% Optional fields: 'month' | 'year'
-@misc{misc,
-  title = {{Title}},
-  author = {{Name Surname, Name Surname and Name Surname}},
-  howpublished = {\url{https://www.google.com}},
-  note = {{Accessed 31/01/2000}}
+
+% ################ Abstract #####################
+
+% AIS – Wikipedia
+@misc{ais-wikipedia,
+  title        = {{Automatic Identification System (AIS)}},
+  author       = {{Wikipedia contributors}},
+  howpublished = {\url{https://en.wikipedia.org/wiki/Automatic_identification_system}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+%$ Paper TrAISformer
+@techreport{porter2011bellhop,
+  author = {O. C. Porter and H. Buckner},
+  title = {General description of the BELLHOP ray tracing program},
+  institution = {University of Algarve},
+  year = {2011}
+}
+
+% db SPL definition
+@misc{db-spl-definition,
+  title        = {{DB SPL (Sound Pressure Level)}},
+  author       = {{AudioInterfacing.com contributors}},
+  howpublished = {\url{https://audiointerfacing.com/what-is-dbspl/}},
+  note         = {{Accessed 21/06/2025}}
+}
+
+@article{fang2024bellhop,
+  author = {Chung T. C. Fang and Anthony C. Zander and Francesco Larizza et al.},
+  title = {Bellhop Underwater Acoustic Simulation and Data Processing Optimisations},
+  journal = {Proceedings of Acoustics 2024},
+  year = {2024}
+}
+
+@article{long2012bellhop,
+  author = {Xiaopeng Huang},
+  title = {A comprehensive study of the Bellhop algorithm for underwater acoustic channel modeling},
+  journal = {J. Acoust. Soc. Am.},
+  volume = {132},
+  number = {3 Supplement},
+  pages = {1942},
+  year = {2012}
+}
+
+@article{nguyen2021traisformer,
+  author = {Duong Nguyen and Ronan Fablet},
+  title = {TrAISformer—A Transformer Network with Sparse Augmented Data Representation and Cross Entropy Loss for AIS-based Vessel Trajectory Prediction},
+  journal = {arXiv preprint arXiv:2109.03958},
+  year = {2021}
+}
+
+@article{paszke2019pytorch,
+  title={PyTorch: An Imperative Style, High‑Performance Deep Learning Library},
+  author={Paszke, Adam and Gross, Sam and Massa, Francisco and et al.},
+  journal={NeurIPS},
+  year={2019}
+}
+
+@article{virtanen2020scipy,
+  title={SciPy 1.0 – Fundamental Algorithms for Scientific Computing in Python},
+  author={Virtanen, Pauli and Gommers, Ralf and Oliphant, Travis E. and et al.},
+  journal={Nature Methods},
+  year={2020}
+}
+
+@article{walt2011numpy,
+  title={The NumPy array: a structure for efficient numerical computation},
+  author={Van Der Walt, Stefan and Colbert, S. Chris and Varoquaux, Gaël},
+  journal={arXiv preprint arXiv:1102.1523},
+  year={2011}
+}
+
+@misc{geopandas2025,
+  title={GeoPandas documentation ecosystem},
+  author={GeoPandas Developers},
+  howpublished={\\url{https://geopandas.org/}},
+  year={2025}
+}
+
+@misc{heatmap-wikipedia,
+  title        = {{Heat map}},
+  author       = {{Wikipedia contributors}},
+  howpublished = {\url{https://en.wikipedia.org/wiki/Heat_map}},
+  note         = {{Accessed 20/06/2025}}
+}
+
+@misc{techTarget-heatmap,
+  title        = {{What is a heat map (heatmap)?}},
+  author       = {{Rahul Awati}},
+  howpublished = {\url{https://www.techtarget.com/searchbusinessanalytics/definition/heat-map}},
+  note         = {{Accessed 20/06/2025}}
+}
+
+@misc{vwo-heatmap,
+  title        = {{What is a Heatmap - Comprehensive Guide and Best Practices}},
+  author       = {{VWO}},
+  howpublished = {\url{https://vwo.com/website-heatmap/what-is-a-heatmap/}},
+  note         = {{Accessed 20/06/2025}}
+}
+
+@misc{investopedia-heatmap,
+  title        = {{What Is a Heatmap?}},
+  author       = {{Investopedia contributors}},
+  howpublished = {\url{https://www.investopedia.com/terms/h/heatmap.asp}},
+  note         = {{Accessed 20/06/2025}}
+}
+
+@misc{clarity-heatmap,
+  title        = {{What is a Heatmap?}},
+  author       = {{Microsoft Clarity}},
+  howpublished = {\url{https://clarity.microsoft.com/blog/what-is-a-heatmap/}},
+  note         = {{Accessed 20/06/2025}}
+}
+
+% AirGun
+
+@misc{bellhop-doc,
+  title        = {{The BELLHOP Manual and User's Guide}},
+  author       = {{M. Porter and H. P. Bucker}},
+  howpublished = {\url{https://oalib.hlsresearch.com/Rays/HLS-2010-1.pdf}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+% ARLpy + Bellhop integration
+@misc{arlpy-bellhop,
+  title        = {{Underwater acoustic propagation modeling with arlpy and Bellhop}},
+  author       = {{ARLpy Project}},
+  howpublished = {\url{https://arlpy.readthedocs.io/en/latest/_static/bellhop.html}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+% Airgun – Discovery of Sound in the Sea
+@misc{airgun-dosits,
+  title        = {{Airgun noise characteristics}},
+  author       = {{Discovery of Sound in the Sea (DOSITS)}},
+  howpublished = {\url{https://dosits.org/galleries/audio-gallery/anthropogenic-sounds/airgun/}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@article{airgun_marine_life,
+  author = {Madsen},
+  title = {Air gun arrays as noise sources: output, impact zones, and frequency c
+haracteristics},
+  journal = {J. Acoust. Soc. Am.},
+  year = {2008}
 }
 
 
-% Book
-% Required fields: 'author' or 'editor' | 'title' | 'publisher' | 'year'.
-% Optional fields: 'volume' or 'number' | 'series' | 'address' | 'edition' | 'month' | 'note'
-@book{book,
-  author = {{Name Surname, Name Surname and Name Surname}},
-  title = {{Title}},
-  publisher = {{University of Trento}},
-  year = 1994,
-  edition = 2
+% Seismic source – Wikipedia
+@misc{seismic-source,
+  title        = {{Seismic source}},
+  author       = {{Wikipedia contributors}},
+  howpublished = {\url{https://en.wikipedia.org/wiki/Seismic_source}},
+  note         = {{Accessed 08/05/2025}}
 }
 
-% Conference
-% Required fields: 'author' | 'title' | 'booktitle' | 'year'
-% Optional fields: 'editor' | 'volume' or 'number' | 'series' | 'pages' | 'address' | 'month' | 'organization' | 'publisher' | 'note'
-@conference{conference,
-  author = {{Name Surname, Name Surname and Name Surname}},
-  title = {{Title}},
-  booktitle = {{University of Trento}},
-  address = {{Trento | ITA}},
-  year = 2005,
-  month = jun,
-  pages = {886-893}
+% Plotly – documentazione Python
+@misc{lightningchart-js,
+  title        = {{High-Performance JavaScript Charts | WebGL JS Charts Library}},
+  author       = {{LightningChart}},
+  howpublished = {\url{https://lightningchart.com/js-charts/}},
+  note         = {{Accessed 14/05/2025}}
 }
 
-% Article
-% Required fields: 'author' | 'title' | 'journal' | 'year'
-% Optional fields: 'volume' | 'number' | 'pages' | 'month' | 'note'
-@article{article,
-  author = {{Name Surname, Name Surname and Name Surname}},
-  title = {{Title}},
-  journal = {{University of Trento}},
-  volume = 52,
-  number = 4,
-  pages = {1289-1306},
-  year = 2006
+@misc{mapbox-gl-js,
+  title        = {{Rendering Hundreds of Thousands of Polygons using JS}},
+  author       = {{Dipak Patil}},
+  howpublished = {\url{https://medium.com/@dipakpatil2615/rendering-hundreds-of-thousands-of-polygons-using-js-because-gis-deserves-modern-visualization-e27d678dccca}},
+  note         = {{Accessed 14/05/2025}}
+}
+
+@misc{esri-raster-model,
+  title        = {{Raster Data Model Definition | GIS Dictionary - Esri Support}},
+  author       = {{Esri}},
+  howpublished = {\url{https://support.esri.com/en-us/gis-dictionary/raster-data-model}},
+  note         = {{Accessed 14/05/2025}}
+}
+
+@misc{qgis-raster-data,
+  title        = {{6. Raster Data — QGIS Documentation documentation}},
+  author       = {{QGIS Project}},
+  howpublished = {\url{https://docs.qgis.org/latest/en/docs/gentle_gis_introduction/raster_data.html}},
+  note         = {{Accessed 14/05/2025}}
+}
+
+
+% ################ Leaflet ######################
+
+% Website per la documentazione ufficiale di Leaflet
+@misc{leaflet-doc,
+  title        = {{Leaflet: a JavaScript library for interactive maps}},
+  author       = {{Leaflet Project}},
+  howpublished = {\url{https://leafletjs.com/reference.html}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+% Website per React Leaflet
+@misc{react-leaflet,
+  title        = {{React Leaflet: React components for Leaflet maps}},
+  author       = {{React Leaflet Contributors}},
+  howpublished = {\url{https://react-leaflet.js.org/}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+% Website per Supercluster (clustering ad alte prestazioni)
+@misc{supercluster,
+  title        = {{Supercluster: A very fast geospatial point clustering library}},
+  author       = {{Mapbox}},
+  howpublished = {\url{https://github.com/mapbox/supercluster}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+% Website per leafgl (WebGL per Leaflet)
+@misc{leafgl,
+  title        = {{leafgl: performant WebGL rendering for Leaflet}},
+  author       = {{R-spatial}},
+  howpublished = {\url{https://r-spatial.github.io/leafgl/}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+% Website per MapTiler raster tiles
+@misc{maptiler-raster,
+  title        = {{Raster tiles in Leaflet JS}},
+  author       = {{MapTiler}},
+  howpublished = {\url{https://docs.maptiler.com/leaflet/examples/raster-tiles-in-leaflet-js/}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+% Website per leaflet-geojson-vt (vector tiles)
+@misc{leaflet-geojson-vt,
+  title        = {{leaflet-geojson-vt: A plugin combining geojson-vt with Leaflet}},
+  author       = {{Brandon Xiang}},
+  howpublished = {\url{https://github.com/brandonxiang/leaflet-geojson-vt}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+% Website per Leaflet.VectorGrid
+@misc{vectorgrid,
+  title        = {{Leaflet.VectorGrid: Display gridded vector data}},
+  author       = {{Leaflet Contributors}},
+  howpublished = {\url{https://github.com/Leaflet/Leaflet.VectorGrid}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+% Website per la licenza BSD di Leaflet
+@misc{leaflet-license,
+  title        = {{Leaflet License (BSD 2-Clause)}},
+  author       = {{Leaflet Project}},
+  howpublished = {\url{https://github.com/Leaflet/Leaflet/blob/main/LICENSE}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+% ##################### WEBGL #############
+
+@misc{mdn-webgl,
+  title        = {{WebGL: 2D and 3D graphics for the web}},
+  author       = {{MDN Web Docs}},
+  howpublished = {\url{https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{wiki-webgl,
+  title        = {{WebGL}},
+  author       = {{Wikipedia contributors}},
+  howpublished = {\url{https://en.wikipedia.org/wiki/WebGL}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{khronos-webgl,
+  title        = {{WebGL}},
+  author       = {{Khronos Group}},
+  howpublished = {\url{https://www.khronos.org/webgl/}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+% ################ MapBox ###########################
+
+@misc{mapbox-docs,
+  title        = {{Mapbox GL JS Guides}},
+  author       = {{Mapbox}},
+  howpublished = {\url{https://docs.mapbox.com/mapbox-gl-js/guides/}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{mapbox-api,
+  title        = {{Mapbox GL JS API Reference}},
+  author       = {{Mapbox}},
+  howpublished = {\url{https://docs.mapbox.com/mapbox-gl-js/api/}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{mapbox-performance,
+  title        = {{Improve the performance of Mapbox GL JS maps}},
+  author       = {{Mapbox}},
+  howpublished = {\url{https://docs.mapbox.com/help/troubleshooting/mapbox-gl-js-performance/}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{article-highperf,
+  title        = {{High‑Performance Web Mapping using Vector Tiles and Mapbox GL}},
+  author       = {{Bhaskar Bhattacharya}},
+  howpublished = {\url{https://www.linkedin.com/pulse/high-performance-web-mapping-using-vector-tiles-mapbox-bhaskar-dlg7e}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{mapbox-vector,
+  title        = {{Vector tiles standards}},
+  author       = {{Mapbox}},
+  howpublished = {\url{https://docs.mapbox.com/data/tilesets/guides/vector-tiles-standards/}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{gdal-mvt,
+  title        = {{MVT: Mapbox Vector Tiles — GDAL Documentation}},
+  author       = {{GDAL Project}},
+  howpublished = {\url{https://gdal.org/en/stable/drivers/vector/mvt.html}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{mapbox-raster,
+  title        = {{Add a raster tile source}},
+  author       = {{Mapbox}},
+  howpublished = {\url{https://docs.mapbox.com/mapbox-gl-js/example/map-tiles/}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{mapbox-license-v2,
+  title        = {{Mapbox GL JS v2 License Changes}},
+  author       = {{Geoapify}},
+  howpublished = {\url{https://www.geoapify.com/mapbox-gl-new-license-and-6-free-alternatives/}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{mapbox-pricing,
+  title        = {{Mapbox Pricing}},
+  author       = {{Mapbox}},
+  howpublished = {\url{https://www.mapbox.com/pricing}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{react-map-gl,
+  title        = {{react-map-gl Documentation}},
+  author       = {{visgl}},
+  howpublished = {\url{https://visgl.github.io/react-map-gl/docs}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{mapbox-react-tutorial,
+  title        = {{Use Mapbox GL JS in a React app}},
+  author       = {{Mapbox}},
+  howpublished = {\url{https://docs.mapbox.com/help/tutorials/use-mapbox-gl-js-with-react/}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{mapbox-turf,
+  title        = {{Analyze data with Turf.js and Mapbox GL JS}},
+  author       = {{Mapbox}},
+  howpublished = {\url{https://docs.mapbox.com/help/tutorials/analysis-with-turf/}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{mapbox-threejs,
+  title        = {{Working with Three.js and Mapbox GL}},
+  author       = {{three.js Forum}},
+  howpublished = {\url{https://discourse.threejs.org/t/working-with-threejs-and-mapbox-gl/49767}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{mapbox-ios,
+  title        = {{Mapbox Maps SDK for iOS Guides}},
+  author       = {{Mapbox}},
+  howpublished = {\url{https://docs.mapbox.com/ios/maps/guides/}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{mapbox-mobile-sdk,
+  title        = {{Mobile maps in 3D for iOS and Android}},
+  author       = {{Mapbox}},
+  howpublished = {\url{https://www.mapbox.com/mobile-maps-sdk}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+% #################### Deck.gl #####################
+
+@misc{deckgl-docs,
+  title        = {{deck.gl: High‑Performance WebGL2/ WebGPU Data Visualization}},
+  author       = {{vis.gl}},
+  howpublished = {\url{https://deck.gl/docs}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{deckgl-github,
+  title        = {{visgl/deck.gl: WebGL2 powered visualization framework}},
+  author       = {{vis.gl}},
+  howpublished = {\url{https://github.com/visgl/deck.gl}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{deckgl-npm,
+  title        = {{deck.gl – npm}},
+  author       = {{npm}},
+  howpublished = {\url{https://www.npmjs.com/package/deck.gl}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{deckgl-performance,
+  title        = {{Performance Optimization | deck.gl}},
+  author       = {{vis.gl}},
+  howpublished = {\url{https://deck.gl/docs/developer-guide/performance}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{deckgl-uber-blog,
+  title        = {{Visualize Data Sets on the Web with Uber Engineering's deck.gl}},
+  author       = {{Uber Engineering}},
+  howpublished = {\url{https://www.uber.com/blog/visualizing-data-sets-deck-gl-framework/}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{deckgl-vector,
+  title        = {{VectorTileLayer – deck.gl API Reference}},
+  author       = {{vis.gl}},
+  howpublished = {\url{https://deck.gl/docs/api-reference/carto/vector-tile-layer}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{deckgl-mvtlayer,
+  title        = {{MVTLayer – deck.gl API Reference}},
+  author       = {{vis.gl}},
+  howpublished = {\url{https://deck.gl/docs/api-reference/geo-layers/mvt-layer}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{deckgl-raster-plugin,
+  title        = {{deck.gl-raster – GitHub}},
+  author       = {{Kyle Barron}},
+  howpublished = {\url{https://github.com/kylebarron/deck.gl-raster}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{deckgl-maptiler,
+  title        = {{Use Deck.gl with Vector Tiles – MapTiler}},
+  author       = {{MapTiler}},
+  howpublished = {\url{https://docs.maptiler.com/deck-gl/get-started/}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{deckgl-license,
+  title        = {{deck.gl/LICENSE (MIT)}},
+  author       = {{vis.gl}},
+  howpublished = {\url{https://github.com/visgl/deck.gl/blob/master/LICENSE}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{deckgl-react,
+  title        = {{Using deck.gl with React}},
+  author       = {{vis.gl}},
+  howpublished = {\url{https://deck.gl/docs/get-started/using-with-react}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{deckgl-community,
+  title        = {{deck.gl-community}},
+  author       = {{vis.gl}},
+  howpublished = {\url{https://visgl.github.io/deck.gl-community/}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{openlayers-doc,
+  title        = {{OpenLayers Documentation}},
+  author       = {{OpenLayers contributors}},
+  howpublished = {\url{https://openlayers.org/doc/}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{openlayers-github,
+  title        = {{OpenLayers GitHub Repository}},
+  author       = {{OpenLayers contributors}},
+  howpublished = {\url{https://github.com/openlayers/openlayers}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{awesome-openlayers,
+  title        = {{Awesome‑OpenLayers: Third‑party libraries list}},
+  author       = {{webgeodatavore}},
+  howpublished = {\url{https://github.com/webgeodatavore/awesome-openlayers}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{openlayers-webgl-example,
+  title        = {{WebGL Vector Layer Example – OpenLayers}},
+  author       = {{OpenLayers contributors}},
+  howpublished = {\url{https://openlayers.org/en/latest/examples/webgl-vector-layer.html}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{openlayers-webgl-workshop,
+  title        = {{Rendering points with WebGL – OpenLayers Workshop}},
+  author       = {{OpenLayers contributors}},
+  howpublished = {\url{https://openlayers.org/workshop/en/webgl/points.html}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{openlayers-issue-perf,
+  title        = {{Improving performance of large vector layers – GIS StackExchange}},
+  author       = {{GIS StackExchange user}},
+  howpublished = {\url{https://gis.stackexchange.com/questions/120810/how-to-improve-the-performance-of-an-openlayers-based-api-containing-a-large-num}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{openlayers-mapbox-vector-tiles,
+  title        = {{Mapbox Vector Tiles Example – OpenLayers}},
+  author       = {{OpenLayers contributors}},
+  howpublished = {\url{https://openlayers.org/en/latest/examples/mapbox-vector-tiles.html}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{openlayers-osm-vector-tiles,
+  title        = {{OSM Vector Tiles Example – OpenLayers}},
+  author       = {{OpenLayers contributors}},
+  howpublished = {\url{https://openlayers.org/en/latest/examples/osm-vector-tiles.html}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{openlayers-raster-xyz,
+  title        = {{Display raster from GeoServer using XYZ – GIS StackExchange}},
+  author       = {{GIS StackExchange user}},
+  howpublished = {\url{https://gis.stackexchange.com/questions/436795/display-raster-from-geoserver-through-openlayers-using-xyz}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{openlayers-raster-reprojection,
+  title        = {{Raster Reprojection Tutorial – OpenLayers}},
+  author       = {{OpenLayers contributors}},
+  howpublished = {\url{https://openlayers.org/doc/tutorials/raster-reprojection.html}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{ol-cesium-license,
+  title        = {{ol-cesium LICENSE (BSD 3‑Clause)}},
+  author       = {{OpenLayers contributors}},
+  howpublished = {\url{https://github.com/openlayers/ol-cesium/blob/master/LICENSE}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{openlayers-turf-example,
+  title        = {{turf.js Integration Example – OpenLayers}},
+  author       = {{OpenLayers contributors}},
+  howpublished = {\url{https://openlayers.org/en/latest/examples/turf.html}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{openlayers-react-native,
+  title        = {{openlayers-react-native-example}},
+  author       = {{PhanxDEV}},
+  howpublished = {\url{https://github.com/PhanxDEV/openlayers-react-native-example}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+% ############## Folium ######################
+
+@misc{folium-doc,
+  title        = {{Folium: Python Data. Leaflet.js Maps.}},
+  author       = {{Python-Visualization contributors}},
+  howpublished = {\url{https://python-visualization.github.io/folium/}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{folium-userguide,
+  title        = {{User guide — Folium documentation}},
+  author       = {{Python-Visualization contributors}},
+  howpublished = {\url{https://python-visualization.github.io/folium/latest/user_guide.html}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{folium-api,
+  title        = {{API reference — Folium documentation}},
+  author       = {{Python-Visualization contributors}},
+  howpublished = {\url{https://python-visualization.github.io/folium/latest/reference.html}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{folium-github,
+  title        = {{python-visualization/folium: Python Data. Leaflet.js Maps.}},
+  author       = {{Python-Visualization contributors}},
+  howpublished = {\url{https://github.com/python-visualization/folium}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{folium-pypi,
+  title        = {{Folium – PyPI}},
+  author       = {{Rob Story et al.}},
+  howpublished = {\url{https://pypi.org/project/folium/}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{folium-lic,
+  title        = {{LICENSE.txt – Folium}},
+  author       = {{Python-Visualization contributors}},
+  howpublished = {\url{https://github.com/python-visualization/folium/blob/main/LICENSE.txt}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{folium-raster,
+  title        = {{Raster layers — Folium documentation}},
+  author       = {{Python-Visualization contributors}},
+  howpublished = {\url{https://python-visualization.github.io/folium/latest/user_guide/raster_layers.html}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{folium-cluster-issue,
+  title        = {{Folium Marker-Cluster map is not visualized for a large dataset}},
+  author       = {{StackOverflow user}},
+  howpublished = {\url{https://stackoverflow.com/questions/74385089/folium-marker-cluster-map-is-not-visualized-for-a-large-dataset}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{folium-large-geojson,
+  title        = {{folium crashes Jupyter Notebook when using large geojson file \#787}},
+  author       = {{Python-Visualization Issue \#787}},
+  howpublished = {\url{https://github.com/python-visualization/folium/issues/787}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{folium-tutorial,
+  title        = {{Building Interactive Maps with Folium, Python}},
+  author       = {{Chibuzo Dev}},
+  howpublished = {\url{https://medium.com/@chibuzordev/creating-interactive-maps-the-easy-way-with-python-folium-and-leaflet-js-f5bcc24862f}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{folium-realpython,
+  title        = {{Python Folium: Create Web Maps From Your Data}},
+  author       = {{Real Python}},
+  howpublished = {\url{https://realpython.com/python-folium-web-maps-from-data/}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{folium-pypistats,
+  title        = {{folium – PyPI download stats}},
+  author       = {{PyPI Stats}},
+  howpublished = {\url{https://pypistats.org/packages/folium}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+@misc{folium-react,
+  title        = {{Make Folium map interactible from page where it's embedded}},
+  author       = {{StackOverflow user}},
+  howpublished = {\url{https://stackoverflow.com/questions/71162332/make-folium-map-interactible-from-page-where-its-embedded}},
+  note         = {{Accessed 08/05/2025}}
+}
+
+
+@misc{peerdh-ssr-csr-comparison,
+  title        = {{Comparing Client-side And Server-side Rendering Performance Metrics}},
+  author       = {{Peerdh}},
+  howpublished = {\url{https://peerdh.com/blogs/programming-insights/comparing-client-side-and-server-side-rendering-performance-metrics-2}},
+  note         = {{Accessed 19/05/2025}}
+}
+
+@misc{devto-csr-vs-ssr,
+  title        = {{Understanding Rendering in Web Apps: CSR vs SSR}},
+  author       = {{Nicholas Mendez}},
+  howpublished = {\url{https://dev.to/snickdx/understanding-rendering-in-web-apps-csr-vs-ssr-43d}},
+  note         = {{Accessed 19/05/2025}}
+}
+
+
+% ### GeoJSON ####
+
+
+@misc{rfc7946,
+  title        = {{RFC 7946: The GeoJSON Format}},
+  author       = {{IETF GeoJSON Working Group}},
+  howpublished = {\url{https://datatracker.ietf.org/doc/html/rfc7946}},
+  note         = {{Accessed 12/05/2025}}
+}
+
+@misc{geojson-spec,
+  title        = {{The GeoJSON Specification}},
+  author       = {{GeoJSON Working Group}},
+  howpublished = {\url{https://geojson.org/}},
+  note         = {{Accessed 12/05/2025}}
+}
+
+@misc{chrome-dom-size,
+    title        = {\textit{Avoid an excessive DOM size}},
+    author       = {{Chrome Developer}},
+    howpublished = {\url{https://developer.chrome.com/docs/lighthouse/performance/dom-size}},
+    note         ={{Accessed 08/05/2025}}
+}
+
+@misc{leaflet-clustering,
+  title        = {{Leaflet Marker Clustering}},
+  author       = {{Leigh Halliday}},
+  howpublished = {\url{https://www.leighhalliday.com/leaflet-clustering}},
+  note         = {{Accessed 14/05/2025}}
+}
+
+@misc{deckgl-webgl,
+  title        = {{deck.gl: WebGL2 powered visualization framework}},
+  author       = {{vis.gl}},
+  howpublished = {\url{https://github.com/visgl/deck.gl}},
+  note         = {{Accessed 14/05/2025}}
+}
+
+@misc{json-minify,
+  title        = {{JSON Minifier - Optimize JSON for Performance | 4DevTools}},
+  author       = {{4DevTools}},
+  howpublished = {\url{https://4devtools.co/json-minify/}},
+  note         = {{Accessed 14/05/2025}}
+}
+
+@misc{flask-compress-pypi,
+  title        = {{Flask-Compress}},
+  author       = {{Flask-Compress Contributors}},
+  howpublished = {\url{https://pypi.org/project/Flask-Compress/}},
+  note         = {{Accessed 14/05/2025}}
+}
+
+% ############# Flask ##################
+
+@misc{flask-docs,
+  title        = {{Welcome to Flask — Flask Documentation (3.1.x)}},
+  author       = {{Pallets Projects}},
+  howpublished = {\url{https://flask.palletsprojects.com/}},
+  note         = {{Accessed 15/05/2025}}
+}
+
+@misc{leaflet-heat,
+  title        = {{Leaflet.heat: A tiny, simple and fast heatmap plugin for Leaflet}},
+  author       = {{Leaflet}},
+  howpublished = {\url{https://github.com/Leaflet/Leaflet.heat}},
+  note         = {{Accessed 21/05/2025}}
+}
+
+@misc{maplibre-sourcedata,
+  title        = {{MapSourceDataEvent - MapLibre GL JS}},
+  author       = {{MapLibre}},
+  howpublished = {\url{https://maplibre.org/maplibre-gl-js/docs/API/type-aliases/MapSourceDataEvent/}},
+  note         = {{Accessed 21/05/2025}}
+}
+
+@misc{openlayers-heatmap,
+  title        = {{OpenLayers v10.5.0 API - Class: Heatmap}},
+  author       = {{OpenLayers}},
+  howpublished = {\url{https://openlayers.org/en/latest/apidoc/module-ol_layer_Heatmap-Heatmap.html}},
+  note         = {{Accessed 21/05/2025}}
+}
+
+@misc{deckgl-onafterrender,
+  title        = {{SnapshotTestRunner - deck.gl}},
+  author       = {{deck.gl}},
+  howpublished = {\url{https://deck.gl/docs/api-reference/test-utils/snapshot-test-runner}},
+  note         = {{Accessed 21/05/2025}}
+}
+
+
+% ########### Blueprints #############
+
+@manual{palets_blueprints,
+  title = {Modular Applications with Blueprints},
+  author = {{Flask Documentation}},
+  note = {Blueprints in Flask record operazioni da applicare all'app, permettono modularità, prefissi, registrazione multipla, template e static files},
+  year = {2025}
+}
+
+% ########### Codice Mappa - Configurazione ########
+
+@misc{dependency-injection-wiki,
+  title        = {{Dependency injection}},
+  author       = {{Wikipedia contributors}},
+  howpublished = {\url{https://en.wikipedia.org/wiki/Dependency_injection}},
+  note         = {{Accessed 18/06/2025}}
+}
+
+@misc{understanding-config-json,
+  title        = {{Understanding config.json: Examples \& Best Practices}},
+  author       = {{Ash Lei}},
+  howpublished = {\url{https://www.byteplus.com/en/topic/505390?title=understanding-config-json-a-comprehensive-guide-to-configuration-management}},
+  note         = {{Accessed 24/04/2025}}
+}
+
+@misc{config-files-types,
+  title        = {{Configuration Files: Types, Examples, and 5 Critical Best Practices}},
+  author       = {{Configu Blog}},
+  howpublished = {\url{https://configu.com/blog/configuration-files-types-examples-and-5-critical-best-practices/}},
+  note         = {{Accessed 18/06/2025}}
+}
+
+@misc{deckgl-roadmap,
+  title        = {{WebGPU in deck.gl}},
+  author       = {{vis.gl}},
+  howpublished = {\url{https://deck.gl/docs/overview/webgpu}},
+  note         = {{Accessed 18/06/2025}}
+}
+
+@misc{glassmorphism-css,
+  title        = {{Glassmorphism: Frosted Glass Effect with CSS}},
+  author       = {{CSS-Tricks Contributors}},
+  howpublished = {\url{https://css-tricks.com/glassmorphism/}},
+  note         = {{Accessed 18/06/2025}}
+}
+
+@misc{tailwind-docs,
+  title        = {{Tailwind CSS Documentation}},
+  author       = {{Tailwind Labs}},
+  howpublished = {\url{https://tailwindcss.com/docs/installation}},
+  note         = {{Accessed 18/06/2025}}
+}
+
+@misc{tailwind-responsive,
+  title        = {{Responsive Design — Tailwind CSS}},
+  author       = {{Tailwind Labs}},
+  howpublished = {\url{https://tailwindcss.com/docs/responsive-design}},
+  note         = {{Accessed 18/06/2025}}
+}
+
+@misc{app-factories,
+  title        = {{Application Factories – Flask Documentation}},
+  author       = {{Pallets Projects}},
+  howpublished = {\url{https://flask.palletsprojects.com/en/stable/patterns/appfactories/}},
+  note         = {{Accessed 18/06/2025}}
+}
+
+@misc{flask-di,
+  title        = {{A Minimalist Guide to Dependency Injection in Flask}},
+  author       = {{Sefik Ilkin Serengil}},
+  howpublished = {\url{https://sefiks.com/2024/12/12/a-minimalist-guide-to-dependency-injection-in-flask-based-python-web-services/}},
+  note         = {{Accessed 18/06/2025}}
+}
+
+% ############### Flusso dati ################
+
+@misc{pandas-readcsv,
+  title        = {{pandas.read\_csv}},
+  author       = {{pandas documentation contributors}},
+  howpublished = {\url{https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html}},
+  note         = {{Accessed 19/06/2025}}
+}
+
+@misc{pandas-todict,
+  title        = {{pandas.DataFrame.to\_dict — pandas documentation}},
+  author       = {{pandas documentation contributors}},
+  howpublished = {\url{https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_dict.html}},
+  note         = {{Accessed 19/06/2025}}
+}
+
+@misc{pandas-performance,
+  title        = {{Top 5 tips to make your pandas code absurdly fast}},
+  author       = {{Tryolabs}},
+  howpublished = {\url{https://tryolabs.com/blog/2023/02/08/top-5-tips-to-make-your-pandas-code-absurdly-fast}},
+  note         = {{Accessed 19/06/2025}}
+}
+
+@misc{deckgl-heatmap,
+  title        = {{HeatmapLayer – deck.gl API Reference}},
+  author       = {{vis.gl}},
+  howpublished = {\url{https://deck.gl/docs/api-reference/aggregation-layers/heatmap-layer}},
+  note         = {{Accessed 19/06/2025}}
 }

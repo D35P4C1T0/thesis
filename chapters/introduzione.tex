@@ -1,0 +1,90 @@
+\chapter{Introduzione e contesto progettuale}
+\label{ch:introduzione}
+
+\section{Obiettivo del progetto}
+
+Il presente elaborato descrive le fasi di progettazione e sviluppo del frontend web di un sistema interattivo per la visualizzazione dei dati prodotti da un modello di simulazione del rumore subacqueo
+L'obiettivo specifico di questa tesi era fornire al team di ricerca uno strumento accessibile via web che permettesse di caricare i risultati del modello, costituiti da grandi volumi di dati geospaziali, di rappresentarli in maniera chiara su mappa interattiva e consentire un'esplorazione dinamica dei dati, con filtri e livelli di dettaglio variabile.
+Il frontend doveva quindi fungere da veste grafica per i risultati del modello, offrendo un'esperienza utente fluida, veloce e comprensibile anche a non esperti in tecnologie web o GIS.
+
+
+% ## Perchè flask ##
+
+\section{Motivazioni della Scelta di Flask}
+\label{ch:flask}
+
+\subsection{Introduzione al Framework}
+\textit{Flask} è un \textit{microframework} web scritto in Python, pensato per lo sviluppo rapido di applicazioni web leggere ma estensibili; si è progressivamente affermato come una delle soluzioni più apprezzate nell'ambito dello sviluppo web con Python.  
+La filosofia alla base di Flask è quella della semplicità e della flessibilità: il \textit{framework} fornisce solo gli strumenti essenziali per avviare un'applicazione web, lasciando allo sviluppatore la libertà di scegliere e integrare le funzionalità aggiuntive tramite estensioni. \cite{flask-docs}
+
+\textit{Flask} ha rappresentato una scelta strategica per la realizzazione del sistema di \textit{backend} dell'applicazione. La sua leggerezza, unita alla possibilità di estensione mirata e all'ottima documentazione disponibile, ha consentito di sviluppare un'infrastruttura web coerente con le esigenze del progetto, senza introdurre complessità superflue. In un contesto accademico, dove spesso è necessario prototipare rapidamente soluzioni specifiche, un \textit{framework} come \textit{Flask} si rivela uno strumento estremamente efficace.
+
+\begin{listing}[H]
+\caption{Codice che inizializza un'istanza minimale di Flask}
+\label{lst:minimal-flask} % Il label va all'interno dell'ambiente listing o subito dopo la caption
+\begin{minted}{python}
+from flask import Flask
+app = Flask(__name__)
+
+@app.route('/')
+def hello():
+    return 'Hello, World!'
+
+if __name__ == '__main__':
+    app.run(debug=True)
+\end{minted}
+\end{listing}
+
+
+\subsection{Vantaggi Offerti}
+\subsubsection*{Leggerezza e rapidità di sviluppo}
+Uno dei principali punti di forza di Flask risiede nella sua struttura minimale, come si può osservare nel frammento di codice presente nel Listing \ref{lst:minimal-flask}. L'avvio di un'applicazione richiede pochissime righe di codice, rendendo il \textit{framework} particolarmente adatto per prototipi, applicazioni di piccole e medie dimensioni, o per progetti che necessitano di una fase di sviluppo iniziale particolarmente snella.  
+Nel contesto di questo progetto, tale caratteristica ha permesso di concentrare l'attenzione sulle funzionalità specifiche dell'applicazione, riducendo al minimo la complessità architetturale.
+
+\subsubsection*{Modularità e facilità di integrazione}
+Flask si contraddistingue per un sistema modulare che consente di estendere il comportamento dell'applicazione in modo selettivo. \cite{flask-docs}
+
+Questa flessibilità ha rappresentato un vantaggio significativo, poiché ha consentito l'integrazione fluida con il progetto sviluppato dal collaboratore.
+
+\section{Sfide tecniche e problematiche affrontate}
+
+Durante lo sviluppo, è stato evidente come la quantità e complessità dei dati da trattare richiedesse una notevole attenzione sia in fase di progettazione dell'interfaccia, sia nella scelta delle tecnologie di visualizzazione. Le principali sfide sono rappresentate da:
+
+\begin{itemize}
+  \item la gestione di \textit{dataset} composti da centinaia di migliaia di punti, ciascuno rappresentante un valore acustico in coordinate geografiche precise;
+  \item la necessità di interagire in tempo reale con la mappa (zoom, pan, click, overlay);
+  \item la compatibilità con diversi browser, dispositivi e risoluzioni.
+\end{itemize}
+
+A queste problematiche si è aggiunta la difficoltà di conciliare un'interfaccia con diverse funzionalità e dall'impatto visivo semplice e pulito, mantenendo alta la responsività dell'applicazione.
+
+\subsection{Impatto delle dimensioni del DOM sulle performance}
+
+Uno degli aspetti fondamentali da considerare nello sviluppo di interfacce web interattive è la gestione efficiente del \textit{Document Object Model} (DOM). Il DOM rappresenta la struttura gerarchica di un documento HTML o XML, permettendo ai linguaggi di scripting, come JavaScript, di accedere e manipolare dinamicamente il contenuto, la struttura e lo stile della pagina.
+
+Quando un browser carica una pagina web, inizia analizzando il file HTML per costruire il DOM. Un DOM di grandi dimensioni implica che il browser debba elaborare un numero elevato di nodi, aumentando il tempo necessario per il parsing e la costruzione della struttura interna della pagina. Questo processo può rallentare significativamente il tempo di caricamento iniziale della pagina, specialmente su dispositivi con risorse limitate.
+
+Secondo le linee guida fornite da strumenti come Lighthouse, una pagina web dovrebbe evitare di avere un DOM con più di 1.500 nodi, una profondità massima superiore a 32 livelli o più di 60 nodi figli per elemento. Superare queste soglie può indicare una struttura DOM eccessivamente complessa, con potenziali impatti negativi sulle prestazioni e sull'usabilità della pagina. \cite{chrome-dom-size}
+
+\subsection{Limitazioni nella renderizzazione di molti punti in una pagina HTML}
+
+Uno dei problemi principali emersi fin da subito è stato l'elevato numero di marker da visualizzare sulla mappa. Ogni punto prodotto dal modello corrispondeva a una coordinata geografica e a un valore numerico (in questo caso, il livello di pressione acustica). Visualizzare tutti questi punti contemporaneamente in una pagina web porta inevitabilmente a un sovraccarico del DOM.
+
+Infatti, molti motori di \textit{mapping} web (come Leaflet o Folium) aggiungono un elemento HTML per ogni marker. Questo approccio è sostenibile fino a qualche migliaio di elementi, ma scala molto male: superata una certa soglia, si assiste a rallentamenti importanti, consumo elevato di RAM e CPU e talvolta al blocco del browser. \cite{folium-react}
+
+
+\section{Ottimizzazioni adottate}
+
+\subsection{Strategie per mitigare gli effetti di un DOM di grandi dimensioni}
+
+Per rendere possibile la visualizzazione fluida di questi dati, sono state prese in considerazione librerie per mappe che adottano diverse strategie di ottimizzazione, in particolare:
+
+\begin{itemize}
+  \item \textbf{Clustering dei marker}. L'adozione di tecniche di \textit{clustering} automatico consente di aggregare dinamicamente i \textit{marker} (o \textit{datapoints}) più vicini tra loro e rappresentarli con un'unica icona contenente un contatore. 
+  
+  Questo riduce drasticamente il numero di elementi DOM attivi, migliorando la performance percepita. Diverse librerie, come \texttt{Leaflet.markercluster}, permettono questo tipo di ottimizzazione in modo trasparente per l'utente \cite{leaflet-clustering}. Questo concetto può essere esteso anche alle librerie che implementano una Heatmap, dove viene gestito il \textit{clustering} dei \textit{datapoints}.
+
+  \item \textbf{Uso di Canvas e WebGL}. Laddove le performance non erano ancora soddisfacenti, si è proceduto con l'adozione di motori di rendering basati su Canvas 2D e WebGL. 
+  
+  Queste tecnologie non utilizzano elementi DOM per ciascun marker, ma disegnano direttamente sul contesto grafico, permettendo di visualizzare decine di migliaia di punti mantenendo un'interazione fluida. L'utilizzo di WebGL, in particolare, è stato determinante nei casi con oltre 100.000 punti. \cite{deckgl-webgl}
+\end{itemize}

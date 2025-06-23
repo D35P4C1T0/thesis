@@ -1,0 +1,32 @@
+\section{Leaflet}
+\label{ch:leaflet}
+
+\subsection{Facilità d'integrazione e documentazione}  
+Leaflet fornisce una guida introduttiva, esempi interattivi e un'API reference completa sul sito ufficiale \cite{leaflet-doc}.  
+La curva di apprendimento è bassa grazie a metodi semplici come \texttt{L.map()}, \texttt{L.tileLayer()} e \texttt{L.marker()}, e la comunità mantiene un ampio catalogo di plugin per estendere ogni funzionalità, dal \textit{clustering} dei marker all'integrazione con dataset GeoJSON complessi \cite{react-leaflet}.
+
+\subsection{Performance e fluidità dell'interazione}  
+Di default Leaflet usa SVG e elementi DOM per il rendering, garantendo ottime performance fino a 5.000–10.000 feature\cite{supercluster}.  
+Per dataset più voluminosi, plugin come \texttt{Supercluster} permettono di raggruppare i punti via \textit{clustering} su struttura R‑tree e riducono drasticamente i marker renderizzati\cite{supercluster}.  
+In alternativa, estensioni WebGL come \texttt{leafgl} sfruttano la GPU per mantenere un'interattività fluida anche con decine di migliaia di feature\cite{leafgl}.  
+
+WebGL (Web Graphics Library) è un'API JavaScript per il rendering di grafica 2D e 3D interattiva ad alte prestazioni direttamente nel browser, sfruttando l'accelerazione hardware della GPU \cite{wiki-webgl}.  
+Avere supporto a WebGL all'interno di una libreria per mappe web è fondamentale per gestire grandi quantità di dati geospaziali e garantire un'esperienza utente fluida, poiché il carico grafico viene trasferito dalla CPU alla GPU tramite \textit{shader} e buffer dedicati \cite{khronos-webgl}.  
+Senza WebGL, il rendering di dataset massivi ricadrebbe sul DOM e sulla CPU, con evidenti rallentamenti e limiti di scala.
+
+
+\subsection{Supporto a dati vettoriali e raster}  
+
+I \textit{raster} sono un modello di dati spaziali in cui lo spazio geografico viene suddiviso in una griglia regolare di celle (o pixel), organizzate in righe e colonne, e ciascuna cella contiene un valore numerico che rappresenta un fenomeno reale, come temperatura o elevazione. Questi dati derivano spesso da immagini digitali, fotografie aeree, satellitari o mappe scannerizzate, e sono particolarmente adatti a rappresentare variabili continue distribuite su un'area. \cite{esri-raster-model,qgis-raster-data}
+
+La gestione dei \emph{raster tiles} (p.es. OpenStreetMap o MapTiler) è immediata con \texttt{L.tileLayer()}\cite{maptiler-raster}.  
+Il supporto ai \emph{vector tiles} non è nativo, ma può essere aggiunto tramite plugin consolidati come \texttt{leaflet-geojson-vt} e \texttt{Leaflet.VectorGrid}, che frammentano i grandi file GeoJSON/TopoJSON in tile \textit{client‑side} per un caricamento e un clipping più efficienti \cite{leaflet-geojson-vt,vectorgrid}.  
+
+\subsection{Licenza e costi d'uso}  
+Leaflet è rilasciato sotto licenza BSD2‑Clause (Simplified) e BSD3‑Clause, entrambe estremamente permissive e compatibili con progetti commerciali senza obblighi di royalty.
+Non esistono canoni d'uso; per chi desidera supporto professionale, sono disponibili piani di consulenza e SLA a pagamento offerti da terze parti. \cite{leaflet-doc, leaflet-license}
+
+\subsection{Compatibilità con altri strumenti e framework}  
+Viene concepita inizialmente come libreria JavaScript; per React esiste \texttt{ReactLeaflet}, una raccolta di componenti che incapsulano mappe Leaflet in JSX e ne semplificano l'uso all'interno di applicazioni React. \cite{react-leaflet}
+
+\newpage

@@ -1,0 +1,138 @@
+\subsection{Sistema di Configurazione}
+
+Uno dei componenti centrali del sistema è la classe \texttt{HeatmapConfig}, che funge da interfaccia tra l'utente e le configurazioni interne del backend. Questo oggetto è in grado di accettare diverse forme di input: si può passare un singolo file CSV, una lista di file, oppure addirittura un dizionario con nomi personalizzati. Il merito di questa flessibilità è del metodo interno \texttt{\_process\_csv\_files()}, che normalizza i dati contenenti informazioni da disporre sulla mappa in una struttura facilmente gestibile dal resto dell'applicazione.
+
+\begin{listing}[H]
+\caption{Costruttore della classe \texttt{HeatmapConfig}}
+\label{lst:heatmap_config}
+\begin{minted}{python}
+class HeatmapConfig:
+    def __init__(self, kwargs):
+        # Load global configuration defaults first
+        global_defaults = self._load_global_defaults()
+        
+        # CSV file configuration - supports both single file and multiple files
+        self.INPUT_CSV_FILE = kwargs.get('INPUT_CSV_FILE', global_defaults.get('INPUT_CSV_FILE', 'data/data.csv'))
+        self.CSV_FILES = kwargs.get('CSV_FILES', None)  # New: dict of {name: filepath} or list of filepaths
+        self.DEFAULT_CSV = kwargs.get('DEFAULT_CSV', None)  # Which CSV to show by default
+        
+        # Folder configuration
+        self.STATIC_FOLDER = kwargs.get('STATIC_FOLDER', global_defaults.get('STATIC_FOLDER', 'static'))
+        self.TEMPLATE_FOLDER = kwargs.get('TEMPLATE_FOLDER', global_defaults.get('TEMPLATE_FOLDER', 'templates'))
+        self.COLORS_DIR = kwargs.get('COLORS_DIR', 'colors')
+        
+        # Data configuration
+        self.REQUIRED_COLUMNS = kwargs.get('REQUIRED_COLUMNS', global_defaults.get('REQUIRED_COLUMNS', ['Latitude', 'Longitude', 'Value']))
+        self.DEFAULT_MAP_OPACITY = kwargs.get('DEFAULT_MAP_OPACITY', global_defaults.get('DEFAULT_MAP_OPACITY', 0.75))
+        self.INITIAL_HEATMAP_RADIUS = kwargs.get('INITIAL_HEATMAP_RADIUS', global_defaults.get('INITIAL_HEATMAP_RADIUS', 40))
+        self.INITIAL_HEATMAP_INTENSITY = kwargs.get('INITIAL_HEATMAP_INTENSITY', global_defaults.get('INITIAL_HEATMAP_INTENSITY', 1.5))
+        self.INITIAL_HEATMAP_THRESHOLD = kwargs.get('INITIAL_HEATMAP_THRESHOLD', global_defaults.get('INITIAL_HEATMAP_THRESHOLD', 0.00))
+        
+        # Blueprint configuration (these are blueprint-specific, no global defaults)
+        self.URL_PREFIX = kwargs.get('URL_PREFIX', '/heatmap')
+        self.BLUEPRINT_NAME = kwargs.get('BLUEPRINT_NAME', 'heatmap')
+        
+        # Process CSV files configuration
+        self._process_csv_files()
+\end{minted}
+\end{listing}
+
+È possibile scegliere come inizializzare la mappa: se con parametri di default, tramite file di configurazione o tramite parametri passati a \textit{runtime}. La priorità di ogni metodo è differente; abbiamo in ordine decrescente di priorità:
+
+\begin{enumerate}
+    \item Parametri passati a \texttt{register\_heatmap()}
+    \item File di configurazione config.json globale
+    \item Valori di default generici (failsafe)
+\end{enumerate}
+Nella pratica, questo significa che il sistema può essere utilizzato ed eseguito affidandosi a parametri di default senza una conoscenza profonda del progetto, sia tramite una configurazione granulare dei parametri iniziali. Personalmente, ho trovato molto comodo poter passare da una modalità all'altra senza dover cambiare il codice, ma solo intervenendo sul file \texttt{config.json}.
+
+\begin{listing}[H]
+\caption{Metodi per inizializzare la mappa}
+\label{lst:register_hm}
+\begin{minted}{python}
+# Istanza che usa config.json come base
+register_heatmap(app, url_prefix='/global')
+
+# Istanza che override specifici parametri
+register_heatmap(
+    app, 
+    CSV_FILES={'Custom': 'data/custom.csv'},
+    INITIAL_HEATMAP_RADIUS=60,      # ← Override global default
+    url_prefix='/custom'
+)
+\end{minted}
+\end{listing}
+
+L'adozione di questa configurazione gerarchica comporta diversi benefici \cite{dependency-injection-wiki}:
+
+\begin{itemize}
+  \item \textbf{Modularità}: le dipendenze sono isolate dal codice, facilitando la sostituzione dei componenti.
+  \item \textbf{Testabilità}: è possibile fornire istanze simulate (mock) in fase di test, evitando comportamenti indesiderati.
+  \item \textbf{Scalabilità}: nuovi dataset o formati possono essere integrati senza cambiare la logica esistente.
+\end{itemize}
+
+L'architettura adottata garantisce un sistema robusto, estremamente flessibile e facilmente mantenibile, adatto sia a configurazioni base sia a scenari complessi e personalizzati.
+
+\subsubsection{Gestione Multi-Dataset}
+Il sistema prevede anche la gestione simultanea di più dataset CSV. Diversi formati di input (stringa singola, lista, dizionario) vengono normalizzati in una struttura uniforme.
+
+\begin{listing}[H]
+\caption{Dizionario multi-CSV} % Aggiunta una didascalia descrittiva
+\label{lst:csv_normalization} % Un'altra etichetta univoca
+\begin{minted}{python}
+csv_files = {
+    'Primary Dataset'  : 'data/data.csv',
+    'Secondary Dataset': 'data/data2.csv',
+    'Third Dataset'    : 'data/data3.csv'
+}
+\end{minted}
+\end{listing}
+
+A livello di configurazione, è possibile specificare più di un dataset fornendo un dizionario con la struttura in Listing \ref{lst:csv_normalization} come parametro di \texttt{register\_heatmap()}; un esempio di tale utilizzo è illustrato nel frammento di codice presente nel Listing \ref{lst:register_hm} (riga 6).
+Fornire un dizionario simile durante l'inizializzazione di \texttt{HeatmapConfig} andrà ad influenzare il comportamento della mappa: sarà possibile selezionare quale Dataset visualizzare direttamente dai pannelli dell'interfaccia utente e il passaggio da uno all'altro avverrà dinamicamente, senza causare ricaricamenti della pagina.
+
+\subsubsection{Configurazione tramite file \texttt{config.json}}
+
+Il file \texttt{config.json} costituisce il cuore della configurazione del sistema per la generazione della heatmap: funge da centro di controllo centralizzato, consentendo di modificare in modo semplice e rapido il comportamento dell'applicazione senza necessità di intervenire sul codice Python. Questa soluzione rispecchia il principio di separazione delle responsabilità, fondamentale nell'ingegneria del software.
+
+Utilizzare un file \texttt{config.json} facilita la gestione dei parametri in modo autonomo e modulare, consentendo di passare da un ambiente all'altro (sviluppo, produzione, test) modificando semplicemente il file di configurazione. Un simile approccio migliora la flessibilità, la portabilità e la leggibilità delle impostazioni, senza richiedere modifiche al codice sorgente \cite{understanding-config-json,config-files-types}.
+
+Di seguito viene mostrata la struttura del file \texttt{config.json}:
+
+\begin{listing}[H]
+\caption{Contenuto del file \texttt{config.json}}
+\label{lst:config_json} % Added a label for cross-referencing
+\begin{minted}{json}
+{
+    "INPUT_CSV_FILE": "data/data.csv",
+    "STATIC_FOLDER": "static",
+    "FRONTEND_TEMPLATE": "index.html",
+    "REQUIRED_COLUMNS": ["Latitude", "Longitude", "Value"],
+    "DEFAULT_MAP_OPACITY": 0.75,
+    "INITIAL_HEATMAP_RADIUS": 40,
+    "INITIAL_HEATMAP_INTENSITY": 1.5,
+    "INITIAL_HEATMAP_THRESHOLD": 0.00
+}
+\end{minted}
+\end{listing}
+
+Il file contiene sezioni ben definite che influiscono su aspetti fondamentali del sistema:
+
+\paragraph{Configurazioni dei dati}  
+\begin{itemize}
+  \item \texttt{INPUT\_CSV\_FILE}: percorso del file CSV principale. Permette di cambiare dataset senza riconfigurare o ricompilare il sistema.
+  \item \texttt{REQUIRED\_COLUMNS}: array con i nomi delle colonne obbligatorie. Viene eseguita una validazione automatica e consente di adattare velocemente l'ingestione dei dati a formati CSV differenti.
+\end{itemize}
+
+\paragraph{Configurazioni dell'interfaccia}  
+\begin{itemize}
+  \item \texttt{STATIC\_FOLDER}: specifica la cartella contenente risorse statiche (CSS, JS, immagini), rendendo più semplice l'integrazione con strutture front-end preesistenti.
+  \item \texttt{FRONTEND\_TEMPLATE}: nome del file HTML principale, per definire facilmente interfacce personalizzate senza intervenire sul codice Python.
+\end{itemize}
+
+\paragraph{Configurazioni di visualizzazione}  
+Controllano l'aspetto iniziale della heatmap:
+\begin{itemize}
+  \item \texttt{DEFAULT\_MAP\_OPACITY}: opacità della mappa base.
+  \item \texttt{INITIAL\_HEATMAP\_RADIUS}, \texttt{INITIAL\_HEATMAP\_INTENSITY}, \texttt{INITIAL\_HEATMAP\_THRESHOLD}: definiscono rispettivamente i valori iniziali di raggio, intensità e soglia di visualizzazione, influenzando sia l'estetica che le prestazioni.
+\end{itemize}

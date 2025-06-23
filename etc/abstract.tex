@@ -1,5 +1,23 @@
 \chapter*{Abstract}
-\label{cha:abtract}
 \addcontentsline{toc}{chapter}{Abstract}
 
-\lipsum[1]
+\vspace{1em}
+
+\noindent
+Il presente lavoro si inserisce all'interno del progetto \textit{M-NAT}, un sistema integrato per la modellazione del rumore sottomarino, basato su dati \textit{AIS} \cite{ais-wikipedia}, modelli di propagazione acustica come BELLHOP \cite{bellhop-doc} e strumenti come ARLpy \cite{arlpy-bellhop}, oltre a tecniche di \textit{machine learning}. In questo contesto, il contributo della tesi si focalizza sullo sviluppo di un sistema web scalabile e modulare per la visualizzazione interattiva di heatmap geospaziali derivate da simulazioni acustiche.
+
+\vspace{0.5em}
+
+\noindent
+In particolare, è stato realizzato un front-end interattivo per la visualizzazione dei dati generati dal modello \textit{Airgun} \cite{airgun-dosits}, impiegato per simulare la propagazione del rumore prodotto da sorgenti impulsive in ambiente marino \cite{seismic-source}. Il modello tiene conto di variabili ambientali complesse, come il passaggio di imbarcazioni, la batimetria e i profili di velocità del suono, producendo output numerici ad alta densità spaziale. La sfida progettuale è consistita nel rendere accessibili questi dati attraverso un'interfaccia web che ne favorisca l'esplorazione e l'interpretazione da parte di ricercatori e operatori ambientali.
+
+\vspace{0.5em}
+
+\noindent
+L'architettura del sistema si basa su Flask Blueprint e implementa il \textit{Factory Pattern} per la creazione dinamica e riutilizzabile di componenti. Il sistema di configurazione adotta un approccio \textit{zero-touch}, che consente un'integrazione semplificata con progetti Flask esistenti. Grazie a una gestione multilivello di dataset CSV e a un'interfaccia \textit{responsive}, l'applicazione supporta l'interazione con mappe, il caricamento dinamico dei dati e la selezione dei parametri di simulazione. 
+
+\vspace{0.5em}
+
+\noindent
+Il risultato finale è un framework modulare che contribuisce a rendere più fruibili i risultati delle simulazioni acustiche, migliorando l'interoperabilità con il backend scientifico e offrendo uno strumento versatile per l'analisi dell'impatto del rumore antropico in ambiente marino.
+

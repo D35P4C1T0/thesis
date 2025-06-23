@@ -1,0 +1,23 @@
+\section{Analisi dell'Architettura}
+\label{ch:backend-architecture}
+
+\subsection{Factory Pattern e Dependency Injection}
+
+Durante lo sviluppo del backend, una delle scelte architetturali fondamentali è stata l'adozione del \emph{Factory Pattern}. Questo pattern è implementato nella funzione \texttt{create\_heatmap\_blueprint()}, che si occupa di generare dinamicamente \textit{blueprint} Flask configurati sulla base di parametri specificati esternamente. L'idea di fondo è che ogni \textit{blueprint} funzioni come un \say{modulo indipendente} che può essere montato o smontato a seconda delle esigenze, mantenendo però coerenza e riusabilità del codice \cite{app-factories}. Il concetto di \textit{blueprint} viene approfondito nella sezione \ref{ss:blueprint}. In altre parole, il backend non è pensato come un'entità rigida, ma come una struttura modulare capace di adattarsi a diversi contesti applicativi semplicemente variando le configurazioni in input. Questo progetto è quindi in grado di inserirsi all'interno di contesti preesistenti e complessi, mediante le giuste accortezze, minimizzando le \say{frizioni} e gli interventi sul codice del progetto che lo ospiterà.
+
+In combinazione con il Factory Pattern, per predisporre il progetto ad essere importato \say{dall'esterno} viene utilizzata anche la tecnica della \emph{dependency injection}, un approccio che permette di fornire componenti esterni (come ad esempio oggetti di configurazione o funzioni di utility) direttamente al momento della creazione del modulo. Questo non solo evita l'uso di variabili globali, spesso fonte di bug e difficoltà nella fase di test, ma rende l'intero sistema più flessibile e facile da mantenere \cite{dependency-injection-wiki,flask-di}.
+
+\input{chapters/implementazione/blueprints}
+
+\input{chapters/implementazione/configurazione}
+
+\input{chapters/flask/pipeline-dati-json}
+
+\input{chapters/flask/modularita}
+
+\subsection{Considerazioni sull'architettura}
+
+L'architettura che ho implementato non è certo priva di limiti, ma si è dimostrata efficace per gli obiettivi del mio lavoro. Il sistema è sufficientemente flessibile da poter essere adattato a scenari diversi, ed è organizzato in modo modulare per facilitare l'estensione futura.
+
+
+In particolare, l'uso del Factory Pattern e della dependency injection ha reso lo sviluppo più ordinato, mentre la gestione centralizzata delle configurazioni e dei dataset ha permesso di lavorare con file molto diversi tra loro senza grandi modifiche. Tutti questi elementi, sebbene piuttosto semplici presi singolarmente, hanno contribuito a costruire un backend che potrà essere integrato in ambienti di lavoro più complessi.

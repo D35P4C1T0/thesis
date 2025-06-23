@@ -1,0 +1,32 @@
+\chapter{Analisi delle librerie per la visualizzazione di mappe web}
+
+\section{Introduzione}
+Le mappe web interattive sono diventate strumenti fondamentali per la visualizzazione e l'analisi di dati geospaziali in ambito scientifico, industriale e ambientale. Con la crescente disponibilità di dataset georeferenziati di grandi dimensioni, la necessità di soluzioni web performanti e flessibili per la loro rappresentazione è oggi più sentita che mai. Negli ultimi anni, lo sviluppo di numerose librerie JavaScript ha reso possibile integrare con relativa facilità mappe interattive all'interno di applicazioni web, offrendo funzionalità avanzate sia per la visualizzazione 2D che 3D.
+
+In particolare, il caso d'uso affrontato in questo lavoro, ossia la rappresentazione di oltre 100.000 punti geolocalizzati, ciascuno associato a un valore di intensità del rumore subacqueo, pone una sfida significativa in termini di rendering e interattività. L'obiettivo principale di questo capitolo è analizzare lo stato dell'arte delle principali librerie JavaScript per la visualizzazione di mappe, con un focus su quelle in grado di gestire grandi volumi di dati mantenendo buone performance grazie al supporto a tecnologie come WebGL \cite{mapbox-gl-js}.
+
+Verranno confrontate le soluzioni più diffuse, sia \textit{open-source} che commerciali, valutandone la modularità, la facilità d'integrazione, e la capacità di offrire un'esperienza utente fluida anche in scenari complessi. Il fine ultimo è individuare la libreria più adatta a essere integrata nel sistema M-NAT, garantendo un'interfaccia reattiva, scalabile e in grado di restituire in modo chiaro e immediato l'informazione acustica elaborata dal modello.
+
+\subsection{Cos'è un Heatmap}
+Una \emph{heatmap} è una rappresentazione grafica bidimensionale che utilizza una scala cromatica per visualizzare l'intensità o la concentrazione di un fenomeno all'interno di una griglia o mappa. Le tonalità più calde (es. rosso, arancione) indicano valori più elevati, mentre quelle fredde (es. blu, verde) rappresentano valori più bassi.
+
+Questo tipo di visualizzazione facilita l'individuazione immediata di pattern, cluster o anomalie in insiemi di dati complessi, risultando particolarmente utile in ambiti come l'analisi geospaziale, il web analytics, l'urbanistica, l'economia e la ricerca scientifica. In applicazioni geospaziali, una \emph{spatial heatmap} sovrappone dati di densità geolocalizzata su una mappa, evidenziando visivamente le aree di maggiore concentrazione del fenomeno studiato \cite{vwo-heatmap,heatmap-wikipedia,clarity-heatmap}.
+
+
+\section{Criteri di valutazione}
+Per confrontare le diverse librerie sono stati definiti alcuni criteri fondamentali:
+\begin{itemize}
+  \item \textbf{Facilità d'integrazione e documentazione}
+  \item \textbf{Performance e fluidità dell'interazione}
+  \item \textbf{Supporto a dati vettoriali e raster}
+  \item \textbf{Licenza e costi d'uso}
+  \item \textbf{Compatibilità con altri strumenti e framework}
+\end{itemize}
+
+% import leaflet.tex
+\input{chapters/librerie/leaflet}
+\input{chapters/librerie/mapbox}
+\input{chapters/librerie/deck-gl}
+\input{chapters/librerie/openlayers}
+\input{chapters/librerie/folium}
+\input{chapters/librerie/confronto}

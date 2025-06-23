@@ -1,0 +1,105 @@
+\subsection{Struttura modulare - Blueprint}
+\label{ss:blueprint}
+
+Flask è un \textit{micro‑framework}, tuttavia con la crescita dell'applicazione diventa essenziale una struttura modulare per mantenere il codice chiaro e manutenibile. 
+In tale contesto entrano in gioco i \textit{blueprint}, un meccanismo integrato di Flask che consente di suddividere progetti complessi in componenti riutilizzabili e modulari, ognuno dei quali può essere sviluppato, mantenuto e riutilizzato in modo indipendente, permettendo la facile integrazione di futuri \textit{blueprint} senza una riscrittura radicale del progetto principale. 
+I \textit{blueprint} permettono di raggruppare rotte, \textit{template} e file statici in \textit{mini}‑applicazioni all'interno della stessa istanza Flask. Essi non sono veri e propri micro‑framework, bensì \textit{insiemi di operazioni} da registrare su un'applicazione principale (anche in più occorrenze). 
+Questa metodologia offre diversi vantaggi: \cite{palets_blueprints}
+
+\begin{itemize}
+  \item \emph{Modularità e incapsulamento}: ogni \textit{blueprint} contiene logica e risorse legate a una specifica funzionalità (es. visualizzazione mappa, simulazione propagazione, ecc.)
+  \item \emph{Scalabilità}: permette di crescere l'app aggiungendo moduli senza impattare il codice esistente.
+  \item \emph{Gestione centralizzata}: tutte le configurazioni e le estensioni vengono condivise, mantenendo comunque un ordine strutturale chiaro.
+\end{itemize}
+
+\subsubsection{Esempio di Blueprint}
+
+Un \textit{blueprint} è un'entità modulare dichiarata come illustrato nel Listing \ref{lst:flask-blueprint} (es. \texttt{'simple\_page'} importato da \texttt{'templates'}), progettata per incapsulare rotte e risorse di un componente autonomo dell'applicazione.
+
+Dopo la sua definizione, il \textit{blueprint} viene registrato nell'applicazione Flask principale tramite \texttt{app.register\_blueprint()} (Listing \ref{lst:python_blueprint_registration}). Questa operazione lo integra nel contesto runtime dell'applicazione.
+
+Le rotte interne ai \textit{blueprints} sono gestite in modo relativo, prevenendo conflitti di naming con le rotte dell'applicazione principale o di altri \textit{blueprints}. Ciò significa che il percorso completo di una rotta interna dipende dal montaggio del \textit{blueprint}.
+
+\begin{listing}[!ht]
+\caption{Codice del file \texttt{simple\_page.py} che descrive un blueprint in Flask}
+\label{lst:flask-blueprint} % Il label va all'interno dell'ambiente listing o subito dopo la caption
+\begin{minted}{python}
+from flask import Blueprint, render_template, abort
+from jinja2 import TemplateNotFound
+
+simple_page = Blueprint('simple_page', __name__, template_folder='templates')
+
+@simple_page.route('/<page>')
+def show(page):
+    try:
+        return render_template(f'pages/{page}.html')
+    except TemplateNotFound:
+        abort(404)
+\end{minted}
+\end{listing}
+
+Questa gestione relativa permette di \say{montare} il \textit{blueprint} su un percorso \textit{radice} specifico (nell'esempio, su \texttt{/pages} tramite \texttt{url\_PREFIX}), creando un namespace URL logico. Una richiesta a \texttt{<indirizzo principale>/pages} viene quindi internamente instradata al \textit{blueprint}, consentendo un disaccoppiamento che favorisce la modularità e la riusabilità \cite{palets_blueprints}.
+
+\begin{listing}[!ht]
+\caption{Blueprint \texttt{simple\_page} montata in /pages}
+\label{lst:python_blueprint_registration} % Aggiunto un nuovo label per questo secondo blocco
+\begin{minted}{python}
+from flask import Flask
+from simple_page import simple_page
+
+app = Flask(__name__)
+app.register_blueprint(simple_page, url\_PREFIX='/pages')
+\end{minted}
+\end{listing}
+
+\subsection{Integrazione del blueprint}
+
+Il seguente segmento illustra come, in un progetto terzo basato su Flask, l'integrazione di un sistema di heatmap completo possa essere realizzata con la massima semplicità ed efficienza. L'approccio enfatizza una metodologia \say{zero-configuration} per la configurazione di base, rendendola ideale sia per contesti di prototipazione rapida sia per applicazioni con requisiti standardizzati.
+Il cuore di questa integrazione risiede nella funzione \texttt{register\_heatmap()}. Come dimostrato nel codice seguente, l'invocazione di questa funzione con l'istanza dell'applicazione Flask (\texttt{app}) rappresenta l'unico passaggio programmatico richiesto per abilitare l'intera suite di funzionalità di heatmap. Questa astrazione della complessità permetterà agli sviluppatori di concentrarsi sulla logica applicativa principale del loro progetto, delegando la gestione e l'esposizione del modulo heatmap.
+
+\begin{listing}[H]
+\caption{Esempio di Integrazione Semplificata della Heatmap in un Progetto Flask}
+\label{lst:heatmap_simple_integration}
+\begin{minted}{python}
+from flask import Flask
+from heatmap_blueprint import register_heatmap
+
+app = Flask(__name__)
+
+# Aggiungi qui le tue rotte esistenti
+@app.route('/')
+def home():
+    return "My existing Flask app"
+
+# Aggiungi la funzionalità heatmap
+register_heatmap(app)
+
+if __name__ == '__main__':
+    app.run(debug=True)
+\end{minted}
+\end{listing}
+
+A seguito di questa integrazione, supponendo di aver scelto un prefisso per il blueprint (rappresentato dal generico \texttt{URL\_PREFIX}), l'applicazione renderà disponibili automaticamente i seguenti endpoint HTTP, fornendo accesso all'interfaccia utente e ai servizi API della heatmap:
+
+\begin{itemize}
+    \item \texttt{http://localhost:5000/} -- Redirect alla dashboard principale.
+\end{itemize}
+
+\subsection{Endpoints con Prefisso} % Un sottotitolo per chiarezza
+\label{ss:endpoints}
+
+Tutti i seguenti endpoint sono preceduti da \texttt{http://localhost:5000/\{URL\_PREFIX\}/}:
+
+\begin{itemize}
+    \item \texttt{} -- Dashboard unificata con heatmap e visualizzazione della propagazione.
+    \item \texttt{data} -- Restituisce i dati CSV predefiniti come JSON.
+    \item \texttt{data/\{csv\_key\}} -- Restituisce uno specifico dataset come JSON.
+    \item \texttt{csv-files} -- Restituisce l'elenco dei file CSV disponibili.
+    \item \texttt{config-info} -- Restituisce le informazioni di configurazione e i percorsi auto-rilevati.
+    \item \texttt{test-data} -- Testa il caricamento dei CSV e mostra la struttura dei file.
+    \item \texttt{static/\{filename\}} -- Serve risorse statiche (auto-rilevate).
+\end{itemize}
+
+Questi esempi utilizzano \texttt{http://localhost:5000} per indicare l'indirizzo di accesso locale durante la fase di sviluppo dell'applicazione. L'hostname \texttt{localhost} si riferisce al server in esecuzione sulla macchina locale dello sviluppatore, mentre \texttt{5000} è la porta di default utilizzata dal server di sviluppo integrato di Flask. In un ambiente di produzione, questi URL sarebbero sostituiti dal dominio e dalla porta configurati per il deployment dell'applicazione (es. \texttt{https://mnat.org/heatmap/}).
+
+\newpage

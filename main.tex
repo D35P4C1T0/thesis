@@ -18,7 +18,11 @@
 % Letter
 \usepackage[utf8]{inputenc}
 % Language
-\usepackage[english]{babel}
+\usepackage[italian]{babel}
+
+% load xcolor before pdfx to avoid errors
+\usepackage{xcolor}
+
 % PDF/A
 \usepackage[a-1b]{pdfx}
 % Image
@@ -37,6 +41,62 @@
 % START: DELETE ME
 \usepackage{lipsum}
 % END: DELETE ME
+
+% csv tabella
+\usepackage{csvsimple}
+
+\usepackage{booktabs}
+\usepackage{siunitx}
+\sisetup{
+    output-exponent-marker=\ensuremath{\mathrm{E}},
+    exponent-product={},
+    retain-explicit-plus
+}
+
+% Snippet di codice
+\usepackage{listings}
+
+% Grafici
+\usepackage{pgfplots}
+\usepackage{siunitx}
+
+% Impostazioni per pgfplots
+\pgfplotsset{compat=1.18} % Usa una versione recente di pgfplots
+\usepgfplotslibrary{groupplots} % Per grafici multipli
+\usepgfplotslibrary{statistics}
+
+% short space character fix
+% \DeclareUnicodeCharacter{202F}{FIX ME!!!!}
+
+\usepackage{subcaption}  % Add to preamble
+\usepackage{caption}
+
+% better quotes
+\usepackage{dirtytalk}
+
+
+\newenvironment{longlisting}{\captionsetup{type=listing}}{}
+
+% code snipper syntax highlight
+\usepackage{minted}
+% minted style
+\usemintedstyle{manni}
+
+\setminted{
+    linenos=true,               % Mostra i numeri di riga
+    breaklines=true,            % Abilita il wrapping delle righe lunghe
+    autogobble=true,            % Rimuove l'indentazione comune
+    frame=lines,                % Aggiunge una cornice attorno al codice
+    framesep=2mm,               % Spaziatura tra la cornice e il codice
+    % frameround=B,               % Angoli arrotondati (opzionale)
+    fontsize=\small,            % Dimensione del font per il codice
+    fontseries=tt,              % Tipo di font (monospace)
+    obeytabs=true,              % Rispetta i tab
+    tabsize=4,                  % Dimensione dei tab
+}
+
+% \usepackage{parskip}
+% \setlength{\parskip}{3pt plus1pt minus1pt}
 
 % Document
 \begin{document}
@@ -74,9 +134,11 @@
   \input{etc/abstract.tex}
 
   % Chapters
-  \input{chapters/examples.tex}
 
-  % Conclusions
+  \input{chapters/MNAT/mnat}
+  \input{chapters/introduzione}
+  \input{chapters/analisi-mappe}
+  \input{chapters/implementazione}
   \input{etc/conclusions.tex}
 
   \endgroup
@@ -88,7 +150,7 @@
   \bibliography{bibliography.bib}
 
   % Attachments
-  \titleformat{\chapter} {\normalfont\Huge\bfseries}{Appendix \thechapter}{1em}{}
-  \appendix
-  \input{attachments/attachment.tex}
+  % \titleformat{\chapter} {\normalfont\Huge\bfseries}{Appendix \thechapter}{1em}{}
+  % \appendix
+  % \input{chapters/geojson}
 \end{document}

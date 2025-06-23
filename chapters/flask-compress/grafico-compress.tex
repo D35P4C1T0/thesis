@@ -1,0 +1,71 @@
+% grafici
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      width=1\textwidth,
+      height=0.85\textwidth,
+      ybar,
+      bar width=4pt,
+      enlarge x limits=0.03,
+      ylabel={Dimensione (Byte)},
+      xlabel={Tipologia dati},
+      symbolic x coords={
+        Testo 10KB,Testo 50KB,Testo 100KB,Testo 250KB,Testo 500KB,Testo 1MB,Testo 2MB,
+        Testo 5MB,Testo 10MB,Testo 15MB,Testo 20MB,
+        JSON 100 voci,JSON 500 voci,JSON 1000 voci,JSON 5000 voci,JSON 10000 voci,
+        JSON 25000 voci,JSON 50000 voci,JSON 75000 voci,JSON 100000 voci,JSON 125000 voci,
+        JSON 150000 voci,
+        Binario 10KB,Binario 50KB,Binario 100KB,Binario 250KB,Binario 500KB,
+        Binario 1MB,Binario 2MB,Binario 3MB,Binario 4MB,Binario 5MB,Binario 10MB
+      },
+      xtick=data,
+      x tick label style={
+        rotate=90,
+        anchor=east,
+        font=\tiny
+      },
+      grid=major,
+      cycle list={
+        {blue!70,fill=blue!30},
+        {red!70,fill=red!30}
+      },
+      group style={
+        group size=2 by 1,
+        x descriptions at=edge bottom,
+        horizontal sep=1pt
+      },
+      % Legend repositioned above the axis
+      legend style={
+        at={(0.5,1.15)},    % center under the plot, adjust the -0.25 as needed
+        anchor=north,
+        legend columns=2,
+        /tikz/font=\footnotesize
+      }
+    ]
+      % Serie non compressa
+      \addplot+[
+        nodes near coords,
+        nodes near coords style={font=\tiny, rotate=90, anchor=west},
+      ] table[
+        col sep=comma,
+        x=Descrizione Test,
+        y={Dimensione Non Compressa (Byte)}
+      ]{chapters/flask-compress/compression_results.csv};
+      \addlegendentry{Non compresso}
+
+      % Serie compressa
+      \addplot+[
+        nodes near coords,
+        nodes near coords style={font=\tiny, rotate=90, anchor=west},
+      ] table[
+        col sep=comma,
+        x=Descrizione Test,
+        y={Dimensione Compressa (Byte)}
+      ]{chapters/flask-compress/compression_results.csv};
+      \addlegendentry{Compresso}
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Confronto tra dimensione non compressa e compressa per ciascun test.}
+  \label{fig:compression_grouped}
+\end{figure}

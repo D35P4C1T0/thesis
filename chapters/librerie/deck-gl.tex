@@ -1,0 +1,36 @@
+\section{Deck.gl}
+\label{ch:deckgl}
+
+\subsection{Facilità d'integrazione e documentazione}  
+Deck.gl è un framework GPU‑powered pensato per la visual exploratory data analysis di grandi dataset geospaziali.  
+La documentazione ufficiale, disponibile sul sito di Deck.gl (https://deck.gl/docs), include un'introduzione, guide passo‑passo e una API reference completa, oltre a esempi di codice e uno showcase interattivo \cite{deckgl-docs}.  
+L'installazione è semplice: basta aggiungere il pacchetto \texttt{deck.gl} da npm o yarn, oppure includere i bundle via CDN \cite{deckgl-npm,deckgl-github}.  
+
+\subsection{Performance e fluidità dell'interazione}  
+Grazie al rendering WebGL2 (e supporto sperimentale a WebGPU), Deck.gl mantiene frame rate elevati anche con milioni di punti: per esempio, lo \texttt{ScatterplotLayer} rimane fluido fino a circa 1M di elementi su hardware consumer, degradando in modo controllato oltre i 10M \cite{deckgl-performance}.  
+Demo storiche mostrano la visualizzazione di oltre 2M di punti e 36K viaggi in tempo reale con interpolazione GPU di New York City \cite{deckgl-uber-blog}.  
+Il core di Deck.gl è ottimizzato per il caricamento e l'aggiornamento dei dati a livello di tile, riducendo la pressione sulla CPU e sfruttando in modo efficiente la GPU \cite{deckgl-github}.  
+
+\subsection{Supporto a dati vettoriali e raster}  
+Deck.gl offre una vasta libreria di layer per dati vettoriali; fra i più rilevanti abbiamo: 
+
+\begin{itemize}
+    \item \texttt{GeoJsonLayer},
+    \item \texttt{MVTLayer}
+    \item \texttt{VectorTileLayer}
+\end{itemize}
+
+Queste librerie consentono di caricare GeoJSON e Mapbox Vector Tiles in MVT con clipping e streaming dinamico\cite{deckgl-vector,deckgl-mvtlayer}.  
+Per i raster tiles, il plugin \texttt{deck.gl-raster} e il layer \texttt{RasterTileLayer} (in Carto integration) permettono di visualizzare immagini satellitari o DEM con WebGL direttamente nel canvas di Deck.gl.  
+L'architettura a layer composabili facilita anche l'estensione a casi d'uso personalizzati, integrando WebGL modules per elaborazioni \textit{on-the-fly} di dati raster avanzati\cite{deckgl-maptiler,deckgl-raster-plugin}.  
+
+\subsection{Licenza e costi d'uso}  
+Deck.gl è rilasciato con licenza permissiva MIT, che ne consente l'uso, la modifica e la ridistribuzione anche in progetti commerciali senza royalty. \cite{deckgl-license}  
+Non ci sono costi di licenza; l'unico requisito è l'attribuzione del copyright e la preservazione del testo di licenza originale.  
+
+\subsection{Compatibilità con altri strumenti e framework}  
+Deck.gl offre una buona integrazione con React tramite il componente \texttt{@deck.gl/react}, che espone \texttt{DeckGL} e hooks per gestire view state e interazioni in JSX. \cite{deckgl-react}  
+Per altri framework, la comunità mantiene binding e plugin non ufficiali (ad es. Vue, Angular) raccolti in \texttt{deck.gl-community}, benché con supporto meno costante. \cite{deckgl-community}
+Il layer system di Deck.gl è inoltre progettato per lavorare insieme a librerie di analisi spaziale come Turf.js e a motori di rendering 3D come Three.js attraverso CustomLayer. cite{deckgl-faq}
+
+\newpage
