@@ -2,7 +2,7 @@
 
 L'idea di fondo dell'intero progetto è quella di creare un sistema riusabile e facilmente integrabile in altri progetti. A questo scopo, la funzione \texttt{register\_heatmap()}, già apparsa nel frammento di codice nel Listing \ref{lst:csv_reading_serialization}, offre un'interfaccia semplificata che permette di integrare il progetto in una qualsiasi applicazione Flask già esistente, senza dover modificare nulla a livello di struttura.
 
-Ogni \textit{blueprint} mantiene il proprio namespace isolato, evitando conflitti tra percorsi API e risorse statiche. Ho trovato particolarmente utile questa separazione nel momento in cui ho provato ad affiancare questo modulo a un'applicazione già esistente, poiché non ho dovuto modificare le rotte precedenti.
+Ogni \textit{blueprint} mantiene il proprio namespace isolato, evitando conflitti tra percorsi API e risorse statiche. Questa separazione si è dimostrata particolarmente utile nella fase di integrazione di questo modulo con un'applicazione già esistente, poiché non è stato necessario modificare le rotte precedenti.
 
 \subsection{Architettura e Funzionamento}
 

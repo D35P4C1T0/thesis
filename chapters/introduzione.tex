@@ -35,7 +35,6 @@ if __name__ == '__main__':
 \end{minted}
 \end{listing}
 
-
 \subsection{Vantaggi Offerti}
 \subsubsection*{Leggerezza e rapidità di sviluppo}
 Uno dei principali punti di forza di Flask risiede nella sua struttura minimale, come si può osservare nel frammento di codice presente nel Listing \ref{lst:minimal-flask}. L'avvio di un'applicazione richiede pochissime righe di codice, rendendo il \textit{framework} particolarmente adatto per prototipi, applicazioni di piccole e medie dimensioni, o per progetti che necessitano di una fase di sviluppo iniziale particolarmente snella.  
@@ -56,7 +55,7 @@ Durante lo sviluppo, è stato evidente come la quantità e complessità dei dati
   \item la compatibilità con diversi browser, dispositivi e risoluzioni.
 \end{itemize}
 
-A queste problematiche si è aggiunta la difficoltà di conciliare un'interfaccia con diverse funzionalità e dall'impatto visivo semplice e pulito, mantenendo alta la responsività dell'applicazione.
+A queste problematiche si è aggiunta la difficoltà di conciliare un'interfaccia ricca di funzionalità con un impatto visivo semplice e pulito, mantenendo al contempo un'elevata responsività dell'applicazione.
 
 \subsection{Impatto delle dimensioni del DOM sulle performance}
 
@@ -70,7 +69,7 @@ Secondo le linee guida fornite da strumenti come Lighthouse, una pagina web dovr
 
 Uno dei problemi principali emersi fin da subito è stato l'elevato numero di marker da visualizzare sulla mappa. Ogni punto prodotto dal modello corrispondeva a una coordinata geografica e a un valore numerico (in questo caso, il livello di pressione acustica). Visualizzare tutti questi punti contemporaneamente in una pagina web porta inevitabilmente a un sovraccarico del DOM.
 
-Infatti, molti motori di \textit{mapping} web (come Leaflet o Folium) aggiungono un elemento HTML per ogni marker. Questo approccio è sostenibile fino a qualche migliaio di elementi, ma scala molto male: superata una certa soglia, si assiste a rallentamenti importanti, consumo elevato di RAM e CPU e talvolta al blocco del browser. \cite{folium-react}
+Infatti, molti motori di \textit{mapping} web (come Leaflet o Folium) aggiungono un elemento HTML per ogni marker. Questo approccio è sostenibile fino a qualche migliaio di elementi; superata una certa soglia, si assiste a rallentamenti importanti, consumo elevato di RAM e CPU e talvolta al blocco del browser. \cite{folium-react}
 
 
 \section{Ottimizzazioni adottate}

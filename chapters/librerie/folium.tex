@@ -8,7 +8,7 @@ Il \textit{repository} GitHub ospita codice, issue e un elenco di plugin e pacch
 Online è facile reperire delle guide pratiche per integrare Folium in workflow di \textit{data science} basati, per esempio, su Jupyter Notebook \cite{folium-tutorial,folium-realpython}.
 
 \subsection{Performance e fluidità dell'interazione}  
-Di default Folium rende le feature come oggetti JavaScript nel DOM di Leaflet: ciò è efficiente per qualche migliaio di marker, ma può diventare lento con dataset superiori a 10'000 punti, come evidenziato da una discussione su StackOverflow riguardo al MarkerCluster, dove, per dataset molto voluminosi, viene consigliato di preprocessare i dati in vector tiles o di applicare tecniche di clustering lato server \cite{folium-cluster-issue}.  
+Di default Folium rende le feature come oggetti JavaScript nel DOM di Leaflet: ciò è efficiente per qualche migliaio di marker, ma può diventare lento con dataset superiori a 10.000 punti, come evidenziato da una discussione su StackOverflow riguardo al MarkerCluster, dove, per dataset molto voluminosi, viene consigliato di preprocessare i dati in vector tiles o di applicare tecniche di clustering lato server \cite{folium-cluster-issue}.  
 
 Sono disponibili diversi plugin come \textit{MarkerCluster} e \textit{FastMarkerCluster}, mirati a migliorare l'esperienza utente con il crescere della dimensione del dataset \cite{folium-cluster-issue,folium-pypistats}.  
 Il numero di download settimanali (più di 500.000) testimonia la diffusione di Folium e la necessità di \textit{best practice} per gestire prestazioni e scalabilità.

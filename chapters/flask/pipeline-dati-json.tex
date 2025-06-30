@@ -13,7 +13,7 @@ Segue una tabella contenente informazioni riguardo la necessità di convertire i
 Leaflet & No & Array \texttt{[lat, lng, weight]} (via plugin) \\
 Deck.gl & No & Oggetti JS con coordinate e peso \\
 Folium & No & Lista o DataFrame (via Python) \\
-Mapbox GL JS & Sì & \texttt{GeoJSON} con \texttt{type: \say{Feature}} \\
+Mapbox GL JS & Sì & GeoJSON con \texttt{type: \say{Feature}} \\
 OpenLayers & Raccomandato & GeoJSON o oggetti \texttt{ol.Feature} \\
 \bottomrule
 \end{tabular}
@@ -29,7 +29,7 @@ Il cuore operativo del backend è rappresentato dall'endpoint \texttt{/data/<csv
 \begin{itemize}
   \item verifica che il file esista e che l'utente abbia i permessi per accedervi;
   \item caricamento tramite la funzione \texttt{pandas.read\_csv(..., index\_col=0)}, che consente di interpretare correttamente file con indici espliciti; \cite{pandas-readcsv}
-  \item calcolo del range dei valori, necessario per una visualizzazione corretta della \textit{heatmap};
+  \item il calcolo dell'intervallo di valori (range), necessario per una corretta visualizzazione della \textit{heatmap};
   \item selezione e applicazione della palette di colori per la \textit{heatmap}, con un fallback automatico se il file specificato non è disponibile.
 \end{itemize}
 
@@ -86,7 +86,8 @@ I dati vengono poi convertiti in una lista di dizionari Python utilizzando il me
 
 \subsubsection{GeoJSON: Quando e Perché Non Usarlo}
 
-Il formato GeoJSON è largamente utilizzato per rappresentare entità geografiche complesse come poligoni, linee o feature collection. Tuttavia, nel caso specifico di dataset composti esclusivamente da punti con attributi numerici, GeoJSON introduce un overhead strutturale che non è necessario:
+Il formato GeoJSON è largamente utilizzato per rappresentare entità geografiche complesse come poligoni, linee o feature collection. 
+Tuttavia, nel caso specifico di dataset composti esclusivamente da punti con attributi numerici, il formato GeoJSON introduce un sovraccarico strutturale (\textit{overhead}) non necessario:
 
 \begin{listing}[H]
 \caption{Struttura GeoJSON equivalente}

@@ -3,7 +3,7 @@
 
 \subsection{Libreria scelta - Deck.gl}
 
-In conclusione ho scelto di strutturare il progetto basandomi su \texttt{Deck.gl}, una libreria avanzata per la visualizzazione di dati geospaziali basata su WebGL. Un vantaggio significativo di Deck.gl è la capacità di lavorare direttamente con array di oggetti JavaScript (nel codice seguente, la variabile \texttt{data}), senza necessità di convertire i dati in formato GeoJSON. \cite{deckgl-heatmap} Il codice per la creazione di una heatmap risulta un buon esempio di tale compatibilità:
+In conclusione si è scelto di strutturare il progetto basandosi su \texttt{Deck.gl}, una libreria avanzata per la visualizzazione di dati geospaziali basata su WebGL. Un vantaggio significativo di Deck.gl è la capacità di lavorare direttamente con array di oggetti JavaScript (nel codice seguente, la variabile \texttt{data}), senza necessità di convertire i dati in formato GeoJSON. \cite{deckgl-heatmap} Il codice per la creazione di una heatmap risulta un buon esempio di tale compatibilità:
 
 \begin{listing}[H]
 \caption{Integrazione dati flat con Deck.gl}
@@ -79,7 +79,7 @@ Una delle priorità durante lo sviluppo è stata garantire la capacità del sito
 
 Partizionare lo spazio della finestra in modo ordinato ha permesso di mantenere un'interfaccia leggibile e utilizzabile, indipendentemente dalle dimensioni dello schermo o dal livello di zoom applicato. In altre parole, l'obiettivo è stato quello di rendere l'interazione sempre fluida e accessibile, anche in condizioni di visualizzazione non ottimali.
 
-Ho ritenuto quindi naturale l'uso di librerie in grado di portare a termine questo tipo di compito; l'intero layout è perciò basato su \textit{Tailwind CSS} ed arricchito da \textit{media queries} personalizzate, che consentono di identificare le dimensioni della finestra del browser e di conseguenza:
+Si è ritenuto quindi naturale l'uso di librerie in grado di portare a termine questo tipo di compito; l'intero layout è perciò basato su \textit{Tailwind CSS} ed arricchito da \textit{media queries} personalizzate, che consentono di identificare le dimensioni della finestra del browser e di conseguenza:
 \begin{itemize}
   \item Ridimensionare automaticamente elementi dell'interfaccia quali griglie e container in base alla larghezza del viewport, ossia dello schermo del dispositivo utilizzato.
   \item Adattare la disposizione dei controlli per una fruizione ottimale su schermi piccoli \cite{tailwind-responsive}.

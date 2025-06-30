@@ -7,8 +7,8 @@ La documentazione ufficiale, disponibile sul sito di Deck.gl (https://deck.gl/do
 L'installazione è semplice: basta aggiungere il pacchetto \texttt{deck.gl} da npm o yarn, oppure includere i bundle via CDN \cite{deckgl-npm,deckgl-github}.  
 
 \subsection{Performance e fluidità dell'interazione}  
-Grazie al rendering WebGL2 (e supporto sperimentale a WebGPU), Deck.gl mantiene frame rate elevati anche con milioni di punti: per esempio, lo \texttt{ScatterplotLayer} rimane fluido fino a circa 1M di elementi su hardware consumer, degradando in modo controllato oltre i 10M \cite{deckgl-performance}.  
-Demo storiche mostrano la visualizzazione di oltre 2M di punti e 36K viaggi in tempo reale con interpolazione GPU di New York City \cite{deckgl-uber-blog}.  
+Grazie al rendering WebGL2 (e supporto sperimentale a WebGPU), Deck.gl mantiene frame rate elevati anche con milioni di punti: per esempio, lo \texttt{ScatterplotLayer} rimane fluido fino a circa 1M di elementi su hardware consumer, degradando in modo controllato oltre i 10 milioni \cite{deckgl-performance}.  
+Demo storiche mostrano la visualizzazione di oltre 2 milioni di punti e 36 mila viaggi in tempo reale con interpolazione GPU di New York City \cite{deckgl-uber-blog}.  
 Il core di Deck.gl è ottimizzato per il caricamento e l'aggiornamento dei dati a livello di tile, riducendo la pressione sulla CPU e sfruttando in modo efficiente la GPU \cite{deckgl-github}.  
 
 \subsection{Supporto a dati vettoriali e raster}  

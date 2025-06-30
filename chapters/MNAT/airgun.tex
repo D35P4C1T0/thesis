@@ -26,12 +26,12 @@ Il modello produce un file contenente coordinate GPS, livelli di pressione sonor
 
 \begin{itemize}
   \item coordinate GPS dei punti campionati;
-  \item livelli di rumore in dB;
+  \item livelli di rumore in dB riferiti a 1 microPascal $(\mu Pa)$ a 1 metro dalla sorgente acustica;
   \item dati ambientali (profondità, distanza dalla sorgente);
   \item etichette di settore per ogni punto.
 \end{itemize}
 
-Questi dati possono essere elaborati ulteriormente con il fine di visualizzare i dati contenuti sotto forma di rappresentazioni grafiche significative. Il mio contributo al progetto si è focalizzato su quest'ultimo aspetto, ossia rappresentare decine di migliaia di \textit{datapoints} su una mappa digitale, permettendo un'interazione dinamica. Si veda un esempio di rappresentazione grafica in Figura \ref{fig:preview-heatmap}.
+Questi dati possono essere elaborati ulteriormente con il fine di visualizzare i dati contenuti sotto forma di rappresentazioni grafiche significative. Il contributo al progetto si è focalizzato su quest'ultimo aspetto, ossia rappresentare decine di migliaia di \textit{datapoints} su una mappa digitale, permettendo un'interazione dinamica. Si veda un esempio di rappresentazione grafica in Figura \ref{fig:preview-heatmap}.
 
 \begin{figure}
     \centering
@@ -70,6 +70,6 @@ Una breve anteprima dei dati testuali generati:
 \subsection{Utilità principale}
 
 I risultati generati dal modello permettono di stimare con precisione le aree di maggiore impatto acustico attorno alla sorgente, evidenziando come il rumore si attenui con la distanza seguendo le leggi della propagazione sott'acqua. \cite{airgun_marine_life} 
-Grazie all'inclusione di rotte navali e dettagli morfologici come isole, coste e batimetria, il modello è in grado di identificare zone con livello di rumore più elevato e zone \say{ombra} dove il suono è attenuato rispetto all'ambiente circostante.
+Grazie all'inclusione di rotte navali e dettagli morfologici come isole, coste e batimetria, il modello è in grado di identificare sia zone con un livello di rumore più elevato, sia zone \say{d'ombra} dove il suono risulta attenuato rispetto all'ambiente circostante.
 
 \noindent In sintesi, il modello trasforma una simulazione fisica complessa in un output geografico e operativo, utile per la gestione responsabile dell'inquinamento acustico marino.

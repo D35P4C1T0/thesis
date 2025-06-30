@@ -1,6 +1,6 @@
-\chapter{Il sistema M-NAT: un approccio integrato per la predizione acustica e navale}
+\chapter{Il sistema M-NAT}
 
-Il progetto \textbf{M-NAT} rappresenta un'iniziativa di ricerca avanzata che combina la modellazione acustica sottomarina con algoritmi di intelligenza artificiale, includendo il monitoraggio e la predizione del comportamento navale al fine di una modellazione più accurata.
+Il progetto \textbf{M-NAT} rappresenta un'iniziativa di ricerca avanzata che combina la modellazione acustica sottomarina con algoritmi di intelligenza artificiale, includendo il monitoraggio e la predizione delle rotte navali al fine di una modellazione più accurata.
 
 M-NAT innova integrando modellazione fisica e tecniche \textit{data-driven} all'interno di un framework scalabile e configurabile. La combinazione di BellHop e TrAISformer offre uno strumento per applicazioni marine, monitoraggio ambientale e \textit{intelligence} navale.
 
@@ -19,7 +19,7 @@ L'AIS, acronimo di \textit{Automatic Identification System}, è un sistema che p
 \noindent Il modello:
 \begin{itemize}
   \item codifica latitudine, longitudine, velocità e rotta in \textit{embedding} separati;
-  \item utilizza una \textit{loss} a base di entropia incrociata per gestire la natura multimodale dei dati;
+  \item utilizza una \textit{loss} basata sulla \textit{cross-entropy} per gestire la natura multimodale dei dati;
   \item sfrutta l'architettura \textit{transformer} per estrarre dipendenze temporali a medio-lungo termine \cite{nguyen2021traisformer}.
 \end{itemize}
 
