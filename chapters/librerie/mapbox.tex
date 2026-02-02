@@ -2,28 +2,24 @@
 \label{ch:mapbox}
 
 \subsection{Facilità d'integrazione e documentazione}  
-Mapbox GL JS è una libreria JavaScript client-side che sfrutta WebGL per costruire mappe interattive direttamente nel browser.  
-La documentazione ufficiale è organizzata in guide passo‑passo e in una API reference dettagliata, entrambe mantenute costantemente aggiornate sul sito Mapbox.  
-L'installazione può avvenire tramite CDN o, per un'integrazione nei workflow moderni, installando il pacchetto \texttt{mapbox-gl} con npm o yarn. \cite{mapbox-docs}  
+Mapbox GL JS è una libreria JavaScript client-side che utilizza WebGL per mappe interattive nel browser.  
+La documentazione ufficiale comprende guide passo‑passo e API reference aggiornate.  
+L'installazione avviene tramite CDN o pacchetto \texttt{mapbox-gl} con npm o yarn \cite{mapbox-docs}.  
 
 \subsection{Performance e fluidità dell'interazione}  
-Grazie al rendering GPU‑accelerato, Mapbox GL JS è in grado di mantenere un frame rate elevato anche con centinaia di migliaia di feature.
-Le metriche principali per misurare le prestazioni sono il \emph{render time}, il \emph{source update time} e il \emph{layer update time}, tutte analizzabili tramite logging interno.  
-Per dataset estremamente grandi è possibile ottimizzare i tileset applicando tecniche di \emph{tile clipping} e caching client-side, come descritto nella guida ufficiale ai \textit{vector tiles} \cite{mapbox-vector, article-highperf}.  
+Il rendering GPU-accelerato consente frame rate elevati anche con centinaia di migliaia di feature.  
+Prestazioni misurate tramite \emph{render time}, \emph{source update time} e \emph{layer update time} possono essere monitorate tramite logging interno.  
+Per dataset molto grandi, l'ottimizzazione dei tileset tramite \emph{tile clipping} e caching client-side migliora l'efficienza \cite{mapbox-vector, article-highperf}.  
 
 \subsection{Supporto a dati vettoriali e raster}  
-Mapbox GL JS supporta nativamente i \emph{vector tiles} in formato MVT, uno standard basato su Google Protobuf per file con estensione \texttt{.mvt}\cite{mapbox-vector}.  
-Il caricamento di \emph{raster tiles} da terze parti è altrettanto semplice: basta definire una sorgente di tipo \texttt{raster} e aggiungere il layer corrispondente, seguendo gli esempi forniti nella documentazione \cite{mapbox-raster}.  
+Mapbox GL JS supporta nativamente \emph{vector tiles} in formato MVT (\texttt{.mvt}) \cite{mapbox-vector}.  
+I \emph{raster tiles} da terze parti si aggiungono facilmente definendo una sorgente \texttt{raster} e il layer corrispondente \cite{mapbox-raster}.  
 
 \subsection{Licenza e costi d'uso}  
-A partire dalla versione 2, Mapbox GL JS è distribuito sotto licenza commerciale e richiede un \textit{token} Mapbox per l'uso in produzione.  
-Il modello di pricing è basato sui \emph{map loads} mensili, con una soglia gratuita di base e piani a consumo che scalano automaticamente con l'utilizzo \cite{mapbox-license-v2, mapbox-pricing}.  
+Dalla versione 2, Mapbox GL JS è distribuito con licenza commerciale, richiedendo un \textit{token} per l'uso in produzione.  
+Il modello di pricing si basa sui \emph{map loads} mensili, con soglia gratuita e piani a consumo scalabili \cite{mapbox-license-v2, mapbox-pricing}.  
 
 \subsection{Compatibilità con altri strumenti e framework}  
-In ambito React è disponibile \texttt{react-map-gl}, una raccolta di componenti che semplifica l'integrazione di Mapbox GL JS in applicazioni basate su React \cite{react-map-gl,mapbox-react-tutorial}.  
-
-Per analisi spaziali avanzate è possibile combinare Mapbox GL JS con librerie come Turf.js, aggiungendo operazioni geospaziali direttamente sul client.  
-Chi volesse implementare visualizzazioni 3D o modelli personalizzati può estendere la mappa con Three.js tramite un CustomLayer.  
-Infine, Mapbox offre SDK nativi per iOS e Android, che permettono di riutilizzare stili e tileset MVT nelle applicazioni mobile con API coerenti \cite{mapbox-ios, mapbox-mobile-sdk}.  
-
-\newpage
+Per React è disponibile \texttt{react-map-gl}, semplificando l'integrazione \cite{react-map-gl,mapbox-react-tutorial}.  
+Per analisi spaziali avanzate si può combinare con Turf.js o estendere mappe 3D tramite Three.js con un CustomLayer.  
+SDK nativi per iOS e Android consentono di riutilizzare stili e tileset MVT con API coerenti \cite{mapbox-ios, mapbox-mobile-sdk}.  

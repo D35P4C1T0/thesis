@@ -1,41 +1,25 @@
 \section{OpenLayers}
 \label{ch:openlayers}
 
-\subsection{Facilità d'integrazione e documentazione}
-OpenLayers mette a disposizione una documentazione ufficiale molto dettagliata, con guide introduttive, esempi interattivi e API reference sul sito del progetto \cite{openlayers-doc}.  
-Il codice sorgente e il tracker delle issue sono ospitati su GitHub, dove si trova anche il file di licenza Clear BSD 2‑Clause.
-È inoltre attivo un ecosistema di wrapper e plugin non ufficiali raccolti in repository quali \say{awesome-openlayers} \cite{openlayers-github,awesome-openlayers}.
+\subsection{Facilità d'integrazione e documentazione}  
+OpenLayers offre documentazione dettagliata con guide, esempi interattivi e API reference \cite{openlayers-doc}.  
+Codice sorgente e licenza Clear BSD 2‑Clause sono su GitHub; plugin e wrapper non ufficiali sono raccolti in repository come \say{awesome-openlayers} \cite{openlayers-github,awesome-openlayers}.  
 
-\subsection{Performance e fluidità dell'interazione}
-Il supporto WebGL in OpenLayers permette di sfruttare la GPU per il rendering di geometrie complesse: esempi ufficiali mostrano come il layer \texttt{WebGLVectorLayer} mantenga un frame rate elevato anche con decine di migliaia di punti. \cite{openlayers-webgl-example} 
-Workshop dedicati illustrano tecniche di ottimizzazione, come il tiling client‑side e la gestione dinamica dei dati, per mantenere interactive performance anche in scenari di grandi dataset.
-Discutere problemi di performance su forum come GIS StackExchange rivela strategie quali clustering e buffer dinamici per ridurre il carico di rendering. \cite{openlayers-webgl-workshop,openlayers-issue-perf}
+\subsection{Performance e fluidità dell'interazione}  
+Il supporto WebGL consente rendering GPU per geometrie complesse: \texttt{WebGLVectorLayer} mantiene frame rate elevati con decine di migliaia di punti \cite{openlayers-webgl-example}.  
+Tecniche di ottimizzazione includono tiling client-side, gestione dinamica dei dati, clustering e buffer dinamici \cite{openlayers-webgl-workshop,openlayers-issue-perf}.  
 
-\subsection{Supporto a dati vettoriali e raster}
-\subsubsection*{Vector tiles}
-OpenLayers supporta nativamente Mapbox Vector Tiles (MVT) tramite il layer \texttt{VectorTileLayer}, consentendo styling lato client e caricamento tile‑by‑tile.
-Sono disponibili esempi per OSM Vector Tiles che utilizzano il formato MVT per ottenere ottime prestazioni con dataset di medie dimensioni. \cite{openlayers-mapbox-vector-tiles,openlayers-osm-vector-tiles}
+\subsection{Supporto a dati vettoriali e raster}  
+\textbf{Vector tiles:} supporto nativo a Mapbox Vector Tiles tramite \texttt{VectorTileLayer}, con styling lato client e caricamento tile-by-tile. Esempi OSM MVT mostrano buone performance su dataset medi \cite{openlayers-mapbox-vector-tiles,openlayers-osm-vector-tiles}.  
+\textbf{Raster tiles:} supporto a XYZ e WMS tramite \texttt{ol/source/XYZ} e \texttt{ol/source/TileWMS}, semplificando l'uso di basemap come OSM o Geoserver \cite{openlayers-raster-xyz}.  
 
-\subsubsection*{Raster tiles}
-Il framework gestisce tile raster da sorgenti XYZ e WMS con le classi 
+\subsection{Supporto a WebGL}  
+Layer \texttt{WebGLPointsLayer} e \texttt{WebGLVectorLayer} trasferiscono il rendering alla GPU tramite buffer e shader GLSL, consentendo visualizzazioni fluide di grandi dataset \cite{openlayers-webgl-example,openlayers-webgl-workshop}.  
 
-\begin{itemize}
-    \item \texttt{ol/source/XYZ} 
-    \item \texttt{ol/source/TileWMS}
-\end{itemize}
+\subsection{Licenza e costi d'uso}  
+OpenLayers è rilasciato sotto Clear BSD 2‑Clause, permissiva e senza royalty \cite{openlayers-github,ol-cesium-license}.  
+Non ci sono costi di licenza, ma si incoraggia a supportare il progetto tramite donazioni OSGeo \cite{openlayers-doc}.  
 
-semplificando l'uso di basemap come OpenStreetMap o servizi Geoserver\cite{openlayers-raster-xyz}.  
-Per casi avanzati, la documentazione ufficiale risulta un'importante risorsa per ottenere più informazioni sulla riproiezione dei raster.
-
-\subsection{Supporto a WebGL}
-Il motore WebGL di OpenLayers, accessibile tramite \texttt{WebGLPointsLayer} e \texttt{WebGLVectorLayer}, sfrutta buffer di vertici e shader GLSL per trasferire gran parte del lavoro di rendering alla GPU, rendendo possibile la visualizzazione di grandi moli di dati con animazioni fluide. \cite{openlayers-webgl-example,openlayers-webgl-workshop}
-
-\subsection{Licenza e costi d'uso}
-OpenLayers è rilasciato sotto licenza Clear BSD 2‑Clause, una licenza permissiva che permette uso, modifica e ridistribuzione anche in progetti commerciali senza royalty \cite{openlayers-github,ol-cesium-license}.  
-Non sono previsti costi di licenza, ma il progetto invita a donare tramite OSGeo per sostenere il mantenimento del software \cite{openlayers-doc}.
-
-\subsection{Compatibilità con altri strumenti e framework}
-Oltre a React, la comunità ha sviluppato binding per Vue, Angular e GWT, elencati nella pagina \say{Useful 3rd party libraries} del sito ufficiale.  
-Per analisi spaziale lato client è comune integrare OpenLayers con Turf.js, come mostrato nell'esempio ufficiale \say{\texttt{turf.js}} \cite{awesome-openlayers,openlayers-turf-example}.  
-
-\newpage
+\subsection{Compatibilità con altri strumenti e framework}  
+Oltre a React, sono disponibili binding per Vue, Angular e GWT.  
+L'integrazione con Turf.js è comune per analisi spaziali lato client \cite{awesome-openlayers,openlayers-turf-example}.  

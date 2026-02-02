@@ -1,16 +1,18 @@
 \chapter{Analisi delle librerie per la visualizzazione di mappe web}
 
 \section{Introduzione}
-Le mappe web interattive sono diventate strumenti fondamentali per la visualizzazione e l'analisi di dati geospaziali in ambito scientifico, industriale e ambientale. Con la crescente disponibilità di dataset georeferenziati di grandi dimensioni, la necessità di soluzioni web performanti e flessibili per la loro rappresentazione è oggi più sentita che mai. Negli ultimi anni, lo sviluppo di numerose librerie JavaScript ha reso possibile integrare con relativa facilità mappe interattive all'interno di applicazioni web, offrendo funzionalità avanzate sia per la visualizzazione 2D che 3D.
 
-In particolare, il caso d'uso affrontato in questo lavoro, ossia la rappresentazione di oltre 100.000 punti geolocalizzati, ciascuno associato a un valore di intensità del rumore subacqueo, pone una sfida significativa in termini di rendering e interattività. L'obiettivo principale di questo capitolo è analizzare lo stato dell'arte delle principali librerie JavaScript per la visualizzazione di mappe, con un focus su quelle in grado di gestire grandi volumi di dati mantenendo buone performance grazie al supporto a tecnologie come WebGL \cite{mapbox-gl-js}.
+Le mappe web interattive rappresentano oggi strumenti centrali per la visualizzazione e l'analisi di dati geospaziali in ambito scientifico, industriale e ambientale. Con l'aumento della disponibilità di dataset georeferenziati di grandi dimensioni, cresce la necessità di soluzioni web performanti e flessibili per la loro rappresentazione. Le moderne librerie JavaScript consentono di integrare con relativa semplicità mappe dinamiche in applicazioni web, offrendo funzionalità avanzate sia in 2D che in 3D.
 
-Verranno confrontate le soluzioni più diffuse, sia \textit{open-source} che commerciali, valutandone la modularità, la facilità d'integrazione, e la capacità di offrire un'esperienza utente fluida anche in scenari complessi. Il fine ultimo è individuare la libreria più adatta a essere integrata nel sistema M-NAT, garantendo un'interfaccia reattiva, scalabile e in grado di restituire in modo chiaro e immediato l'informazione acustica elaborata dal modello.
+Il caso di studio trattato in questo lavoro, la visualizzazione di oltre 100.000 punti geolocalizzati associati a valori di intensità del rumore subacqueo, pone sfide rilevanti in termini di rendering e interattività. L'obiettivo è analizzare lo stato dell'arte delle principali librerie di visualizzazione geospaziale, con particolare attenzione a quelle che sfruttano WebGL \cite{mapbox-gl-js} per gestire grandi volumi di dati in modo efficiente.
 
-\subsection{Cos'è un Heatmap}
-Una \emph{heatmap} è una rappresentazione grafica bidimensionale che utilizza una scala cromatica per visualizzare l'intensità o la concentrazione di un fenomeno all'interno di una griglia o mappa. Le tonalità più calde (es. rosso, arancione) indicano valori più elevati, mentre quelle fredde (es. blu, verde) rappresentano valori più bassi.
+Saranno confrontate diverse soluzioni, sia \textit{open-source} che commerciali, valutandone modularità, semplicità d'integrazione e capacità di offrire un'esperienza fluida anche in scenari complessi. Lo scopo finale è identificare la libreria più idonea per l'integrazione nel sistema M-NAT, in grado di fornire un'interfaccia reattiva, scalabile e capace di rappresentare efficacemente l'informazione acustica prodotta dal modello.
 
-Questo tipo di visualizzazione facilita l'individuazione immediata di pattern, cluster o anomalie in insiemi di dati complessi, risultando particolarmente utile in ambiti come l'analisi geospaziale, il web analytics, l'urbanistica, l'economia e la ricerca scientifica. In applicazioni geospaziali, una \emph{spatial heatmap} sovrappone dati di densità geolocalizzata su una mappa, evidenziando visivamente le aree di maggiore concentrazione del fenomeno studiato \cite{vwo-heatmap,heatmap-wikipedia,clarity-heatmap}.
+\subsection{Cos'è una Heatmap}
+
+Una \emph{heatmap} è una rappresentazione grafica bidimensionale che utilizza una scala cromatica per mostrare l'intensità o la concentrazione di un fenomeno su una griglia o una mappa. Le tonalità calde (ad esempio rosso e arancione) indicano valori elevati, mentre quelle fredde (blu, verde) rappresentano valori più bassi.
+
+Questo tipo di visualizzazione consente di individuare rapidamente pattern, cluster e anomalie in insiemi di dati complessi, risultando utile in ambiti come l'analisi geospaziale, l'urbanistica, l'economia o la ricerca scientifica. Nelle applicazioni cartografiche, una \emph{spatial heatmap} sovrappone i dati di densità geolocalizzata alla mappa, evidenziando visivamente le aree di maggiore concentrazione del fenomeno analizzato \cite{vwo-heatmap,heatmap-wikipedia,clarity-heatmap}.
 
 
 \section{Criteri di valutazione}

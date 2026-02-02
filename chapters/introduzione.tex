@@ -19,25 +19,25 @@ La filosofia alla base di Flask è quella della semplicità e della flessibilit�
 
 \textit{Flask} ha rappresentato una scelta strategica per la realizzazione del sistema di \textit{backend} dell'applicazione. La sua leggerezza, unita alla possibilità di estensione mirata e all'ottima documentazione disponibile, ha consentito di sviluppare un'infrastruttura web coerente con le esigenze del progetto, senza introdurre complessità superflue. In un contesto accademico, dove spesso è necessario prototipare rapidamente soluzioni specifiche, un \textit{framework} come \textit{Flask} si rivela uno strumento estremamente efficace.
 
-\begin{listing}[H]
-\caption{Codice che inizializza un'istanza minimale di Flask}
-\label{lst:minimal-flask} % Il label va all'interno dell'ambiente listing o subito dopo la caption
-\begin{minted}{python}
-from flask import Flask
-app = Flask(__name__)
+% \begin{listing}[H]
+% \caption{Codice che inizializza un'istanza minimale di Flask}
+% \label{lst:minimal-flask} % Il label va all'interno dell'ambiente listing o subito dopo la caption
+% \begin{minted}{python}
+% from flask import Flask
+% app = Flask(__name__)
 
-@app.route('/')
-def hello():
-    return 'Hello, World!'
+% @app.route('/')
+% def hello():
+%     return 'Hello, World!'
 
-if __name__ == '__main__':
-    app.run(debug=True)
-\end{minted}
-\end{listing}
+% if __name__ == '__main__':
+%     app.run(debug=True)
+% \end{minted}
+% \end{listing}
 
 \subsection{Vantaggi Offerti}
 \subsubsection*{Leggerezza e rapidità di sviluppo}
-Uno dei principali punti di forza di Flask risiede nella sua struttura minimale, come si può osservare nel frammento di codice presente nel Listing \ref{lst:minimal-flask}. L'avvio di un'applicazione richiede pochissime righe di codice, rendendo il \textit{framework} particolarmente adatto per prototipi, applicazioni di piccole e medie dimensioni, o per progetti che necessitano di una fase di sviluppo iniziale particolarmente snella.  
+Uno dei principali punti di forza di Flask risiede nella sua struttura minimale. L'avvio di un'applicazione richiede pochissime righe di codice, rendendo il \textit{framework} particolarmente adatto per prototipi, applicazioni di piccole e medie dimensioni, o per progetti che necessitano di una fase di sviluppo iniziale particolarmente snella.  
 Nel contesto di questo progetto, tale caratteristica ha permesso di concentrare l'attenzione sulle funzionalità specifiche dell'applicazione, riducendo al minimo la complessità architetturale.
 
 \subsubsection*{Modularità e facilità di integrazione}

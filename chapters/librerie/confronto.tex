@@ -1,41 +1,39 @@
 \section{\textit{Benchmarking} Automatizzato per il Confronto Prestazionale tra Librerie}
 
-Al fine di condurre un'analisi comparativa rigorosa e sistematica delle prestazioni offerte dalle diverse librerie di visualizzazione cartografica prese in esame, è stato realizzato un progetto separato il quale implementa una specifica funzionalità di benchmarking automatizzato. Questo sistema è stato impiegato per acquisire misurazioni quantitative e ripetibili dei tempi di esecuzione e rendering, minimizzando al contempo l'intervento manuale e le potenziali distorsioni da esso derivanti. Si è posta particolare enfasi nel garantire che ogni singola prova venisse eseguita in condizioni operative il più possibile isolate e \say{pulite}, ovvero esenti da interferenze dovute a stati precedenti dell'applicazione o a risorse memorizzate nella cache.
-Grazie a tali dati, è stato possibile valutare la reattività di ogni libreria considerata e presentare, in questo elaborato, un'analisi concisa e fruibile.
+Al fine di condurre un'analisi comparativa sistematica delle prestazioni delle librerie di visualizzazione cartografica, è stato sviluppato un progetto dedicato al benchmarking automatizzato. Questo sistema acquisisce misurazioni quantitative e ripetibili dei tempi di esecuzione e rendering, riducendo al minimo l'intervento manuale e le potenziali distorsioni. Ogni prova è stata eseguita in condizioni operative il più possibile isolate, evitando interferenze da stati precedenti o cache.  
+I dati raccolti hanno permesso di valutare la reattività di ciascuna libreria e presentare un'analisi concisa e fruibile.
 
-Il fulcro di questa architettura di test è rappresentato da un'istanza di Flask che mette a disposizione una pagina web dedicata, accessibile tramite l'endpoint applicativo \texttt{/benchmark}. 
-È doveroso specificare come in queste misurazioni non è stato incluso \textit{Folium}; tale libreria si differenzia dalle altre per via del suo diverso funzionamento, infatti non è possibile effettuare un \textit{benchmark} significativo tra librerie \textit{server-side rendered} (SSR) e \textit{client-side rendered} (CSR) a causa delle differenze fondamentali nei loro modelli di \textit{rendering} e nei flussi di esecuzione. 
+L'architettura di test si basa su un'istanza Flask che espone una pagina web tramite l'endpoint \texttt{/benchmark}.  
+Si specifica che \textit{Folium} non è incluso nelle misurazioni: essendo server-side rendered (SSR), il confronto diretto con librerie client-side rendered (CSR) non sarebbe significativo.  
+In dettaglio:
 
-Nello specifico:
 \begin{itemize}
-      \item Server-Side Rendering (SSR): Il contenuto HTML completo viene generato sul server e inviato al client. Questo approccio consente una visualizzazione immediata del contenuto e una migliore indicizzazione da parte dei motori di ricerca.\cite{peerdh-ssr-csr-comparison}
-
-    \item Client-Side Rendering (CSR): Il server invia una struttura HTML minima, e il browser del client utilizza JavaScript per costruire dinamicamente l'interfaccia utente. Questo può comportare un ritardo nella visualizzazione iniziale del contenuto e richiede che il browser esegua ulteriori elaborazioni.\cite{devto-csr-vs-ssr}
+    \item \textbf{Server-Side Rendering (SSR)}: il contenuto HTML completo viene generato sul server e inviato al client, garantendo visualizzazione immediata e migliore indicizzazione \cite{peerdh-ssr-csr-comparison}.
+    \item \textbf{Client-Side Rendering (CSR)}: il server invia solo HTML minimo, e il browser costruisce dinamicamente l'interfaccia via JavaScript, con possibile ritardo nella visualizzazione iniziale \cite{devto-csr-vs-ssr}.
 \end{itemize}
+
   
 
-Il processo di benchmarking si articola nelle seguenti fasi operative fondamentali:
+Il processo di benchmarking si articola nelle seguenti fasi principali:
 
 \begin{itemize}[leftmargin=*]
-    \item \textbf{Caricamento Iterativo e Contestualizzato delle Mappe:}
-    Per ogni libreria inclusa nel ciclo di test e per ciascuna iterazione configurata, la corrispondente pagina web dedicata alla visualizzazione della mappa (ad esempio, \texttt{/leaflet}, \texttt{/openlayers}, ecc.) viene caricata dinamicamente all'interno di un elemento HTML \texttt{<iframe>}. Quest'ultimo è integrato nella pagina di \textit{benchmark} e serve a creare un ambiente di esecuzione \textit{sandboxed} per ogni test. Questo approccio consente di caricare, inizializzare e renderizzare ogni mappa in un contesto di DOM e JavaScript relativamente isolato, riducendo le possibili interferenze tra test successivi. Sebbene l'\textit{iframe} possa essere configurato per essere invisibile durante l'esecuzione standard, la sua visibilità può essere attivata a fini diagnostici e di \textit{debug}.
+    \item \textbf{Caricamento iterativo delle mappe:}  
+    Per ciascuna libreria e iterazione, la pagina web dedicata (\texttt{/leaflet}, \texttt{/openlayers}, ecc.) viene caricata in un \texttt{<iframe>} integrato nella pagina di \textit{benchmark}. Questo crea un ambiente \textit{sandboxed}, isolando ogni test e riducendo interferenze tra iterazioni. L'\textit{iframe} può essere reso invisibile o visibile per \textit{debug}.
 
-    \item \textbf{Implementazione di Strategie Anti-Cache Robuste:}
-    Una criticità fondamentale nei test di performance web è l'influenza della cache del browser. Per assicurare che ogni caricamento della mappa avvenga ex novo, attingendo le risorse direttamente dal server (o dalla rete, nel caso di \textit{CDN} esterne), sono state implementate due strategie anti-\textit{cache} complementari e sinergiche:
+    \item \textbf{Strategie anti-cache:}  
+    Per garantire caricamenti freschi delle risorse, sono state adottate due misure complementari:
     \begin{itemize}
-        \item \textit{Direttive HTTP Server-Side:} Il server applicativo Flask è stato configurato per apporre, a tutte le risposte HTTP generate, specifiche intestazioni di controllo della cache. Tra queste, le più interessanti sono \texttt{Cache-Control: no-cache, no-store, must-revalidate}, \texttt{Pragma: no-cache}, e \texttt{Expires: 0}, le quali istruiscono esplicitamente il browser a non riutilizzare versioni precedentemente memorizzate delle risorse, ma a richiederle nuovamente.
-        \item \textit{Parametrizzazione Dinamica degli URL Client-Side:} In aggiunta alle direttive server-side, un meccanismo di \say{\textit{cache busting}} è applicato lato client. Ad ogni URL della pagina mappa da caricare nell'\textit{iframe} viene programmaticamente aggiunto un parametro di query univoco, tipicamente basato sul \textit{timestamp} corrente (es. \texttt{?t=xxxxxxxxxxxxx}). Questa tecnica rende ogni richiesta URL formalmente distinta dalla precedente agli occhi del browser, contribuendo significativamente a vanificare i meccanismi di \textit{caching} più aggressivi.
+        \item \textit{Direttive server-side:} Flask imposta intestazioni HTTP come \texttt{Cache-Control: no-cache, no-store, must-revalidate}, \texttt{Pragma: no-cache} ed \texttt{Expires: 0} per forzare il ricaricamento dei contenuti.
+        \item \textit{Cache busting client-side:} Ogni URL di mappa nell'\textit{iframe} riceve un parametro di query univoco basato sul \textit{timestamp} (es. \texttt{?t=xxxxxxxxxxxx}) per prevenire il riuso di risorse memorizzate.
     \end{itemize}
 
-    \item \textbf{Raccolta Differita e Asincrona delle Metriche di Performance:}
-    La misurazione effettiva delle prestazioni è delegata a ciascuna singola pagina di visualizzazione della mappa. All'interno dello script di ogni pagina mappa (es. \texttt{leaflet.html}), vengono utilizzati meccanismi di timing ad alta precisione, come \texttt{performance.now()}, per registrare gli istanti di inizio e fine delle operazioni chiave: recupero dei dati, inizializzazione della mappa base e rendering dello strato \textit{heatmap}.
-    Una volta che tutte queste operazioni sono concluse e le metriche sono state calcolate, la pagina mappa ospitata nell'\textit{iframe} emette un evento JavaScript personalizzato, denominato \texttt{benchmarkMetricsReady}, sull'oggetto \texttt{window} del proprio contesto. Il \textit{payload} associato a questo evento (\texttt{event.detail}) è un oggetto JSON contenente tutte le metriche rilevate (per esempio \texttt{dataFetchTime\_ms}, \texttt{mapInitAndHeatmapRenderTime\_ms}, \texttt{totalClientLoadTime\_ms}, \texttt{totalPoints}). La pagina genitore \texttt{/benchmark} si pone in \textit{ascolto attivo} di questo specifico evento proveniente dall'\textit{iframe}, per poter intercettare e registrare i dati di performance non appena disponibili.
+    \item \textbf{Raccolta asincrona delle metriche:}  
+    Ogni pagina mappa misura i tempi chiave (recupero dati, inizializzazione, rendering) tramite \texttt{performance.now()}. Al termine, emette un evento JavaScript \texttt{benchmarkMetricsReady} con un \texttt{payload} JSON contenente tutte le metriche (\texttt{dataFetchTime\_ms}, \texttt{mapInitAndHeatmapRenderTime\_ms}, \texttt{totalClientLoadTime\_ms}, \texttt{totalPoints}). La pagina genitore cattura l'evento e registra i dati.
 
-    \item \textbf{Aggregazione, Formattazione e Persistenza dei Dati:}
-    Le metriche raccolte per ogni singola iterazione di test vengono progressivamente accumulate in una struttura dati (un array JavaScript) nella pagina \texttt{/benchmark}. Questa struttura include non solo le misurazioni temporali, ma anche metadati contestuali quali il nome della libreria mappa testata, il numero progressivo dell'iterazione e la stringa completa dello User-Agent del browser che ha eseguito il test.
-    Al completamento di tutte le iterazioni per tutte le librerie configurate, l'intero \textit{dataset} di risultati viene serializzato in formato JSON e trasmesso, tramite una richiesta HTTP di tipo POST, a un endpoint server-side dedicato: \texttt{/save\_benchmark\_data}. Questo endpoint, gestito dall'applicazione Flask, riceve i dati e provvede ad accodarli in modo persistente a un file testuale formattato come CSV (Comma-Separated Values); è possibile consultare un estratto di poche righe di tale file, disposto in Tabella \ref{tab:csv-metriche-mappe}, in cui viene mostrato come vengono organizzate le misurazioni. Il file, denominato \texttt{benchmarks.csv} e localizzato nella directory radice del progetto, funge da archivio storico di tutte le sessioni di \textit{benchmark}. La sua struttura tabellare, con colonne chiaramente definite, facilita l'analisi successiva e il confronto dei dati, permettendo l'importazione in fogli di calcolo o software statistici.
-        
+    \item \textbf{Aggregazione e persistenza dei dati:}  
+    Le metriche di ogni iterazione vengono accumulate in un array JavaScript con metadati contestuali (nome libreria, numero iterazione, User-Agent). Al termine, l'intero dataset viene serializzato in JSON e inviato a un endpoint Flask (\texttt{/save\_benchmark\_data}), che lo salva in formato CSV (\texttt{benchmarks.csv}). La tabella risultante, esemplificata in Tabella \ref{tab:csv-metriche-mappe}, consente analisi comparative e importazione in software statistici.
 \end{itemize}
+
 
 \begin{table}[ht]
 \centering
@@ -117,25 +115,23 @@ Si osserva che le librerie Deck.gl e MapBox/MapLibre eccellono particolarmente n
 L'analisi di questo grafico di confronto è fondamentale per orientare la scelta della libreria più adatta alle esigenze specifiche del progetto. Essa rivela non solo le performance assolute, ma anche le loro caratteristiche relative, permettendo di identificare la soluzione che meglio si allinea ai requisiti di velocità e reattività dell'applicazione finale.
 
 % commento grafico xy
-Ora prendiamo in considerazione ciò che viene illustrato in Figura \ref{fig:map_xy_plot}. Questo  grafico di dispersione presenta la relazione tra il tempo impiegato per il \textbf{rendering della mappa} (misurato in millisecondi sull'asse delle ascisse) e il \textbf{tempo totale di caricamento lato client} (misurato in millisecondi sull'asse delle ordinate). Ogni punto sul grafico rappresenta una singola osservazione di test, e le diverse librerie cartografiche (Leaflet, OpenLayers, MapLibre, Deck.gl), ognuna differenziata da un colore diverso, permettono di distinguere visivamente i loro rispettivi comportamenti.
+La Figura \ref{fig:map_xy_plot} mostra un grafico di dispersione tra il \textbf{tempo di rendering della mappa} (ms, ascisse) e il \textbf{tempo totale di caricamento lato client} (ms, ordinate). Ogni punto rappresenta un test singolo, con colori distinti per le librerie Leaflet, OpenLayers, MapLibre e Deck.gl.
 
 \begin{itemize}
-    \item \textbf{Limite inferiore}
-    Si osserva una disposizione dei dati ben definita, dove nessuna libreria è in grado di raggiungere tempi totali di caricamento sotto una certa soglia (indicativamente, $\sim 500$ ms). Interessante la disposizione dei \textit{datapoints} lungo l'asse delle ascisse, quindi l'asse lungo il quale sono disposti i tempi di caricamento in primo luogo della mappa e successivamente del componente \textit{Heatmap}. Ricordo che tale valore è compreso nel più generale tempo di caricamento totale, rappresentato dall'asse delle ordinate; da questo accorgimento si può giustificare l'assenza di \textit{datapoints} situati sotto alla diagonale ipotetica $y=x$.
-    
-    Le librerie cartografiche che si distinguono per la vicinanza all'origine (Deck.gl, Leaflet, MapLibre) infatti hanno tutte in comune tempi di caricamento dei componenti Mappa e \textit{Heatmap} molto bassi, metrica che può dire la sua nella scelta della libreria per uno specifico caso d'uso.
+    \item \textbf{Limite inferiore:}  
+    Nessuna libreria scende sotto circa $500$ ms di caricamento totale. La distribuzione lungo l'asse delle ascisse evidenzia i tempi della mappa e del componente \textit{Heatmap}, che costituiscono il totale (asse ordinate). Questo spiega l'assenza di punti sotto la diagonale $y=x$.  
+    Deck.gl, Leaflet e MapLibre si avvicinano all'origine, indicando tempi di caricamento dei componenti Mappa e \textit{Heatmap} molto bassi, parametro rilevante nella scelta della libreria.
 
-    \item \textbf{Ulteriori osservazioni}
-    Sebbene il grafico in Figura \ref{fig:map_xy_plot} faccia intendere quali siano le librerie generalmente più rapide, è da riconoscere anche un'ulteriore caratteristica: Il grado di correlazione tra i due valori misurati (Tempo di rendering della Mappa e Tempo Totale di Caricamento). Librerie collocate vicino alla diagonale immaginaria $y=x$ sono caratterizzate quindi da una minor differenza tra i due valori misurati. Ciò può indicare un comportamento interessante: in questo caso specifico, abbiamo una libreria (OpenLayers) che impiega più tempo delle altre per il rendering della mappa, ma il tempo di caricamento totale lato \textit{client} risulta poco superiore; questo potrebbe indicare una peggior ottimizzazione lato \textit{Heatmap}, per cui il rendering di tale elemento rappresenta la maggior parte del tempo impiegato dalla libreria per mostrare la mappa a schermo. Un miglioramento su tale versante porterebbe i \textit{datapoints} di tale libreria in una zona più bassa del grafico, probabilmente poco distante dalla diagonale immaginaria. Oppure, adottando una prospettiva più diretta, la libreria nella sua interezza non è tra le più rapide, con o senza \textit{Heatmap}.
-    Ed è proprio per via di questa variabilità nell'interpretazione di tale comportamento che i dati riportati in questo grafico risultano utili solamente nell'individuare la libreria generalmente più veloce; è solo dopo aver visivamente accantonato le librerie con tempo totale più elevato delle altre che si è in grado di apprezzare la metrica che valuta il tempo di caricamento della mappa e del componente \textit{Heatmap}.
-          
+    \item \textbf{Ulteriori osservazioni:}  
+    La vicinanza dei punti alla diagonale $y=x$ indica differenze ridotte tra rendering e caricamento totale. OpenLayers, pur avendo tempi maggiori di rendering, mostra solo un leggero incremento nel totale, suggerendo un impatto significativo del componente \textit{Heatmap}. L'ottimizzazione di quest'ultimo sposterebbe i punti verso il basso. Complessivamente, il grafico aiuta a identificare le librerie mediamente più rapide; solo successivamente si può analizzare in dettaglio l'efficienza del rendering e della \textit{Heatmap}.
 \end{itemize}
 
-In sintesi, l'analisi di questo grafico di correlazione fornisce \textit{insight} preziosi dati sulla dipendenza del tempo di caricamento totale dalle performance di rendering.
+In sintesi, l'analisi di questo grafico di correlazione fornisce \textit{insight} preziosi sui dati riguardanti la dipendenza del tempo di caricamento totale dalle performance di rendering.
 
 \subsection*{Considerazioni sulla Validità e Interpretazione dei Risultati}
-È fondamentale sottolineare che, nonostante gli sforzi per standardizzare il processo, le misurazioni di performance nel contesto di un browser web sono intrinsecamente soggette a una certa variabilità. Fattori quali il carico di sistema della macchina ospite, l'attività di altri processi, le specifiche estensioni del browser installate e le fluttuazioni nella latenza di rete (per il recupero di tile e dati) possono influenzare i risultati.
-Le specifiche del sistema sul quale sono state effettuate le misurazioni sono brevemente riportate nel frammento di codice nel Listing \ref{lst:inxi_output}.
+Pur avendo standardizzato il processo, le misurazioni di performance in un browser restano soggette a variabilità. Fattori come il carico di sistema, i processi in esecuzione, le estensioni del browser e la latenza di rete (per il recupero di tile e dati) possono influenzare i risultati.  
+Le specifiche del sistema utilizzato sono riportate nel frammento di codice del Listing \ref{lst:inxi_output}.
+
 
 \begin{listing}[H]
 \caption{Output del comando \texttt{inxi}}

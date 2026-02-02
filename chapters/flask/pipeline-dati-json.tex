@@ -1,8 +1,8 @@
 
 \subsection{Introduzione al Flusso Dati}
 
-Durante lo studio delle svariate librerie di cartografia web, può emergere una falsa assunzione: i dati geospaziali in formato CSV, per essere importati all'interno di una libreria cartografica, debbano essere rigorosamente convertiti in \textbf{GeoJSON} per la visualizzazione, a prescindere dalla mappa scelta. Nel contesto di questo sistema, tale conversione \textbf{non avviene}; è stata esplicitamente evitata. La decisione non è frutto del caso, bensì di un ragionamento tecnico consapevole legato all'efficienza, alla semplicità e all'adattabilità dell'architettura.
-Segue una tabella contenente informazioni riguardo la necessità di convertire i dati in formato GeoJSON per ogni libreria presa in esame:
+In questo sistema, i dati geospaziali in formato CSV non vengono convertiti in GeoJSON per la visualizzazione; la scelta è stata effettuata per motivi di efficienza, semplicità e adattabilità architetturale.
+
 \begin{table}[H]
 \centering
 \caption{Heatmap e supporto GeoJSON nelle librerie considerate}
@@ -19,33 +19,30 @@ OpenLayers & Raccomandato & GeoJSON o oggetti \texttt{ol.Feature} \\
 \end{tabular}
 \end{table}
 
+Tre librerie non richiedono GeoJSON (Leaflet, Deck.gl, Folium); tra queste, Deck.gl e Folium supportano nativamente un formato minimale, mentre Leaflet necessita di plugin aggiuntivi \cite{leaflet-doc, deckgl-docs, folium-doc, mapbox-docs, openlayers-doc}.
 
-Andando quindi per esclusione abbiamo 3 librerie dove GeoJSON non è strettamente richiesto (Leaflet, Deck.gl, Folium). Tra tutte, Deck.gl e Folium supportano nativamente un formato di dati minimale, mentre Leaflet richiede software aggiuntivo. \cite{leaflet-doc, deckgl-docs, folium-doc, mapbox-docs, openlayers-doc}
+GeoJSON è un formato aperto per lo scambio di dati geografici basato su JSON, standardizzato per rappresentare entità spaziali con coordinate WGS84. La sua semplicità e diffusione lo rendono uno standard de facto per applicazioni web e GIS \cite{geojson-spec,rfc7946}.
 
-\textbf{GeoJSON} è un formato aperto per lo scambio di dati geografici basato su JSON (JavaScript Object Notation) che definisce oggetti standardizzati per rappresentare entità spaziali e i loro attributi non spaziali. Si caratterizza per la semplicità sintattica e per l'adozione universale del sistema di riferimento WGS84, espresso in gradi decimali di longitudine e latitudine. La sua diffusione lo ha reso uno degli standard de facto per applicazioni web e GIS, grazie alla buona integrazione con librerie di \textit{mapping} e piattaforme di analisi spaziale \cite{geojson-spec,rfc7946}.
-
-Il cuore operativo del backend è rappresentato dall'endpoint \texttt{/data/<csv\_key>}, che gestisce il caricamento, la validazione e l'esposizione dei dati al frontend. Quando si invoca questo endpoint, il sistema esegue una serie di operazioni concatenate:
-
+Il backend gestisce i dati tramite l'endpoint \texttt{/data/<csv\_key>}, eseguendo:
 \begin{itemize}
-  \item verifica che il file esista e che l'utente abbia i permessi per accedervi;
-  \item caricamento tramite la funzione \texttt{pandas.read\_csv(..., index\_col=0)}, che consente di interpretare correttamente file con indici espliciti; \cite{pandas-readcsv}
-  \item il calcolo dell'intervallo di valori (range), necessario per una corretta visualizzazione della \textit{heatmap};
-  \item selezione e applicazione della palette di colori per la \textit{heatmap}, con un fallback automatico se il file specificato non è disponibile.
+  \item verifica dell'esistenza del file e dei permessi utente;
+  \item caricamento tramite \texttt{pandas.read\_csv(..., index\_col=0)} \cite{pandas-readcsv};
+  \item calcolo del range dei valori per la visualizzazione della heatmap;
+  \item selezione della palette di colori con fallback automatico.
 \end{itemize}
 
-Il risultato finale è un oggetto JSON già pronto per l'elaborazione da parte del frontend, senza necessità di ulteriori trasformazioni.
-
-\newpage
+Il risultato è un JSON pronto per il frontend, senza ulteriori trasformazioni.
 
 \subsection{Benefici della Struttura Piatta}
 \label{ss:why-not-geojson}
 
-La trasformazione dei dati da DataFrame a JSON viene eseguita con una singola chiamata a \texttt{to\_dict()}, una funzione ottimizzata internamente dalla libreria \textit{Pandas}. Questo metodo sfrutta ottimizzazioni tali da evitare cicli espliciti \cite{pandas-performance}. La decisione di non utilizzare GeoJSON è stata dettata da un'attenta valutazione dei compromessi; è emersa la necessità di mantenere alta la performance, ridurre la complessità del codice e facilitare lo sviluppo e il debugging. L'uso di GeoJSON avrebbe richiesto di iterare il dataset riga per riga, creare manualmente le geometrie, sviluppare una serializzazione personalizzata e includere una validazione della struttura GeoJSON. Questo avrebbe complicato il codice e aumentato i tempi di risposta.
+La conversione da DataFrame a JSON avviene tramite \texttt{to\_dict()}, sfruttando le ottimizzazioni interne di \textit{Pandas} senza cicli espliciti \cite{pandas-performance}. La scelta di non usare GeoJSON garantisce alte prestazioni, semplicità del codice e facilità di debugging, evitando iterazioni riga per riga, creazione manuale delle geometrie e serializzazioni complesse.
 
-Il formato attuale è adatto non solo per heatmap, ma anche per visualizzazioni alternative come scatter plot, grafici a bolle o rappresentazioni tridimensionali. L'assenza di un formato rigido consente inoltre una rapida sperimentazione nel frontend.
-Questo esempio mette in luce un aspetto importante dell'ingegneria del software: saper adattare le scelte tecniche al contesto, anche quando ciò significa discostarsi da soluzioni generalmente consigliate. Non si tratta di ignorare uno standard consolidato, ma di riconoscerne i limiti e valutare in modo critico la sua applicabilità. L'adozione di un formato piatto e compatto, invece del più articolato GeoJSON, è risultata in un'architettura più leggera, efficiente e perfettamente aderente agli obiettivi progettuali.
+Il formato piatto è versatile: oltre alle heatmap, supporta scatter plot, grafici a bolle e visualizzazioni 3D. La struttura libera consente rapide sperimentazioni nel frontend e riduce la complessità architetturale, producendo un sistema leggero, efficiente e conforme agli obiettivi progettuali.
 
-Nel corso dello sviluppo e dei test, il formato piatto si è rivelato estremamente utile: è immediatamente leggibile, sia nella console del browser che durante il \textit{logging} lato server. Questo ha permesso di ridurre il tempo necessario all'identificazione di problemi nei dati o nella mia implementazione.
+Durante sviluppo e test, il formato si è rivelato immediatamente leggibile in console e nel \textit{logging} server, velocizzando l'identificazione di eventuali problemi.
+
+
 
 
 \subsection{Flusso dei Dati nel Backend}

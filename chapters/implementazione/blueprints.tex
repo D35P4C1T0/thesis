@@ -1,28 +1,32 @@
 \subsection{Struttura modulare - Blueprint}
 \label{ss:blueprint}
 
-Flask è un \textit{micro‑framework}, tuttavia con la crescita dell'applicazione diventa essenziale una struttura modulare per mantenere il codice chiaro e manutenibile. 
-In tale contesto entrano in gioco i \textit{blueprint}, un meccanismo integrato di Flask che consente di suddividere progetti complessi in componenti riutilizzabili e modulari, ognuno dei quali può essere sviluppato, mantenuto e riutilizzato in modo indipendente, permettendo la facile integrazione di futuri \textit{blueprint} senza una riscrittura radicale del progetto principale. 
-I \textit{blueprint} permettono di raggruppare rotte, \textit{template} e file statici in \textit{mini}‑applicazioni all'interno della stessa istanza Flask. Essi non sono veri e propri micro‑framework, bensì \textit{insiemi di operazioni} da registrare su un'applicazione principale (anche in più occorrenze). 
-Questa metodologia offre diversi vantaggi: \cite{palets_blueprints}
+Flask è un \textit{micro‑framework}, ma con l'aumentare della complessità dell'applicazione diventa cruciale adottare una struttura modulare per mantenere il codice chiaro e manutenibile.  
+I \textit{blueprint} di Flask permettono di suddividere progetti complessi in componenti riutilizzabili, sviluppabili e mantenibili in modo indipendente, facilitando l'integrazione di nuovi moduli senza riscrivere il progetto principale.  
+Essi consentono di raggruppare rotte, \textit{template} e file statici in \textit{mini}‑applicazioni all'interno della stessa istanza Flask. Non sono micro‑framework autonomi, ma \textit{insiemi di operazioni} da registrare sull'app principale, anche più volte.
+
+I principali vantaggi dei \textit{blueprint} sono: \cite{palets_blueprints}
 
 \begin{itemize}
-  \item \emph{Modularità e incapsulamento}: ogni \textit{blueprint} contiene logica e risorse legate a una specifica funzionalità (es. visualizzazione mappa, simulazione propagazione, ecc.)
-  \item \emph{Scalabilità}: permette di crescere l'app aggiungendo moduli senza impattare il codice esistente.
-  \item \emph{Gestione centralizzata}: tutte le configurazioni e le estensioni vengono condivise, mantenendo comunque un ordine strutturale chiaro.
+  \item \emph{Modularità e incapsulamento}: ogni \textit{blueprint} racchiude logica e risorse relative a una specifica funzionalità (es. visualizzazione mappa, simulazione propagazione).
+  \item \emph{Scalabilità}: consente di estendere l'app aggiungendo moduli senza influire sul codice esistente.
+  \item \emph{Gestione centralizzata}: configurazioni e estensioni vengono condivise, pur mantenendo un'organizzazione chiara del progetto.
 \end{itemize}
+
 
 \subsubsection{Esempio di Blueprint}
 
-Un \textit{blueprint} è un'entità modulare dichiarata come illustrato nel Listing \ref{lst:flask-blueprint} (es. \texttt{'simple\_page'} importato da \texttt{'templates'}), progettata per incapsulare rotte e risorse di un componente autonomo dell'applicazione.
+Un \textit{blueprint} è un'entità modulare dichiarata come illustrato nel Listing \ref{lst:python_blueprint_registration} (es. \texttt{'simple\_page'} importato da \texttt{'templates'}), progettata per incapsulare rotte e risorse di un componente autonomo dell'applicazione.
 
 Dopo la sua definizione, il \textit{blueprint} viene registrato nell'applicazione Flask principale tramite \texttt{app.register\_blueprint()} (Listing \ref{lst:python_blueprint_registration}). Questa operazione lo integra nel contesto runtime dell'applicazione.
 
 Le rotte interne ai \textit{blueprints} sono gestite in modo relativo, prevenendo conflitti di naming con le rotte dell'applicazione principale o di altri \textit{blueprints}. Ciò significa che il percorso completo di una rotta interna dipende dal montaggio del \textit{blueprint}.
 
-\begin{listing}[!ht]
-\caption{Codice del file \texttt{simple\_page.py} che descrive un blueprint in Flask}
-\label{lst:flask-blueprint} % Il label va all'interno dell'ambiente listing o subito dopo la caption
+Questa gestione relativa permette di \say{montare} il \textit{blueprint} su un percorso \textit{radice} specifico (nell'esempio, su \texttt{/pages} tramite \texttt{url\_PREFIX}), creando un namespace URL logico. Una richiesta a \texttt{<indirizzo principale>/pages} viene quindi internamente instradata al \textit{blueprint}, consentendo un disaccoppiamento che favorisce la modularità e la riusabilità \cite{palets_blueprints}.
+
+\begin{listing}
+% \caption{Codice del file \texttt{simple\_page.py} che descrive un blueprint in Flask}
+% \label{lst:flask-blueprint} % Il label va all'interno dell'ambiente listing o subito dopo la caption
 \begin{minted}{python}
 from flask import Blueprint, render_template, abort
 from jinja2 import TemplateNotFound
@@ -36,12 +40,7 @@ def show(page):
     except TemplateNotFound:
         abort(404)
 \end{minted}
-\end{listing}
-
-Questa gestione relativa permette di \say{montare} il \textit{blueprint} su un percorso \textit{radice} specifico (nell'esempio, su \texttt{/pages} tramite \texttt{url\_PREFIX}), creando un namespace URL logico. Una richiesta a \texttt{<indirizzo principale>/pages} viene quindi internamente instradata al \textit{blueprint}, consentendo un disaccoppiamento che favorisce la modularità e la riusabilità \cite{palets_blueprints}.
-
-\begin{listing}[!ht]
-\caption{Blueprint \texttt{simple\_page} montata in /pages}
+\caption{Codice del file \texttt{simple\_page.py} che descrive un blueprint in Flask (sopra) e Blueprint \texttt{simple\_page} montata in /pages}
 \label{lst:python_blueprint_registration} % Aggiunto un nuovo label per questo secondo blocco
 \begin{minted}{python}
 from flask import Flask
@@ -54,8 +53,10 @@ app.register_blueprint(simple_page, url_PREFIX='/pages')
 
 \subsection{Integrazione del blueprint}
 
-Il seguente segmento illustra come, in un progetto terzo basato su Flask, l'integrazione di un sistema di heatmap completo possa essere realizzata con la massima semplicità ed efficienza. L'approccio enfatizza una metodologia \say{zero-configuration} per la configurazione di base, rendendola ideale sia per contesti di prototipazione rapida sia per applicazioni con requisiti standardizzati.
-Il cuore di questa integrazione risiede nella funzione \texttt{register\_heatmap()}. Come dimostrato nel codice seguente, l'invocazione di questa funzione con l'istanza dell'applicazione Flask (\texttt{app}) rappresenta l'unico passaggio programmatico richiesto per abilitare l'intera suite di funzionalità di heatmap. Questa astrazione della complessità permetterà agli sviluppatori di concentrarsi sulla logica applicativa principale del loro progetto, delegando la gestione e l'esposizione del modulo heatmap.
+Questo segmento illustra come, in un progetto Flask esterno, sia possibile integrare un sistema di heatmap completo con semplicità ed efficienza. L'approccio segue una filosofia \say{zero-configuration} per la configurazione di base, risultando adatto sia a prototipi rapidi sia ad applicazioni con requisiti standardizzati.
+
+Il fulcro dell'integrazione è la funzione \texttt{register\_heatmap()}. Come mostrato nel codice seguente, basta invocarla passando l'istanza dell'applicazione Flask (\texttt{app}) per abilitare l'intera suite di funzionalità di heatmap. Questa astrazione della complessità consente agli sviluppatori di concentrarsi sulla logica principale del progetto, mentre la gestione del modulo heatmap viene completamente delegata.
+
 
 \begin{listing}[H]
 \caption{Esempio di Integrazione Semplificata della Heatmap in un Progetto Flask}

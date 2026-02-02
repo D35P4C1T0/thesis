@@ -3,128 +3,87 @@
 
 \subsection{Libreria scelta - Deck.gl}
 
-In conclusione si è scelto di strutturare il progetto basandosi su \texttt{Deck.gl}, una libreria avanzata per la visualizzazione di dati geospaziali basata su WebGL. Un vantaggio significativo di Deck.gl è la capacità di lavorare direttamente con array di oggetti JavaScript (nel codice seguente, la variabile \texttt{data}), senza necessità di convertire i dati in formato GeoJSON. \cite{deckgl-heatmap} Il codice per la creazione di una heatmap risulta un buon esempio di tale compatibilità:
+Per il progetto si è optato per \texttt{Deck.gl}, una libreria avanzata basata su WebGL per la visualizzazione di dati geospaziali. Deck.gl consente di operare direttamente su array di oggetti JavaScript (\texttt{data}) senza necessità di conversione in GeoJSON \cite{deckgl-heatmap}.
 
-\begin{listing}[H]
-\caption{Integrazione dati flat con Deck.gl}
-\label{lst:deckgl_heatmap_layer} % Ho aggiunto un'etichetta per riferimento
-\begin{minted}{javascript}
-    const heatmapLayer = new deck.HeatmapLayer({
-      id: 'heatmap',
-      data: data,
-      getPosition: d => [d.Longitude, d.Latitude],
-      getWeight: d => d.Value
-    });
-\end{minted}
-\end{listing}
+Questa gestione semplificata dei dati mantiene l'interazione rapida e reattiva anche con dataset voluminosi, sfruttando la GPU per il rendering e garantendo fluidità con mappe complesse. Tale performance è fondamentale per l'esplorazione di dataset ad alta densità, come quelli di rumore subacqueo \cite{deckgl-heatmap}.
 
-Questa semplicità nella gestione dei dati lato frontend ha contribuito a mantenere l'interazione rapida e reattiva, anche in presenza di dataset di dimensioni non trascurabili. Inoltre, questo approccio sfrutta l'hardware GPU per il rendering di grandi quantità di dati e garantisce fluidità nell'interazione con mappe complesse. Questa performance è cruciale per garantire un'interazione reattiva quando si esplorano dataset di rumore subacqueo ad alta densità. \cite{deckgl-heatmap}
-
-Oltre al rendering puro, Deck.gl offre:
+Deck.gl offre inoltre:
 \begin{itemize}
-  \item \textbf{Layer specializzati} (tra cui \texttt{HeatmapLayer}) per visualizzazioni tematiche \cite{deckgl-docs}.
-  \item \textbf{Supporto a WebGPU} futuro, che promette prestazioni ancora migliori su hardware compatibile \cite{deckgl-roadmap}.
-  \item \textbf{Strumenti di monitoraggio} delle prestazioni e statistiche di disegno, utili in fase di sviluppo e ottimizzazione.
+  \item \textbf{Layer specializzati}, inclusi \texttt{HeatmapLayer}, per visualizzazioni tematiche \cite{deckgl-docs};
+  \item \textbf{Supporto futuro a WebGPU}, con potenziali prestazioni superiori \cite{deckgl-roadmap};
+  \item \textbf{Strumenti di monitoraggio delle prestazioni}, utili per sviluppo e ottimizzazione.
 \end{itemize}
+
 
 \subsection{Tema della UI}
 
-Per conferire all'interfaccia un aspetto leggero e contemporaneo, è stato adottato lo stile \textbf{glassmorphism}, che simula superfici di vetro smerigliato sovrapposte \cite{glassmorphism-css}. La scelta di colorazioni pacate e dalla vividezza contenuta risalta le proprietà di queste superfici; si attua un compromesso che vede l'uso di minor dettagli a favore di una maggiore leggibilità dei testi. Colori, ombre, sfocature e contrasti diventano così metodi per veicolare informazioni e concetti. 
+Per ottenere un'interfaccia visivamente leggera e moderna è stato adottato lo stile \textbf{glassmorphism}, che riproduce l'effetto di superfici di vetro smerigliato sovrapposte \cite{glassmorphism-css}. La palette cromatica sobria, unita alla riduzione dei dettagli superflui, privilegia la leggibilità del testo e la chiarezza visiva. Colori, ombre, sfocature e contrasti vengono utilizzati come strumenti funzionali di comunicazione visiva.
 
-\begin{listing}[H]
-\caption{Codice CSS per uno stile Glassmorphism}
-\label{lst:css_glassmorphism} % Ho aggiunto un'etichetta per riferimento
-\begin{minted}{css}
-    .glass {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.45);
-    }
-    
-    .glass-dark {
-            background: rgba(17, 25, 40, 0.9);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.5);
-    }
-\end{minted}
-\end{listing}
+Dal punto di vista tecnico, il design si basa su filtri CSS moderni (\texttt{backdrop-filter}), trasparenze e ombre morbide, ottenendo profondità e stratificazione senza incidere significativamente sulle prestazioni. Tale efficienza è cruciale, poiché le risorse principali devono essere riservate al rendering della mappa e dei dati. Esempi tratti dall'implementazione sono riportati in Figura~\ref{fig:glass-overview}.
 
-A livello tecnico, questo design sfrutta filtri CSS moderni (`\texttt{backdrop-filter}`) insieme a trasparenze ed ombre morbide, per ottenere un effetto di profondità e stratificazione senza appesantire le prestazioni, in quanto si vuole dedicare la maggior parte delle risorse al rendering della mappa e dei punti del dataset.
-Esempi tratti dall'implementazione effettiva sono consultabili in Figura \ref{fig:glass-overview}.
 
-\begin{figure}[ht]
+\begin{figure}[H]
     \centering
-    \begin{subfigure}{0.3\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{images/UI-glass-1.png}
-        \caption{UI Glassmorphism 1}
-        \label{fig:UI-glass-1}
-    \end{subfigure}
-    \qquad \qquad \qquad
-    \begin{subfigure}{0.3\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{images/UI-glass-2.png}
-        \caption{UI Glassmorphism 2}
-        \label{fig:UI-glass-2}
-    \end{subfigure}
-    \caption{Esempi di Interfaccia Glassmorphism}
+    % Adjust height here to make the figure shorter
+    \includegraphics[height=0.3\textheight]{images/UI-glass-1.png}%
+    \hspace{1em}%
+    \includegraphics[height=0.3\textheight]{images/UI-glass-2.png}
+    \caption{\small Esempi di interfaccia con stile Glassmorphism.}
     \label{fig:glass-overview}
 \end{figure}
 
 \subsection{Design Responsivo}
 
-Una delle priorità durante lo sviluppo è stata garantire la capacità del sito web di adattarsi in modo efficace al contenitore in cui viene visualizzato. La presenza congiunta di una mappa interattiva e di pannelli dotati di elementi di input eterogenei ha reso fondamentale la definizione di regole di \textit{layout} chiare e coerenti. 
+Durante lo sviluppo si è posto l'accento sulla capacità del sito di adattarsi efficacemente al contenitore di visualizzazione. La presenza di una mappa interattiva e di pannelli con input eterogenei ha reso essenziale definire regole di \textit{layout} chiare e coerenti.
 
-Partizionare lo spazio della finestra in modo ordinato ha permesso di mantenere un'interfaccia leggibile e utilizzabile, indipendentemente dalle dimensioni dello schermo o dal livello di zoom applicato. In altre parole, l'obiettivo è stato quello di rendere l'interazione sempre fluida e accessibile, anche in condizioni di visualizzazione non ottimali.
+Il partizionamento ordinato dello spazio ha garantito un'interfaccia leggibile e fruibile, indipendentemente dalle dimensioni dello schermo o dal livello di zoom, assicurando un'interazione fluida in tutte le condizioni.
 
-Si è ritenuto quindi naturale l'uso di librerie in grado di portare a termine questo tipo di compito; l'intero layout è perciò basato su \textit{Tailwind CSS} ed arricchito da \textit{media queries} personalizzate, che consentono di identificare le dimensioni della finestra del browser e di conseguenza:
+Per questo motivo si è scelto di basare il layout su \textit{Tailwind CSS}, integrato con \textit{media queries} personalizzate, che permettono di:
 \begin{itemize}
-  \item Ridimensionare automaticamente elementi dell'interfaccia quali griglie e container in base alla larghezza del viewport, ossia dello schermo del dispositivo utilizzato.
-  \item Adattare la disposizione dei controlli per una fruizione ottimale su schermi piccoli \cite{tailwind-responsive}.
-  \item Mantenere consistenza stilistica grazie alle \textit{utility class} predefinite \cite{tailwind-docs}.
+  \item Ridimensionare automaticamente griglie e container in base alla larghezza del viewport;
+  \item Adattare la disposizione dei controlli per una fruizione ottimale su dispositivi mobili \cite{tailwind-responsive};
+  \item Mantenere consistenza stilistica tramite le \textit{utility class} predefinite \cite{tailwind-docs}.
 \end{itemize}
 
-Questo approccio assicura un'esperienza utente uniforme, indipendentemente dal dispositivo utilizzato.
+Questo approccio garantisce un'esperienza utente uniforme su qualsiasi dispositivo.
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.86\linewidth]{images/whole-map-homepage.png}
+    \includegraphics[width=0.6\linewidth]{images/whole-map-homepage.png}
     \caption{Interfaccia Web della Heatmap}
     \label{fig:heatmap-homepage}
 \end{figure}
 
+
 \subsection{Controlli Dinamici}
 
-Per offrire un'esplorazione dei dati realmente interattiva, sono stati implementati \textit{widget} con pulsanti e slider che permettono di agire in tempo reale sulla visualizzazione (Figura \ref{fig:UI-glass-2}). Tali controlli sono in grado di variare le seguenti proprietà:
+Per un'esplorazione interattiva dei dati sono stati implementati \textit{widget} con pulsanti e slider che modificano in tempo reale la visualizzazione (Figura \ref{fig:glass-overview}). Questi controlli permettono di regolare:
 
 \begin{itemize}
-  \item \textbf{Intensità Heatmap}: permette di regolare l'opacità della heatmap, rendendola trasparente a piacere; si utilizza per poter intravedere la mappa sottostante.
-  \item \textbf{Raggio di Influenza}: Modifica la quantità di pixel su cui ogni punto influisce, variando la densità visiva delle aree.
-  \item \textbf{Soglia di Visualizzazione}: Filtra i punti con valori inferiori a una soglia predefinita, eliminando il \say{rumore} dai dati.
-  \item \textbf{Selezione Dataset}: Consente di passare istantaneamente tra più serie di dati, senza ricaricare l'intera pagina. (Figura \ref{fig:UI-glass-1})
+  \item \textbf{Intensità Heatmap}: opacità della heatmap per visualizzare la mappa sottostante;
+  \item \textbf{Raggio di Influenza}: estensione dei pixel influenzati da ogni punto, modulando la densità visiva;
+  \item \textbf{Soglia di Visualizzazione}: filtro dei punti sotto una soglia, riducendo il \say{rumore};
+  \item \textbf{Selezione Dataset}: passaggio istantaneo tra serie di dati senza ricaricare la pagina (Figura \ref{fig:glass-overview}).
 \end{itemize}
 
-Questi controlli sono collegati direttamente alle proprietà dei layer di Deck.gl, in modo da riflettere ogni modifica dell'utente senza ritardi. 
-È possibile nascondere tutti i pannelli per una migliore visualizzazione della mappa sottostante tramite un apposito pulsante.
+I controlli sono collegati ai layer di Deck.gl, garantendo aggiornamenti immediati, e possono essere nascosti per una migliore visualizzazione della mappa. Il sistema integra funzionalità pensate per ottimizzare l'interazione e l'analisi dei dati, offrendo sia una panoramica generale che analisi dettagliate con un'interfaccia intuitiva.
 
-Inoltre il sistema integra un set di funzionalità progettate per ottimizzare l'interazione utente e l'analisi dei dati visualizzati. Queste caratteristiche mirano a fornire sia una visione d'insieme che un'analisi dettagliata, mantenendo al contempo un'interfaccia utente intuitiva.
-
-\subsubsection*{Value Picker} Questa funzionalità trasforma la Heatmap in uno strumento di interrogazione precisa. Attivabile tramite un interruttore \say{Enable picker mode}, essa consente all'utente di selezionare punti specifici sulla mappa; passando con il cursore su qualsiasi punto apparirà un riquadro in cui sono indicate le coordinate geografiche (Latitudine/Longitudine) e il valore numerico esatto del punto selezionato. Tale precisione è cruciale per l'analisi puntuale dei dati. Cliccando su un punto della mappa si potranno copiare tali valori.
+\subsubsection*{Value Picker} 
+Attivabile tramite \say{Enable picker mode}, consente di selezionare punti specifici sulla mappa. Passando con il cursore su un punto appare un riquadro con coordinate geografiche (Latitudine/Longitudine) e valore numerico preciso, copiabile tramite click. Questo supporta l'analisi puntuale dei dati.
 
 \subsubsection*{Statistiche Dati}
-Questa sezione offre una panoramica sintetica e immediata del dataset in uso. L'elemento \say{Total Points}, che indica il numero totale di datapoint visualizzati, fornisce una stima della densità dei dati, mentre \say{Data Range} specifica l'intervallo dei valori presenti nel dataset (minimo e massimo), fornendo informazioni sulla scala dei fenomeni rappresentati.
+Fornisce una panoramica sintetica del dataset: \say{Total Points} indica il numero totale di datapoint, mentre \say{Data Range} mostra intervallo minimo e massimo, utile per comprendere la scala dei fenomeni.
 
-\begin{figure}
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\linewidth]{images/legenda.png}
+    \includegraphics[width=0.3\linewidth]{images/legenda.png}
     \caption{Legenda}
     \label{fig:legenda}
 \end{figure}
 
 \subsubsection*{Legenda Colori}
-Elemento interpretativo fondamentale, la Legenda Colori (in Figura \ref{fig:legenda}) facilita la comprensione del mapping tra colori e valori numerici. Caratterizzata da un \say{Gradiente dinamico}, la scala dei colori si adatta automaticamente al \say{Range valori} del dataset corrente, massimizzando la differenziazione visiva. Vi è un pulsante che permette all'utente di mostrare o nascondere la legenda per ottimizzare lo spazio o la pulizia visiva, mentre le etichette numeriche che si trovano sotto la barra colorata forniscono riferimenti chiari ai valori minimo e massimo del gradiente, essenziali per una corretta interpretazione quantitativa della Heatmap.
+Facilita l'interpretazione della heatmap tramite un \say{Gradiente dinamico} che si adatta al \say{Range valori} del dataset (Figura \ref{fig:legenda}). Un pulsante consente di mostrare o nascondere la legenda, mentre le etichette numeriche indicano i valori minimo e massimo, essenziali per l'interpretazione quantitativa.
+
 
 \subsection{Simulazione Propagazione}
 
@@ -132,10 +91,10 @@ Il sistema adotta un modello di propagazione acustica fondato sui principi fisic
 
 La propagazione viene modellata attraverso un'espansione concentrica, che considera sia la geometria dello spazio che le caratteristiche fisiche del mezzo. Il fronte d'onda si diffonde radialmente a partire dalla sorgente, mentre l'intensità del segnale è modulata in funzione della distanza, seguendo i principi dell'attenuazione geometrica e tenendo conto delle proprietà dissipative del mezzo, desunte dai valori di intensità contenuti nei dataset.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     % Primo frame
-    \begin{subfigure}{0.32\textwidth}
+    \begin{subfigure}{0.3\textwidth}
         \centering
         \includegraphics[width=\linewidth]{images/propagation-1.png}
         \caption{Momento iniziale} % Didascalia specifica
@@ -143,7 +102,7 @@ La propagazione viene modellata attraverso un'espansione concentrica, che consid
     \end{subfigure}
     \hfill % Spazio flessibile
     % Secondo frame
-    \begin{subfigure}{0.32\textwidth}
+    \begin{subfigure}{0.3\textwidth}
         \centering
         \includegraphics[width=\linewidth]{images/propagation-2.png}
         \caption{Propagazione intermedia} % Didascalia specifica
@@ -151,7 +110,7 @@ La propagazione viene modellata attraverso un'espansione concentrica, che consid
     \end{subfigure}
     \hfill % Spazio flessibile
     % Terzo frame
-    \begin{subfigure}{0.32\textwidth}
+    \begin{subfigure}{0.3\textwidth}
         \centering
         \includegraphics[width=\linewidth]{images/propagation-3.png}
         \caption{Propagazione avanzata} % Didascalia specifica

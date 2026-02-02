@@ -23,6 +23,21 @@
 % load xcolor before pdfx to avoid errors
 \usepackage{xcolor}
 
+% minimal TOC
+\usepackage{tocloft}
+\renewcommand{\cftaftertoctitle}{\vspace{-1em}}
+\setlength{\cftbeforechapskip}{0pt}
+\setlength{\cftbeforesecskip}{0pt}
+\setlength{\cftbeforetoctitleskip}{-1em}
+\setlength{\cftaftertoctitleskip}{0.5em}
+\setlength{\cftparskip}{0pt}
+\setlength{\cftpartnumwidth}{1.5em}
+\setlength{\cftsecindent}{0pt}
+\setlength{\cftsecnumwidth}{1.5em}
+\renewcommand{\cftsecfont}{\small}
+\renewcommand{\cftsubsecfont}{\footnotesize}
+\renewcommand{\cftdotsep}{1}
+
 % PDF/A
 \usepackage[a-1b]{pdfx}
 % Image
@@ -83,17 +98,17 @@
 \usemintedstyle{manni}
 
 \setminted{
-    linenos=true,               % Mostra i numeri di riga
-    breaklines=true,            % Abilita il wrapping delle righe lunghe
-    autogobble=true,            % Rimuove l'indentazione comune
-    frame=lines,                % Aggiunge una cornice attorno al codice
-    framesep=2mm,               % Spaziatura tra la cornice e il codice
-    % frameround=B,               % Angoli arrotondati (opzionale)
-    fontsize=\small,            % Dimensione del font per il codice
-    fontseries=tt,              % Tipo di font (monospace)
-    obeytabs=true,              % Rispetta i tab
-    tabsize=4,                  % Dimensione dei tab
+    linenos=true,
+    breaklines=true,
+    autogobble=true,
+    frame=lines,
+    framesep=2mm,
+    fontsize=\footnotesize,  % <-- smaller than \small
+    % fontseries=tt,
+    obeytabs=true,
+    tabsize=4,
 }
+
 
 % \usepackage{parskip}
 % \setlength{\parskip}{3pt plus1pt minus1pt}
@@ -143,11 +158,21 @@
 
   \endgroup
 
-  % Bibliography
-  \addcontentsline{toc}{chapter}{Bibliography}
-  % Alphabetical order of authors
+% Bibliography
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{Bibliography}
+
+\begingroup
+  \footnotesize                        % shrink font
+  \setlength{\parskip}{0pt}     % no extra space between items
+  \setlength{\itemsep}{4pt}     % compact list items
+  \renewcommand{\baselinestretch}{0.65}\normalsize % tighten line spacing
+  
   \bibliographystyle{plain}
   \bibliography{bibliography.bib}
+\endgroup
+
 
   % Attachments
   % \titleformat{\chapter} {\normalfont\Huge\bfseries}{Appendix \thechapter}{1em}{}

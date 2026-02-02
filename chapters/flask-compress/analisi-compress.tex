@@ -1,116 +1,121 @@
 \section{Possibili ottimizzazioni lato Back-End}
 \label{ch:flask-compress-test}
 
-\subsection{Flask Compress}
-La compressione dei dati trasmessi via rete è una tecnica fondamentale per migliorare le prestazioni delle applicazioni web, riducendo la latenza e il consumo di banda. Nel contesto di applicazioni sviluppate con il framework Flask, grazie all'utilizzo dell'estensione \texttt{Flask-Compress} si è in grado di abilitare la compressione (tipicamente \textit{gzip, deflate} o \textit{brotli}) delle risposte HTTP. Questo capitolo presenta un programma di test e uno script di supporto per valutare concretamente l'efficacia di \texttt{Flask-Compress} su diversi tipi di dati.
-Per confrontare le prestazioni con e senza compressione e comprendere quanto beneficio possa portare questa estensione, è stata sviluppata una semplice applicazione Flask con due endpoint distinti: uno che serve dati senza alcuna compressione applicata da \texttt{Flask-Compress} e uno che serve gli stessi dati permettendo a \texttt{Flask-Compress} di intervenire.
+\subsection{Flask-Compress}
 
-Il codice Python per l'applicazione è il seguente:
+La compressione dei dati trasmessi via rete è una tecnica essenziale per ottimizzare le prestazioni delle applicazioni web, riducendo latenza e consumo di banda. Nel contesto di Flask, l'estensione \texttt{Flask-Compress} consente di abilitare automaticamente la compressione delle risposte HTTP (tipicamente \textit{gzip}, \textit{deflate} o \textit{brotli}). 
 
-\begin{longlisting}
-\caption{Codice dell'applicazione Flask per il test di compressione}
-\label{lst:flask_compression_app} % Ho aggiunto un'etichetta utile per riferimenti
-\begin{minted}{python}
-from flask import Flask, jsonify, make_response
-from flask_compress import Compress
-import random
-import string
-import json
-import os
+Per valutarne l'efficacia, è stata sviluppata un'applicazione di test con due endpoint distinti: il primo invia i dati senza compressione, il secondo li serve sfruttando \texttt{Flask-Compress}. Tale confronto consente di misurare concretamente il miglioramento ottenuto in termini di riduzione del payload e tempi di trasferimento.
 
-app = Flask(__name__)
-# Inizializza Flask-Compress
-# Di default, Flask-Compress comprimera' le risposte per text/html,
-# text/css, text/xml, application/json, application/javascript, ecc.
-# e solo per richieste che includono 'gzip' nell'header Accept-Encoding.
-compress = Compress()
-compress.init_app(app)
 
-def generate_large_text(size_mb=1):
-    """Genera una stringa grande di caratteri casuali."""
-    chars = string.ascii_letters + string.digits + string.punctuation + ' '
-    # Calcola il numero di caratteri necessario per la dimensione desiderata
-    num_chars = size_mb * 1024 * 1024
-    # Genera la stringa in blocchi per evitare un uso eccessivo di memoria
-    text_chunks = [''.join(random.choice(chars) for _ in range(1024 * 10))] * (num_chars // (1024 * 10))
-    remaining_chars = num_chars % (1024 * 10)
-    if remaining_chars > 0:
-        text_chunks.append(''.join(random.choice(chars) for _ in range(remaining_chars)))
-    return ''.join(text_chunks)
+Link codice: \url{https://gitlab.com/matteogirardi/thesis-code-attachments/-/blob/main/TestCompressione.py?ref_type=heads}
 
-def generate_compressible_json(num_entries=10000):
-    """Genera un oggetto JSON con dati ripetitivi."""
-    data = {
-        "description": "Questo e' un oggetto JSON di test con dati ripetitivi per dimostrare l'efficacia della compressione.",
-        "entries": []
-    }
-    for i in range(num_entries):
-        data["entries"].append({
-            "id": i,
-            "name": f"Item {i % 100}", # Nomi ripetitivi
-            "category": f"Category {(i % 5) + 1}", # Categorie ripetitive
-            "value": random.uniform(0, 1000),
-            "timestamp": "2000-01-24T04:40:00Z" # Timestamp ripetitivo
-        })
-    return data
+% Il codice Python per l'applicazione è il seguente:
 
-def generate_less_compressible_data():
-    """Genera dati meno comprimibili (es. byte casuali)."""
-    # Nota: Flask-Compress si rivolge principalmente a tipi testuali.
-    # Questo serve maggiormente a dimostrare che non comprimera' efficacemente dati non testuali.
-    return os.urandom(1024 * 1024) # 1MB di byte casuali
+% \begin{longlisting}
+% \caption{Codice dell'applicazione Flask per il test di compressione}
+% \label{lst:flask_compression_app} % Ho aggiunto un'etichetta utile per riferimenti
+% \begin{minted}{python}
+% from flask import Flask, jsonify, make_response
+% from flask_compress import Compress
+% import random
+% import string
+% import json
+% import os
 
-# --- Route Flask ---
+% app = Flask(__name__)
+% # Inizializza Flask-Compress
+% # Di default, Flask-Compress comprimera' le risposte per text/html,
+% # text/css, text/xml, application/json, application/javascript, ecc.
+% # e solo per richieste che includono 'gzip' nell'header Accept-Encoding.
+% compress = Compress()
+% compress.init_app(app)
 
-@app.route('/uncompressed')
-def uncompressed_data():
-    """Serve dati senza Flask-Compress."""
-    print("Serving uncompressed data...")
-    large_text = generate_large_text(size_mb=2) # 2MB di testo
-    compressible_json = generate_compressible_json(num_entries=20000) # Piu' voci
-    less_compressible = generate_less_compressible_data() # 1MB byte casuali (saranno codificati in base64 nel JSON)
+% def generate_large_text(size_mb=1):
+%     """Genera una stringa grande di caratteri casuali."""
+%     chars = string.ascii_letters + string.digits + string.punctuation + ' '
+%     # Calcola il numero di caratteri necessario per la dimensione desiderata
+%     num_chars = size_mb * 1024 * 1024
+%     # Genera la stringa in blocchi per evitare un uso eccessivo di memoria
+%     text_chunks = [''.join(random.choice(chars) for _ in range(1024 * 10))] * (num_chars // (1024 * 10))
+%     remaining_chars = num_chars % (1024 * 10)
+%     if remaining_chars > 0:
+%         text_chunks.append(''.join(random.choice(chars) for _ in range(remaining_chars)))
+%     return ''.join(text_chunks)
 
-    response_data = {
-        "type": "uncompressed",
-        "large_text": large_text,
-        "compressible_json_part": compressible_json,
-        "less_compressible_part": less_compressible.hex()
-    }
+% def generate_compressible_json(num_entries=10000):
+%     """Genera un oggetto JSON con dati ripetitivi."""
+%     data = {
+%         "description": "Questo e' un oggetto JSON di test con dati ripetitivi per dimostrare l'efficacia della compressione.",
+%         "entries": []
+%     }
+%     for i in range(num_entries):
+%         data["entries"].append({
+%             "id": i,
+%             "name": f"Item {i % 100}", # Nomi ripetitivi
+%             "category": f"Category {(i % 5) + 1}", # Categorie ripetitive
+%             "value": random.uniform(0, 1000),
+%             "timestamp": "2000-01-24T04:40:00Z" # Timestamp ripetitivo
+%         })
+%     return data
 
-    # Crea manualmente la risposta per assicurarsi che Flask-Compress non interferisca
-    response = make_response(jsonify(response_data))
-    response.headers['Content-Type'] = 'application/json'
-    # Sono rimossi esplicitamente eventuali header di compressione per sicurezza
-    if 'Content-Encoding' in response.headers:
-        del response.headers['Content-Encoding']
-    print("Uncompressed data served.")
-    return response
+% def generate_less_compressible_data():
+%     """Genera dati meno comprimibili (es. byte casuali)."""
+%     # Nota: Flask-Compress si rivolge principalmente a tipi testuali.
+%     # Questo serve maggiormente a dimostrare che non comprimera' efficacemente dati non testuali.
+%     return os.urandom(1024 * 1024) # 1MB di byte casuali
 
-@app.route('/compressed')
-def compressed_data():
-    """Serve gli stessi dati, Flask-Compress gestira' la compressione."""
-    print("Serving compressed data...")
-    large_text = generate_large_text(size_mb=2) # 2MB di testo
-    compressible_json = generate_compressible_json(num_entries=20000) # Piu' voci
-    less_compressible = generate_less_compressible_data() # 1MB byte casuali
+% # --- Route Flask ---
 
-    response_data = {
-        "type": "compressed",
-        "large_text": large_text,
-        "compressible_json_part": compressible_json,
-        # Includi dati meno comprimibili (saranno codificati in base64 nel JSON)
-        "less_compressible_part": less_compressible.hex()
-    }
+% @app.route('/uncompressed')
+% def uncompressed_data():
+%     """Serve dati senza Flask-Compress."""
+%     print("Serving uncompressed data...")
+%     large_text = generate_large_text(size_mb=2) # 2MB di testo
+%     compressible_json = generate_compressible_json(num_entries=20000) # Piu' voci
+%     less_compressible = generate_less_compressible_data() # 1MB byte casuali (saranno codificati in base64 nel JSON)
 
-    # Flask-Compress applichera' automaticamente la compressione se il client la supporta
-    response = jsonify(response_data)
-    print("Compressed data served.")
-    return response
+%     response_data = {
+%         "type": "uncompressed",
+%         "large_text": large_text,
+%         "compressible_json_part": compressible_json,
+%         "less_compressible_part": less_compressible.hex()
+%     }
+
+%     # Crea manualmente la risposta per assicurarsi che Flask-Compress non interferisca
+%     response = make_response(jsonify(response_data))
+%     response.headers['Content-Type'] = 'application/json'
+%     # Sono rimossi esplicitamente eventuali header di compressione per sicurezza
+%     if 'Content-Encoding' in response.headers:
+%         del response.headers['Content-Encoding']
+%     print("Uncompressed data served.")
+%     return response
+
+% @app.route('/compressed')
+% def compressed_data():
+%     """Serve gli stessi dati, Flask-Compress gestira' la compressione."""
+%     print("Serving compressed data...")
+%     large_text = generate_large_text(size_mb=2) # 2MB di testo
+%     compressible_json = generate_compressible_json(num_entries=20000) # Piu' voci
+%     less_compressible = generate_less_compressible_data() # 1MB byte casuali
+
+%     response_data = {
+%         "type": "compressed",
+%         "large_text": large_text,
+%         "compressible_json_part": compressible_json,
+%         # Includi dati meno comprimibili (saranno codificati in base64 nel JSON)
+%         "less_compressible_part": less_compressible.hex()
+%     }
+
+%     # Flask-Compress applichera' automaticamente la compressione se il client la supporta
+%     response = jsonify(response_data)
+%     print("Compressed data served.")
+%     return response
     
-if __name__ == '__main__':
-    app.run(debug=True, port=5000)
-\end{minted}
-\end{longlisting}
+% if __name__ == '__main__':
+%     app.run(debug=True, port=5000)
+% \end{minted}
+% \end{longlisting}
 
 
 Questo script definisce due \textit{route}:
@@ -123,107 +128,105 @@ I dati generati includono una grande stringa di testo e un oggetto JSON con dati
 \subsection{Script Bash per il Confronto}
 Per automatizzare il processo di chiamata agli endpoint e avere un'iniziale visualizzazione testuale del confronto delle dimensioni, è stato utilizzato uno script Bash. Questo script utilizza i comandi Linux \texttt{curl} per scaricare i contenuti dai due endpoint e \texttt{stat} per ottenere le dimensioni dei file risultanti. Ciò mette a disposizione un rapido strumento per comprendere l'efficacia di \texttt{Flask-Compress}.
 
-Il codice dello script Bash è il seguente:
+Link codice: \url{https://gitlab.com/matteogirardi/thesis-code-attachments/-/blob/main/BashConfrontoEndpoint.sh?ref_type=heads}
 
-\begin{longlisting}
-\caption{Script Bash per confrontare gli endpoint}
-\label{lst:bash_compare_endpoints}
-\begin{minted}{bash}
-#!/bin/bash
+% Il codice dello script Bash è il seguente:
 
-# Indirizzo base della tua applicazione Flask
-FLASK_APP_URL="http://127.0.0.1:5000"
+% \begin{longlisting}
+% \caption{Script Bash per confrontare gli endpoint}
+% \label{lst:bash_compare_endpoints}
+% \begin{minted}{bash}
+% #!/bin/bash
 
-# Nomi dei file di output temporanei
-UNCOMPRESSED_FILE="uncompressed_output.json"
-COMPRESSED_FILE="compressed_output.json"
+% # Indirizzo base della tua applicazione Flask
+% FLASK_APP_URL="http://127.0.0.1:5000"
 
-echo "Test di confronto tra endpoint con e senza compressione..."
-echo "-------------------------------------------------------"
+% # Nomi dei file di output temporanei
+% UNCOMPRESSED_FILE="uncompressed_output.json"
+% COMPRESSED_FILE="compressed_output.json"
 
-# 1. Chiama l'endpoint non compresso e salva l'output
-echo "Chiamata all'endpoint non compresso: ${FLASK_APP_URL}/uncompressed"
-# Usiamo -s per la modalita' silenziosa (non mostra la barra di progresso)
-# Usiamo -o per specificare il file di output
-curl -s -o "$UNCOMPRESSED_FILE" "${FLASK_APP_URL}/uncompressed"
+% echo "Test di confronto tra endpoint con e senza compressione..."
+% echo "-------------------------------------------------------"
 
-# Controlla se la chiamata e' andata a buon bene
-if [ $? -eq 0 ]; then
-    echo "Output non compresso salvato in $UNCOMPRESSED_FILE"
-else
-    echo "ERRORE: Impossibile recuperare l'output non compresso."
-    exit 1
-fi
+% # 1. Chiama l'endpoint non compresso e salva l'output
+% echo "Chiamata all'endpoint non compresso: ${FLASK_APP_URL}/uncompressed"
+% # Usiamo -s per la modalita' silenziosa (non mostra la barra di progresso)
+% # Usiamo -o per specificare il file di output
+% curl -s -o "$UNCOMPRESSED_FILE" "${FLASK_APP_URL}/uncompressed"
 
-echo "-------------------------------------------------------"
+% # Controlla se la chiamata e' andata a buon bene
+% if [ $? -eq 0 ]; then
+%     echo "Output non compresso salvato in $UNCOMPRESSED_FILE"
+% else
+%     echo "ERRORE: Impossibile recuperare l'output non compresso."
+%     exit 1
+% fi
 
-# 2. Chiama l'endpoint compresso (richiedendo gzip) e salva l'output
-echo "Chiamata all'endpoint compresso: ${FLASK_APP_URL}/compressed (richiedendo gzip)"
-# Usiamo -H per aggiungere l'header Accept-Encoding: gzip
-curl -s -H "Accept-Encoding: gzip" -o "$COMPRESSED_FILE" "${FLASK_APP_URL}/compressed"
+% echo "-------------------------------------------------------"
 
-# Controlla se la chiamata e' andata a buon bene
-if [ $? -eq 0 ]; then
-    echo "Output compresso salvato in $COMPRESSED_FILE"
-else
-    echo "ERRORE: Impossibile recuperare l'output compresso."
-    # Pulisci il file non compresso se esiste
-    [ -f "$UNCOMPRESSED_FILE" ] && rm "$UNCOMPRESSED_FILE"
-    exit 1
-fi
+% # 2. Chiama l'endpoint compresso (richiedendo gzip) e salva l'output
+% echo "Chiamata all'endpoint compresso: ${FLASK_APP_URL}/compressed (richiedendo gzip)"
+% # Usiamo -H per aggiungere l'header Accept-Encoding: gzip
+% curl -s -H "Accept-Encoding: gzip" -o "$COMPRESSED_FILE" "${FLASK_APP_URL}/compressed"
 
-echo "-------------------------------------------------------"
+% # Controlla se la chiamata e' andata a buon bene
+% if [ $? -eq 0 ]; then
+%     echo "Output compresso salvato in $COMPRESSED_FILE"
+% else
+%     echo "ERRORE: Impossibile recuperare l'output compresso."
+%     # Pulisci il file non compresso se esiste
+%     [ -f "$UNCOMPRESSED_FILE" ] && rm "$UNCOMPRESSED_FILE"
+%     exit 1
+% fi
 
-# 3. Confronta le dimensioni dei file
-echo "Confronto delle dimensioni dei file:"
+% echo "-------------------------------------------------------"
 
-# Usiamo 'stat -c %s' per ottenere la dimensione in byte (Linux)
-SIZE_UNCOMPRESSED=$(stat -c %s "$UNCOMPRESSED_FILE")
-SIZE_COMPRESSED=$(stat -c %s "$COMPRESSED_FILE")
+% # 3. Confronta le dimensioni dei file
+% echo "Confronto delle dimensioni dei file:"
 
-echo "Dimensione non compressa: ${SIZE_UNCOMPRESSED} byte"
-echo "Dimensione compressa:      ${SIZE_COMPRESSED} byte"
+% # Usiamo 'stat -c %s' per ottenere la dimensione in byte (Linux)
+% SIZE_UNCOMPRESSED=$(stat -c %s "$UNCOMPRESSED_FILE")
+% SIZE_COMPRESSED=$(stat -c %s "$COMPRESSED_FILE")
 
-# Calcola la percentuale di riduzione
-if [ "$SIZE_UNCOMPRESSED" -gt 0 ]; then
-    # Utilizza bc per calcoli in virgola mobile
-    REDUCTION_BYTES=$((SIZE_UNCOMPRESSED - SIZE_COMPRESSED))
-    REDUCTION_PERCENT=$(echo "scale=2; ($REDUCTION_BYTES * 100) / $SIZE_UNCOMPRESSED" | bc)
-    echo "Riduzione dimensione:    ${REDUCTION_BYTES} byte (${REDUCTION_PERCENT}%)"
-else
-    echo "Impossibile calcolare la riduzione percentuale (dimensione non compressa e' 0)."
-fi
+% echo "Dimensione non compressa: ${SIZE_UNCOMPRESSED} byte"
+% echo "Dimensione compressa:      ${SIZE_COMPRESSED} byte"
 
-exit 0
-\end{minted}
-\end{longlisting}
+% # Calcola la percentuale di riduzione
+% if [ "$SIZE_UNCOMPRESSED" -gt 0 ]; then
+%     # Utilizza bc per calcoli in virgola mobile
+%     REDUCTION_BYTES=$((SIZE_UNCOMPRESSED - SIZE_COMPRESSED))
+%     REDUCTION_PERCENT=$(echo "scale=2; ($REDUCTION_BYTES * 100) / $SIZE_UNCOMPRESSED" | bc)
+%     echo "Riduzione dimensione:    ${REDUCTION_BYTES} byte (${REDUCTION_PERCENT}%)"
+% else
+%     echo "Impossibile calcolare la riduzione percentuale (dimensione non compressa e' 0)."
+% fi
+
+% exit 0
+% \end{minted}
+% \end{longlisting}
 
 \subsection{Interpretazione dei Risultati}
 
-Per valutare l'efficacia di \texttt{Flask-Compress} in modo grafico, si è raccolta una serie di rilevazioni utilizzando lo script Bash precedentemente descritto. Per ribadire il suo comportamento, registra per ciascun file scaricato:
+Per valutare l'efficacia di \texttt{Flask-Compress}, sono state raccolte misurazioni tramite lo script Bash descritto, registrando per ciascun file:
 
 \begin{itemize}
-  \item la dimensione in byte del payload non compresso;
-  \item la dimensione in byte del payload compresso;
-  \item il calcolo della riduzione assoluta (in byte) e percentuale.
+  \item dimensione in byte non compressa;
+  \item dimensione in byte compressa;
+  \item riduzione assoluta e percentuale.
 \end{itemize}
 
-I risultati sono stati poi raccolti in un file CSV e sintetizzati nel grafico a barre raggruppate in \autoref{fig:compression_grouped}. 
+I dati sono stati sintetizzati in un file CSV e rappresentati nel grafico a barre raggruppate (\autoref{fig:compression_grouped}). Le barre blu indicano la dimensione originale, quelle rosse la dimensione compressa. 
 
-In tale grafico si è voluto mettere a confronto, test dopo test, quanto spazio occupano i dati prima e dopo l'applicazione di \texttt{Flask-Compress}. Sull'asse orizzontale sono riportate in ordine cronologico e di dimensione tutte le prove effettuate: dalla più piccola \say{Testo 10 KB} fino al più corposo \say{Binario 10 MB}, passando per le varie voci JSON e i file binari. Le barre blu rappresentano la dimensione originale dei dati in byte, mentre le barre rosse mostrano la dimensione risultante dopo la compressione.  
+Dall'analisi emerge che la compressione migliora progressivamente con file testuali e JSON più voluminosi, mentre i file binari mostrano una riduzione costante, indipendente dalla dimensione. La rappresentazione a barre affiancate facilita la lettura immediata delle differenze.
 
-A una prima analisi, per i file di testo e per i JSON, la riduzione diventa progressivamente più marcata all'aumentare del volume: le differenze tra le barre blu e rosse si accentuano con il passaggio dai \textit{kilobyte} ai \textit{megabyte}, indicando che l'efficacia di \texttt{Flask-Compress} scala efficientemente con dataset di maggiori dimensioni. Al contrario, i file binari mostrano una percentuale di riduzione costante, indipendentemente dalla loro dimensione: questo suggerisce che, per dati già in formato compresso o con scarsa ridondanza, il guadagno rimane stabile. Tale disposizione dei dati in gruppi affiancati facilita l'analisi visiva immediata: è sufficiente un'occhiata per capire dove la compressione agisce in modo più intenso e dove, invece, il margine di miglioramento è limitato.
-
-Andando più nello specifico, vi sono ulteriori tendenze:
+Tendenze specifiche:
 
 \begin{enumerate}
-    \item \textbf{Dati di testo plain} – Per i file contrassegnati come \say{Testo} (da 10 \textit{kiloBytes} a 20 \textit{megaBytes}), la compressione mostra un guadagno progressivo: più il file è grande, più spazio viene risparmiato. Questo riflette la natura ridondante del testo, che \textit{Gzip} sa ottimizzare molto bene.
-  
-  \item \textbf{JSON strutturato} – Anche per i JSON con centinaia di voci la riduzione rimane elevata (tra l'87 \% e il 90 \%), grazie alla ripetitività dei nomi di campo e dei separatori. Si nota che, superate le 10 000 voci, la percentuale si stabilizza intorno al 90 \%, segno di un'efficacia consistente su strutture dati complesse ma regolari, come appunto i \textit{datapoints} mostrati sulla mappa.
-  
-  \item \textbf{File binari} – I file etichettati \say{Binario} evidenziano una riduzione costante di circa il 43 \% indipendentemente dalla dimensione. Questo indica che, su dati già compatti o con bassa ridondanza, \textit{Gzip} riesce a cavarsela decentemente ma non può emettere salti di compressione a livello di testo.
+    \item \textbf{Dati di testo plain}: guadagno progressivo con l'aumentare della dimensione, grazie alla ridondanza intrinseca del testo.
+    \item \textbf{JSON strutturato}: riduzione elevata (87–90\%) stabile oltre 10 000 voci, dovuta alla ripetitività dei campi e dei separatori.
+    \item \textbf{File binari}: riduzione costante circa 43\%, indicativa della minore ridondanza dei dati.
 \end{enumerate}
 
-Nel complesso, l'analisi dei dati raccolti conferma che \texttt{Flask-Compress} riduce in modo significativo il volume dei dati trasmessi dalla nostra applicazione, specialmente sui contenuti testuali e JSON. Questa riduzione si traduce in un minor utilizzo di banda e in tempi di caricamento più rapidi per l'utente finale, migliorando l'esperienza complessiva senza richiedere modifiche invasive al codice di generazione dei dati.
+Complessivamente, \texttt{Flask-Compress} diminuisce significativamente il volume dei dati trasmessi, riducendo l'utilizzo di banda e i tempi di caricamento senza modifiche invasive al codice.
 
 \input{chapters/flask-compress/grafico-compress}

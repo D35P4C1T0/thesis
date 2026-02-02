@@ -2,40 +2,42 @@
 
 Uno dei componenti centrali del sistema è la classe \texttt{HeatmapConfig}, che funge da interfaccia tra l'utente e le configurazioni interne del backend. Questo oggetto è in grado di accettare diverse forme di input: si può passare un singolo file CSV, una lista di file, oppure addirittura un dizionario con nomi personalizzati. Il merito di questa flessibilità è del metodo interno \texttt{\_process\_csv\_files()}, che normalizza i dati contenenti informazioni da disporre sulla mappa in una struttura facilmente gestibile dal resto dell'applicazione.
 
-\begin{listing}[H]
-\caption{Costruttore della classe \texttt{HeatmapConfig}}
-\label{lst:heatmap_config}
-\begin{minted}{python}
-class HeatmapConfig:
-    def __init__(self, kwargs):
-        # Load global configuration defaults first
-        global_defaults = self._load_global_defaults()
+Link codice: \url{https://gitlab.com/matteogirardi/thesis-code-attachments/-/blob/main/HeatmapConfigClass.py?ref_type=heads}
+
+% \begin{listing}[H]
+% \caption{Costruttore della classe \texttt{HeatmapConfig}}
+% \label{lst:heatmap_config}
+% \begin{minted}{python}
+% class HeatmapConfig:
+%     def __init__(self, kwargs):
+%         # Load global configuration defaults first
+%         global_defaults = self._load_global_defaults()
         
-        # CSV file configuration - supports both single file and multiple files
-        self.INPUT_CSV_FILE = kwargs.get('INPUT_CSV_FILE', global_defaults.get('INPUT_CSV_FILE', 'data/data.csv'))
-        self.CSV_FILES = kwargs.get('CSV_FILES', None)  # New: dict of {name: filepath} or list of filepaths
-        self.DEFAULT_CSV = kwargs.get('DEFAULT_CSV', None)  # Which CSV to show by default
+%         # CSV file configuration - supports both single file and multiple files
+%         self.INPUT_CSV_FILE = kwargs.get('INPUT_CSV_FILE', global_defaults.get('INPUT_CSV_FILE', 'data/data.csv'))
+%         self.CSV_FILES = kwargs.get('CSV_FILES', None)  # New: dict of {name: filepath} or list of filepaths
+%         self.DEFAULT_CSV = kwargs.get('DEFAULT_CSV', None)  # Which CSV to show by default
         
-        # Folder configuration
-        self.STATIC_FOLDER = kwargs.get('STATIC_FOLDER', global_defaults.get('STATIC_FOLDER', 'static'))
-        self.TEMPLATE_FOLDER = kwargs.get('TEMPLATE_FOLDER', global_defaults.get('TEMPLATE_FOLDER', 'templates'))
-        self.COLORS_DIR = kwargs.get('COLORS_DIR', 'colors')
+%         # Folder configuration
+%         self.STATIC_FOLDER = kwargs.get('STATIC_FOLDER', global_defaults.get('STATIC_FOLDER', 'static'))
+%         self.TEMPLATE_FOLDER = kwargs.get('TEMPLATE_FOLDER', global_defaults.get('TEMPLATE_FOLDER', 'templates'))
+%         self.COLORS_DIR = kwargs.get('COLORS_DIR', 'colors')
         
-        # Data configuration
-        self.REQUIRED_COLUMNS = kwargs.get('REQUIRED_COLUMNS', global_defaults.get('REQUIRED_COLUMNS', ['Latitude', 'Longitude', 'Value']))
-        self.DEFAULT_MAP_OPACITY = kwargs.get('DEFAULT_MAP_OPACITY', global_defaults.get('DEFAULT_MAP_OPACITY', 0.75))
-        self.INITIAL_HEATMAP_RADIUS = kwargs.get('INITIAL_HEATMAP_RADIUS', global_defaults.get('INITIAL_HEATMAP_RADIUS', 40))
-        self.INITIAL_HEATMAP_INTENSITY = kwargs.get('INITIAL_HEATMAP_INTENSITY', global_defaults.get('INITIAL_HEATMAP_INTENSITY', 1.5))
-        self.INITIAL_HEATMAP_THRESHOLD = kwargs.get('INITIAL_HEATMAP_THRESHOLD', global_defaults.get('INITIAL_HEATMAP_THRESHOLD', 0.00))
+%         # Data configuration
+%         self.REQUIRED_COLUMNS = kwargs.get('REQUIRED_COLUMNS', global_defaults.get('REQUIRED_COLUMNS', ['Latitude', 'Longitude', 'Value']))
+%         self.DEFAULT_MAP_OPACITY = kwargs.get('DEFAULT_MAP_OPACITY', global_defaults.get('DEFAULT_MAP_OPACITY', 0.75))
+%         self.INITIAL_HEATMAP_RADIUS = kwargs.get('INITIAL_HEATMAP_RADIUS', global_defaults.get('INITIAL_HEATMAP_RADIUS', 40))
+%         self.INITIAL_HEATMAP_INTENSITY = kwargs.get('INITIAL_HEATMAP_INTENSITY', global_defaults.get('INITIAL_HEATMAP_INTENSITY', 1.5))
+%         self.INITIAL_HEATMAP_THRESHOLD = kwargs.get('INITIAL_HEATMAP_THRESHOLD', global_defaults.get('INITIAL_HEATMAP_THRESHOLD', 0.00))
         
-        # Blueprint configuration (these are blueprint-specific, no global defaults)
-        self.URL_PREFIX = kwargs.get('URL_PREFIX', '/heatmap')
-        self.BLUEPRINT_NAME = kwargs.get('BLUEPRINT_NAME', 'heatmap')
+%         # Blueprint configuration (these are blueprint-specific, no global defaults)
+%         self.URL_PREFIX = kwargs.get('URL_PREFIX', '/heatmap')
+%         self.BLUEPRINT_NAME = kwargs.get('BLUEPRINT_NAME', 'heatmap')
         
-        # Process CSV files configuration
-        self._process_csv_files()
-\end{minted}
-\end{listing}
+%         # Process CSV files configuration
+%         self._process_csv_files()
+% \end{minted}
+% \end{listing}
 
 È possibile scegliere come inizializzare la mappa: se con parametri di default, tramite file di configurazione o tramite parametri passati a \textit{runtime}. La priorità di ogni metodo è differente; abbiamo in ordine decrescente di priorità:
 
@@ -93,9 +95,10 @@ Fornire un dizionario simile durante l'inizializzazione di \texttt{HeatmapConfig
 
 \subsubsection{Configurazione tramite file \texttt{config.json}}
 
-Il file \texttt{config.json} costituisce il cuore della configurazione del sistema per la generazione della heatmap: funge da centro di controllo centralizzato, consentendo di modificare in modo semplice e rapido il comportamento dell'applicazione senza necessità di intervenire sul codice Python. Questa soluzione rispecchia il principio di separazione delle responsabilità, fondamentale nell'ingegneria del software.
+Il file \texttt{config.json} costituisce il centro di configurazione del sistema per la generazione della heatmap, permettendo di modificare rapidamente il comportamento dell'applicazione senza intervenire sul codice Python e rispettando il principio di separazione delle responsabilità.
 
-Utilizzare un file \texttt{config.json} facilita la gestione dei parametri in modo autonomo e modulare, consentendo di passare da un ambiente all'altro (sviluppo, produzione, test) modificando semplicemente il file di configurazione. Un simile approccio migliora la flessibilità, la portabilità e la leggibilità delle impostazioni, senza richiedere modifiche al codice sorgente \cite{understanding-config-json,config-files-types}.
+Questo approccio modulare facilita la gestione dei parametri tra diversi ambienti (sviluppo, test, produzione), aumentando flessibilità, portabilità e leggibilità delle impostazioni \cite{understanding-config-json,config-files-types}.
+
 
 Di seguito viene mostrata la struttura del file \texttt{config.json}:
 

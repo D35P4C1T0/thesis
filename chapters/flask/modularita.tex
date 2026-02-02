@@ -1,36 +1,12 @@
 \section{Modularità e Riusabilità}
 
-L'idea di fondo dell'intero progetto è quella di creare un sistema riusabile e facilmente integrabile in altri progetti. A questo scopo, la funzione \texttt{register\_heatmap()}, già apparsa nel frammento di codice nel Listing \ref{lst:csv_reading_serialization}, offre un'interfaccia semplificata che permette di integrare il progetto in una qualsiasi applicazione Flask già esistente, senza dover modificare nulla a livello di struttura.
+L'idea di fondo dell'intero progetto è quella di creare un sistema riusabile e facilmente integrabile in altri progetti. A questo scopo, la funzione \texttt{register\_heatmap()}, già apparsa nel frammento di codice nel Listing \ref{lst:register_hm}, offre un'interfaccia semplificata che permette di integrare il progetto in una qualsiasi applicazione Flask già esistente, senza dover modificare nulla a livello di struttura.
 
 Ogni \textit{blueprint} mantiene il proprio namespace isolato, evitando conflitti tra percorsi API e risorse statiche. Questa separazione si è dimostrata particolarmente utile nella fase di integrazione di questo modulo con un'applicazione già esistente, poiché non è stato necessario modificare le rotte precedenti.
 
 \subsection{Architettura e Funzionamento}
 
-La versatilità di \texttt{register\_heatmap()} si manifesta attraverso diversi livelli di integrazione.
-Seguono esempi di utilizzi di tale funzione per definire una o più istanze di una mappa.
-
-\begin{listing}[H]
-\caption{Definizione della funzione \texttt{register\_heatmap()}}
-\label{lst:register_heatmap_def}
-\begin{minted}{python}
-def register_heatmap(app, **config_kwargs):
-    """
-    Simple function to register heatmap blueprint with a Flask app.
-    
-    Args:
-        app: Flask application instance
-        **config_kwargs: Configuration options for HeatmapConfig
-    
-    Returns:
-        The registered blueprint instance
-    """
-    blueprint = create_heatmap_blueprint(config_kwargs)
-    app.register_blueprint(blueprint)
-    return blueprint
-\end{minted}
-\end{listing}
-
-All'interno di \texttt{register\_heatmap()} viene chiamata la funzione \texttt{create\_heatmap\_blueprint()} (riga 12); tale funzione accetta una configurazione (\texttt{HeatmapConfig} o \texttt{dict}) e restituisce un \textit{blueprint} Flask configurato per la visualizzazione di heatmap.
+La versatilità di \texttt{register\_heatmap()} si manifesta attraverso diversi livelli di integrazione. All'interno di \texttt{register\_heatmap()} viene chiamata la funzione \texttt{create\_heatmap\_blueprint()}; tale funzione accetta una configurazione (\texttt{HeatmapConfig} o \texttt{dict}) e restituisce un \textit{blueprint} Flask configurato per la visualizzazione di heatmap.
 
 Al suo interno viene creato un oggetto \texttt{Blueprint}:
 
@@ -51,33 +27,28 @@ Al suo interno viene creato un oggetto \texttt{Blueprint}:
 Nello stesso file vengono dichiarate le rotte del blueprint. Seguono degli esempi di rotte dichiarate tramite decoratore \texttt{'@'}. Nella rotta \say{\texttt{/data}} si fa uso di diverse funzionalità offerte da Flask: per una stessa funzione \texttt{get\_data()} vengono definite due rotte (\texttt{/data} e \texttt{/data/<csv\_key>}), semplificando il codice e rendendolo più leggibile. In aggiunta, il parametro opzionale \texttt{<csv\_key>} viene estratto dall'URI in maniera elegante e minimale (riga 6) e viene passato al corpo della funzione \texttt{get\_data()}.
 
 \begin{minted}{python}
-    @bp.route('/')                              # rotta principale
-    def index():
-        return render_template('map.html', config=config)
-        
-    @bp.route('/data')                          # rotta "/data"
-    @bp.route('/data/<csv_key>')
-    def get_data(csv_key=None):
-        # Usa un CSV di default se non specificato
-        # Carica il file CSV corrispondente
-        # Estrae le colonne richieste e le converte in JSON
-        # Calcola il range dei valori per la heatmap
-        # Carica la palette colori
-        # Restituisce un oggetto JSON con i dati pronti per la visualizzazione
-
+@bp.route('/')              # Pagina principale che carica la mappa
+def index():
+    return render_template('map.html', config=config)
+    
+@bp.route('/data')          # Endpoint per fornire i dati
+@bp.route('/data/<csv_key>')
+def get_data(csv_key=None):
+    # Carica il CSV richiesto (o uno predefinito)
+    # Estrae e converte i dati in JSON
+    # Calcola il range dei valori e seleziona la palette colori
+    # Restituisce i dati pronti per la heatmap
 \end{minted}
 \end{listing}
 
 Il termine URI sta per \textit{Uniform Resource Identifier}. È una stringa di caratteri che identifica in modo univoco una risorsa su una rete (in questo caso, il web).
 Quando parliamo di URI in Flask, ci riferiamo principalmente al percorso (path) della risorsa all'interno dell'URL. 
-
 Ad esempio, in \texttt{https://website.com/blog/post/123}, il percorso \texttt{/blog/post/123} è l'URI che identifica quella specifica risorsa (il post numero 123 del blog).
 La sua convenienza risiede nella capacità di gestire più varianti di un percorso con una singola funzione (handler), permettendo di ottenere dati sia generali che specifici con la stessa logica di base.
 
-\subsubsection{Integrazione Immediata (Zero Configuration)}
 Il fulcro di questa semplicità è la funzione \texttt{register\_heatmap()}. Con una singola linea di codice, come mostrato nel Listing \ref{lst:zero_config_integration}, l'intera suite di funzionalità Heatmap viene iniettata nell'applicazione Flask. Questo approccio riduce drasticamente lo sforzo di setup, eliminando la necessità di configurare manualmente rotte, endpoint API o la gestione dei file di dati. Lo sviluppatore può così concentrarsi sulla logica principale dell'applicazione, delegando la complessità della Heatmap a un'unica chiamata.
 
-\begin{listing}[H]
+\begin{listing}
 \caption{Integrazione immediata con \texttt{register\_heatmap()}}
 \label{lst:zero_config_integration}
 \begin{minted}{python}
@@ -101,41 +72,41 @@ register_heatmap(app, csv_file='data/my_data.csv')
 \subsection{Flessibilità di Configurazione}
 Mentre la funzionalità \say{Zero Configuration} di \texttt{register\_heatmap()} consente un'integrazione immediata, il vero punto di forza di questo sistema risiede nella sua flessibilità di configurazione. La funzione \texttt{register\_heatmap()} non si limita a fornire un'integrazione base, ma offre una personalizzazione completa attraverso un set esaustivo di parametri di configurazione. 
 Questo permette agli sviluppatori di esercitare un controllo granulare su ogni aspetto della visualizzazione della Heatmap e della sua interazione con i dati. 
-
-
 Tutto ciò viene raggiunto mantenendo la semplicità intrinseca di Flask. I parametri di configurazione sono passati direttamente come argomenti alla funzione \texttt{register\_heatmap()}, offrendo un'alternativa a file di configurazione esterni o al ricorrere a \textit{dependency injection}.
 
-\begin{listing}[H]
-\caption{Parametri di personalizzazione completa per la heatmap}
-\label{lst:full_customization_params}
-\begin{minted}{python}
-register_heatmap(
-    app,
-    # === DATA CONFIGURATION ===
-    CSV_FILES={
-        'Survey Alpha': 'data/alpha.csv',
-        'Survey Beta': 'data/beta.csv'
-    },
-    DEFAULT_CSV='Survey Alpha',
+Link codice: \url{https://gitlab.com/matteogirardi/thesis-code-attachments/-/blob/main/HeatmapParameters.py?ref_type=heads}
+
+% \begin{listing}[H]
+% \caption{Parametri di personalizzazione completa per la heatmap}
+% \label{lst:full_customization_params}
+% \begin{minted}{python}
+% register_heatmap(
+%     app,
+%     # === DATA CONFIGURATION ===
+%     CSV_FILES={
+%         'Survey Alpha': 'data/alpha.csv',
+%         'Survey Beta': 'data/beta.csv'
+%     },
+%     DEFAULT_CSV='Survey Alpha',
     
-    # === VISUAL CONFIGURATION ===
-    HEATMAP_RADIUS=25,          # Raggio dei punti heatmap
-    HEATMAP_INTENSITY=1.5,      # Intensità visiva
-    HEATMAP_THRESHOLD=0.05,     # Soglia di visualizzazione
-    HEATMAP_OPACITY=0.8,        # Opacità overlay
-    COLOR_SCALE='viridis',      # Schema colori
+%     # === VISUAL CONFIGURATION ===
+%     HEATMAP_RADIUS=25,          # Raggio dei punti heatmap
+%     HEATMAP_INTENSITY=1.5,      # Intensità visiva
+%     HEATMAP_THRESHOLD=0.05,     # Soglia di visualizzazione
+%     HEATMAP_OPACITY=0.8,        # Opacità overlay
+%     COLOR_SCALE='viridis',      # Schema colori
     
-    # === MAP CONFIGURATION ===
-    MAP_CENTER_LAT=42.3601,     # Centro mappa iniziale
-    MAP_CENTER_LON=-71.0589,
-    MAP_ZOOM=8,                 # Zoom iniziale
+%     # === MAP CONFIGURATION ===
+%     MAP_CENTER_LAT=42.3601,     # Centro mappa iniziale
+%     MAP_CENTER_LON=-71.0589,
+%     MAP_ZOOM=8,                 # Zoom iniziale
     
-    # === UI CONFIGURATION ===
-    TITLE='My Custom Heatmap',  # Titolo interfaccia
+%     # === UI CONFIGURATION ===
+%     TITLE='My Custom Heatmap',  # Titolo interfaccia
     
-    # === BLUEPRINT CONFIGURATION ===
-    url_prefix='/my-heatmap',   # URL base
-    blueprint_name='my_heatmap' # Nome interno blueprint
-)
-\end{minted}
-\end{listing}
+%     # === BLUEPRINT CONFIGURATION ===
+%     url_prefix='/my-heatmap',   # URL base
+%     blueprint_name='my_heatmap' # Nome interno blueprint
+% )
+% \end{minted}
+% \end{listing}

@@ -2,29 +2,25 @@
 \label{ch:folium}
 
 \subsection{Facilità d'integrazione e documentazione}  
-Folium è una libreria Python che semplifica la creazione di mappe interattive basate su Leaflet direttamente da notebook e applicazioni web \cite{folium-doc}.
-La documentazione ufficiale comprende un User Guide con esempi passo‑passo e un'\textit{API Reference} dettagliata, entrambi disponibili sul sito del progetto \cite{folium-userguide}.  
-Il \textit{repository} GitHub ospita codice, issue e un elenco di plugin e pacchetti correlati (\textit{xyzservices}, streamlit‑folium) che estendono le funzionalità di base \cite{folium-github,folium-pypistats}.  
-Online è facile reperire delle guide pratiche per integrare Folium in workflow di \textit{data science} basati, per esempio, su Jupyter Notebook \cite{folium-tutorial,folium-realpython}.
+Folium è una libreria Python che crea mappe interattive basate su Leaflet da notebook e applicazioni web \cite{folium-doc}.  
+La documentazione include User Guide con esempi passo‑passo e API Reference \cite{folium-userguide}, mentre il repository GitHub ospita codice, issue e plugin correlati (\textit{xyzservices}, \textit{streamlit-folium}) \cite{folium-github,folium-pypistats}.  
+Sono disponibili guide pratiche per integrare Folium in workflow di data science basati su Jupyter Notebook \cite{folium-tutorial,folium-realpython}.  
 
 \subsection{Performance e fluidità dell'interazione}  
-Di default Folium rende le feature come oggetti JavaScript nel DOM di Leaflet: ciò è efficiente per qualche migliaio di marker, ma può diventare lento con dataset superiori a 10.000 punti, come evidenziato da una discussione su StackOverflow riguardo al MarkerCluster, dove, per dataset molto voluminosi, viene consigliato di preprocessare i dati in vector tiles o di applicare tecniche di clustering lato server \cite{folium-cluster-issue}.  
-
-Sono disponibili diversi plugin come \textit{MarkerCluster} e \textit{FastMarkerCluster}, mirati a migliorare l'esperienza utente con il crescere della dimensione del dataset \cite{folium-cluster-issue,folium-pypistats}.  
-Il numero di download settimanali (più di 500.000) testimonia la diffusione di Folium e la necessità di \textit{best practice} per gestire prestazioni e scalabilità.
+Le feature vengono renderizzate come oggetti JavaScript nel DOM di Leaflet, efficienti fino a qualche migliaio di marker.  
+Per dataset >10.000 punti si consiglia clustering lato client/server o l'uso di vector tiles \cite{folium-cluster-issue}.  
+Plugin come \textit{MarkerCluster} e \textit{FastMarkerCluster} migliorano le prestazioni con dataset voluminosi \cite{folium-cluster-issue,folium-pypistats}.  
 
 \subsection{Supporto a dati vettoriali e raster}  
-Folium supporta nativamente diversi tipi di layer vettoriali (GeoJSON, Choropleth, HeatMap) e mette a disposizione \textit{convenience class} per aggiungere popup e tooltip dinamici.  
-Il supporto a raster avviene tramite classi come \texttt{TileLayer}, \texttt{WmsTileLayer} e \texttt{ImageOverlay}, permettendo di utilizzare \textit{basemap} OpenStreetMap, mappe satellitari e overlay di immagini o video georeferenziati.  
-Per esigenze avanzate di overlay raster in Jupyter, utilizzando \textit{Rasterio} è possibile integrare singole bande \textit{tiff} in mappe interattive. \cite{folium-raster,folium-tutorial, folium-doc}
+Folium supporta layer vettoriali (GeoJSON, Choropleth, HeatMap) con popup e tooltip dinamici.  
+Raster sono gestiti tramite \texttt{TileLayer}, \texttt{WmsTileLayer} e \texttt{ImageOverlay}, permettendo basemap OSM, mappe satellitari e overlay di immagini georeferenziate.  
+Con \textit{Rasterio} è possibile integrare singole bande TIFF in mappe interattive \cite{folium-raster,folium-tutorial,folium-doc}.  
 
 \subsection{Licenza e costi d'uso}  
-Folium è rilasciato sotto licenza MIT, liberamente utilizzabile, modificabile e ridistribuibile anche in contesti commerciali senza alcun costo di licenza.  
-La gestione delle dipendenze e dei plugin avviene via PyPI, con aggiornamenti regolari e un ciclo di rilascio che segue le versioni di Leaflet sottostanti \cite{folium-lic,folium-pypi}.
+Folium è rilasciato sotto licenza MIT, utilizzabile, modificabile e ridistribuibile anche commercialmente.  
+Dipendenze e plugin sono gestiti via PyPI, con aggiornamenti regolari in linea con le versioni di Leaflet \cite{folium-lic,folium-pypi}.  
 
 \subsection{Compatibilità con altri strumenti e framework}  
-Folium si integra con Jupyter Notebook e JupyterLab, generando mappe HTML \say{\textit{embeddate}} direttamente nelle celle del notebook.  
-Esistono \textit{binding} pacchetti per far girare mappe Folium in applicazioni Streamlit (\texttt{streamlit-folium}) e wrapper per framework frontend come React, sebbene in questi casi si usino spesso \textit{iframe} o comunicazione via REST \cite{folium-github,folium-react}.  
-L'ecosistema di plugin ospita esempi per l'uso con GeoPandas, Pandas e altri pacchetti di data science, facilitando l'integrazione in pipeline di elaborazione geospaziale \cite{folium-doc,folium-userguide}.
-
-\newpage
+Si integra con Jupyter Notebook e JupyterLab generando mappe HTML \say{embeddate}.  
+Esistono wrapper per Streamlit (\texttt{streamlit-folium}) e React, spesso tramite \textit{iframe} o REST \cite{folium-github,folium-react}.  
+Plugin supportano l'uso con GeoPandas, Pandas e altre librerie di data science \cite{folium-doc,folium-userguide}.  
