@@ -37,14 +37,15 @@ class HeatmapConfig:
 \end{minted}
 \end{listing}
 
-È possibile scegliere come inizializzare la mappa: se con parametri di default, tramite file di configurazione o tramite parametri passati a \textit{runtime}. La priorità di ogni metodo è differente; abbiamo in ordine decrescente di priorità:
+È possibile scegliere come inizializzare la mappa: se con parametri di default, tramite file di configurazione o tramite parametri passati a \textit{runtime}. La priorità di ogni metodo è differente; abbiamo in ordine decrescente:
 
 \begin{enumerate}
     \item Parametri passati a \texttt{register\_heatmap()}
     \item File di configurazione config.json globale
     \item Valori di default generici (failsafe)
 \end{enumerate}
-Nella pratica, questo significa che il sistema può essere utilizzato ed eseguito affidandosi a parametri di default senza una conoscenza profonda del progetto, sia tramite una configurazione granulare dei parametri iniziali. Personalmente, ho trovato molto comodo poter passare da una modalità all'altra senza dover modificare il codice, ma intervenendo unicamente sul file \texttt{config.json}.
+
+\noindent Nella pratica, questo significa che il sistema può essere utilizzato ed eseguito affidandosi a parametri di default, senza una conoscenza profonda del progetto, sia tramite una configurazione granulare dei parametri iniziali. È quindi possibile passare da una modalità all'altra senza modificare il codice, intervenendo unicamente sul file \texttt{config.json}. La struttura di tale JSON è mostrata nel Listing \ref{lst:config_json}.
 
 \begin{listing}[H]
 \caption{Metodi per inizializzare la mappa}
@@ -63,7 +64,7 @@ register_heatmap(
 \end{minted}
 \end{listing}
 
-L'adozione di questa configurazione gerarchica comporta diversi benefici \cite{dependency-injection-wiki}:
+\noindent L'adozione di questa configurazione gerarchica comporta diversi benefici \cite{dependency-injection-wiki}:
 
 \begin{itemize}
   \item \textbf{Modularità}: le dipendenze sono isolate dal codice, facilitando la sostituzione dei componenti.
@@ -71,7 +72,7 @@ L'adozione di questa configurazione gerarchica comporta diversi benefici \cite{d
   \item \textbf{Scalabilità}: nuovi dataset o formati possono essere integrati senza cambiare la logica esistente.
 \end{itemize}
 
-L'architettura adottata garantisce un sistema robusto, estremamente flessibile e facilmente mantenibile, adatto sia a configurazioni base sia a scenari complessi e personalizzati.
+\noindent L'architettura adottata garantisce un sistema robusto, estremamente flessibile e facilmente mantenibile, adatto sia a configurazioni base sia a scenari complessi e personalizzati.
 
 \subsubsection{Gestione Multi-Dataset}
 Il sistema prevede anche la gestione simultanea di più dataset CSV. Diversi formati di input (stringa singola, lista, dizionario) vengono normalizzati in una struttura uniforme.
@@ -116,18 +117,18 @@ Di seguito viene mostrata la struttura del file \texttt{config.json}:
 \end{minted}
 \end{listing}
 
-Il file contiene sezioni ben definite che influiscono su aspetti fondamentali del sistema:
+\noindent Il file contiene sezioni ben definite che influenzano aspetti fondamentali del sistema:
 
 \paragraph{Configurazioni dei dati}  
 \begin{itemize}
-  \item \texttt{INPUT\_CSV\_FILE}: percorso del file CSV principale. Permette di cambiare dataset senza riconfigurare o ricompilare il sistema.
+  \item \texttt{INPUT\_CSV\_FILE}: percorso del file CSV principale. Permette di cambiare dataset senza modificare il codice sorgente.
   \item \texttt{REQUIRED\_COLUMNS}: array con i nomi delle colonne obbligatorie. Viene eseguita una validazione automatica e consente di adattare velocemente l'ingestione dei dati a formati CSV differenti.
 \end{itemize}
 
 \paragraph{Configurazioni dell'interfaccia}  
 \begin{itemize}
   \item \texttt{STATIC\_FOLDER}: specifica la cartella contenente risorse statiche (CSS, JS, immagini), rendendo più semplice l'integrazione con strutture front-end preesistenti.
-  \item \texttt{FRONTEND\_TEMPLATE}: nome del file HTML principale, per definire facilmente interfacce personalizzate senza intervenire sul codice Python.
+  \item \texttt{FRONTEND\_TEMPLATE}: è il nome del file HTML principale, per definire facilmente interfacce personalizzate senza intervenire sul codice Python.
 \end{itemize}
 
 \paragraph{Configurazioni di visualizzazione}  

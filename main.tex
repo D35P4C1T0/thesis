@@ -17,11 +17,34 @@
 \setcounter{tocdepth}{3}
 % Letter
 \usepackage[utf8]{inputenc}
-% Language
+% Language, sillabazione a capo in italiano
+\usepackage[T1]{fontenc}
 \usepackage[italian]{babel}
+
+% regola la sillabazione a capo
+\hyphenpenalty=1000
+\exhyphenpenalty=1000
+\pretolerance=2000
+\tolerance=3000
+
 
 % load xcolor before pdfx to avoid errors
 \usepackage{xcolor}
+
+% minimal TOC
+\usepackage{tocloft}
+\renewcommand{\cftaftertoctitle}{\vspace{-2em}}
+% \setlength{\cftbeforechapskip}{0pt}
+% \setlength{\cftbeforesecskip}{0pt}
+% \setlength{\cftbeforetoctitleskip}{-1em}
+% \setlength{\cftaftertoctitleskip}{0.5em}
+% \setlength{\cftparskip}{0pt}
+% \setlength{\cftpartnumwidth}{1.5em}
+% \setlength{\cftsecindent}{0pt}
+% \setlength{\cftsecnumwidth}{1.5em}
+% \renewcommand{\cftsecfont}{\small}
+% \renewcommand{\cftsubsecfont}{\footnotesize}
+% \renewcommand{\cftdotsep}{1}
 
 % PDF/A
 \usepackage[a-1b]{pdfx}
@@ -31,10 +54,17 @@
 \usepackage{stackengine}
 \usepackage{etoolbox}
 \BeforeBeginEnvironment{wrapfigure}{\setlength{\intextsep}{0pt}}
+
 % Hyperlink
-\usepackage{xurl}
-\usepackage[pdfa]{hyperref}
-\hypersetup{breaklinks=true}
+\usepackage{xurl} % improves URL line breaks
+
+\hypersetup{
+  hidelinks
+}
+
+
+% \hypersetup{breaklinks=false}
+
 % List
 \usepackage{enumitem}
 
@@ -90,7 +120,7 @@
     framesep=2mm,               % Spaziatura tra la cornice e il codice
     % frameround=B,               % Angoli arrotondati (opzionale)
     fontsize=\small,            % Dimensione del font per il codice
-    fontseries=tt,              % Tipo di font (monospace)
+    % fontseries=tt,              % Tipo di font (monospace)
     obeytabs=true,              % Rispetta i tab
     tabsize=4,                  % Dimensione dei tab
 }

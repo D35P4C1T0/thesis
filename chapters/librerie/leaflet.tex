@@ -6,7 +6,7 @@ Leaflet fornisce una guida introduttiva, esempi interattivi e un'API reference c
 La curva di apprendimento è bassa grazie a metodi semplici come \texttt{L.map()}, \texttt{L.tileLayer()} e \texttt{L.marker()}, e la comunità mantiene un ampio catalogo di plugin per estendere ogni funzionalità, dal \textit{clustering} dei marker all'integrazione con dataset GeoJSON complessi \cite{react-leaflet}.
 
 \subsection{Performance e fluidità dell'interazione}  
-Di default Leaflet usa SVG e elementi DOM per il rendering, garantendo ottime performance fino a 5.000–10.000 feature\cite{supercluster}.  
+Di default Leaflet usa SVG e elementi DOM per il rendering, garantendo ottime performance fino a 5.000–10.000 feature \cite{supercluster}.  
 Per dataset più voluminosi, plugin come \texttt{Supercluster} permettono di raggruppare i punti via \textit{clustering} su struttura R‑tree e riducono drasticamente i marker renderizzati\cite{supercluster}.  
 In alternativa, estensioni WebGL come \texttt{leafgl} sfruttano la GPU per mantenere un'interattività fluida anche con decine di migliaia di feature\cite{leafgl}.  
 
@@ -24,9 +24,9 @@ Il supporto ai \emph{vector tiles} non è nativo, ma può essere aggiunto tramit
 
 \subsection{Licenza e costi d'uso}  
 Leaflet è rilasciato sotto licenza BSD2‑Clause (Simplified) e BSD3‑Clause, entrambe estremamente permissive e compatibili con progetti commerciali senza obblighi di royalty.
-Non esistono canoni d'uso; per chi desidera supporto professionale, sono disponibili piani di consulenza e SLA a pagamento offerti da terze parti. \cite{leaflet-doc, leaflet-license}
+Non esistono canoni d'uso; tuttavia, per chi desidera supporto professionale, sono disponibili piani di consulenza e SLA a pagamento offerti da terze parti. \cite{leaflet-doc, leaflet-license}
 
 \subsection{Compatibilità con altri strumenti e framework}  
-Viene concepita inizialmente come libreria JavaScript; per React esiste \texttt{ReactLeaflet}, una raccolta di componenti che incapsulano mappe Leaflet in JSX e ne semplificano l'uso all'interno di applicazioni React. \cite{react-leaflet}
+Viene concepita inizialmente come libreria JavaScript; per React esiste \texttt{react-leaflet}, una raccolta di componenti che incapsulano mappe Leaflet in JSX e ne semplificano l'uso all'interno di applicazioni React. \cite{react-leaflet}
 
 \newpage

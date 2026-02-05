@@ -147,7 +147,7 @@ echo "Chiamata all'endpoint non compresso: ${FLASK_APP_URL}/uncompressed"
 # Usiamo -o per specificare il file di output
 curl -s -o "$UNCOMPRESSED_FILE" "${FLASK_APP_URL}/uncompressed"
 
-# Controlla se la chiamata e' andata a buon bene
+# Controlla se la chiamata e' andata a buon fine
 if [ $? -eq 0 ]; then
     echo "Output non compresso salvato in $UNCOMPRESSED_FILE"
 else
@@ -162,7 +162,7 @@ echo "Chiamata all'endpoint compresso: ${FLASK_APP_URL}/compressed (richiedendo 
 # Usiamo -H per aggiungere l'header Accept-Encoding: gzip
 curl -s -H "Accept-Encoding: gzip" -o "$COMPRESSED_FILE" "${FLASK_APP_URL}/compressed"
 
-# Controlla se la chiamata e' andata a buon bene
+# Controlla se la chiamata e' andata a buon fine
 if [ $? -eq 0 ]; then
     echo "Output compresso salvato in $COMPRESSED_FILE"
 else
@@ -208,22 +208,22 @@ Per valutare l'efficacia di \texttt{Flask-Compress} in modo grafico, si è racco
   \item il calcolo della riduzione assoluta (in byte) e percentuale.
 \end{itemize}
 
-I risultati sono stati poi raccolti in un file CSV e sintetizzati nel grafico a barre raggruppate in \autoref{fig:compression_grouped}. 
+\noindent I risultati sono stati poi raccolti in un file CSV e sintetizzati nel grafico a barre raggruppate in \autoref{fig:compression_grouped}, in cui si è voluto mettere a confronto, test dopo test, quanto spazio occupassero i dati prima e dopo l'applicazione di \texttt{Flask-Compress}. 
 
-In tale grafico si è voluto mettere a confronto, test dopo test, quanto spazio occupano i dati prima e dopo l'applicazione di \texttt{Flask-Compress}. Sull'asse orizzontale sono riportate in ordine cronologico e di dimensione tutte le prove effettuate: dalla più piccola \say{Testo 10 KB} fino al più corposo \say{Binario 10 MB}, passando per le varie voci JSON e i file binari. Le barre blu rappresentano la dimensione originale dei dati in byte, mentre le barre rosse mostrano la dimensione risultante dopo la compressione.  
+Sull'asse orizzontale sono riportate, in ordine cronologico e di dimensione, tutte le prove effettuate: dalla più piccola, \say{Testo 10 KB} fino al più corposo, \say{Binario 10 MB}, passando per le varie voci JSON e i file binari. Le barre blu rappresentano la dimensione originale dei dati in byte, mentre le barre rosse mostrano la dimensione risultante dopo la compressione.  
 
-A una prima analisi, per i file di testo e per i JSON, la riduzione diventa progressivamente più marcata all'aumentare del volume: le differenze tra le barre blu e rosse si accentuano con il passaggio dai \textit{kilobyte} ai \textit{megabyte}, indicando che l'efficacia di \texttt{Flask-Compress} scala efficientemente con dataset di maggiori dimensioni. Al contrario, i file binari mostrano una percentuale di riduzione costante, indipendentemente dalla loro dimensione: questo suggerisce che, per dati già in formato compresso o con scarsa ridondanza, il guadagno rimane stabile. Tale disposizione dei dati in gruppi affiancati facilita l'analisi visiva immediata: è sufficiente un'occhiata per capire dove la compressione agisce in modo più intenso e dove, invece, il margine di miglioramento è limitato.
+A una prima analisi, per i file di testo e per i JSON, la riduzione diventa progressivamente più marcata all'aumentare del volume: le differenze tra le barre blu e rosse si accentuano con il passaggio dai \textit{kilobyte} ai \textit{megabyte}, indicando che l'efficacia di \texttt{Flask-Compress} scala efficientemente con dataset di dimensioni maggiori. Al contrario, i file binari mostrano una percentuale di riduzione costante, indipendentemente dalla loro dimensione: questo suggerisce che, per dati già in formato compresso o con scarsa ridondanza, il guadagno rimane stabile. Tale disposizione dei dati in gruppi affiancati facilita l'analisi visiva immediata: è sufficiente un'occhiata per capire dove la compressione agisce in modo più intenso e dove, invece, il margine di miglioramento è limitato.
 
 Andando più nello specifico, vi sono ulteriori tendenze:
 
 \begin{enumerate}
-    \item \textbf{Dati di testo plain} – Per i file contrassegnati come \say{Testo} (da 10 \textit{kiloBytes} a 20 \textit{megaBytes}), la compressione mostra un guadagno progressivo: più il file è grande, più spazio viene risparmiato. Questo riflette la natura ridondante del testo, che \textit{Gzip} sa ottimizzare molto bene.
+    \item \textbf{Dati di testo plain} – Per i file contrassegnati come \say{Testo} (da 10 \textit{kilobytes} a 20 \textit{megabytes}), la compressione mostra un guadagno progressivo: più il file è grande, più spazio viene risparmiato. Questo riflette la natura ridondante del testo, che \textit{Gzip} sa ottimizzare molto bene.
   
   \item \textbf{JSON strutturato} – Anche per i JSON con centinaia di voci la riduzione rimane elevata (tra l'87 \% e il 90 \%), grazie alla ripetitività dei nomi di campo e dei separatori. Si nota che, superate le 10 000 voci, la percentuale si stabilizza intorno al 90 \%, segno di un'efficacia consistente su strutture dati complesse ma regolari, come appunto i \textit{datapoints} mostrati sulla mappa.
   
   \item \textbf{File binari} – I file etichettati \say{Binario} evidenziano una riduzione costante di circa il 43 \% indipendentemente dalla dimensione. Questo indica che, su dati già compatti o con bassa ridondanza, \textit{Gzip} riesce a cavarsela decentemente ma non può emettere salti di compressione a livello di testo.
 \end{enumerate}
 
-Nel complesso, l'analisi dei dati raccolti conferma che \texttt{Flask-Compress} riduce in modo significativo il volume dei dati trasmessi dalla nostra applicazione, specialmente sui contenuti testuali e JSON. Questa riduzione si traduce in un minor utilizzo di banda e in tempi di caricamento più rapidi per l'utente finale, migliorando l'esperienza complessiva senza richiedere modifiche invasive al codice di generazione dei dati.
+\noindent Nel complesso, l'analisi dei dati raccolti conferma che \texttt{Flask-Compress} riduce in modo significativo il volume dei dati trasmessi dalla nostra applicazione, specialmente sui contenuti testuali e JSON. Questa riduzione si traduce in un minor utilizzo di banda e in tempi di caricamento più rapidi per l'utente finale, migliorando l'esperienza complessiva senza richiedere modifiche invasive al codice di generazione dei dati.
 
 \input{chapters/flask-compress/grafico-compress}

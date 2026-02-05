@@ -13,7 +13,7 @@ L'obiettivo del modello è stimare come il rumore emesso da un \textit{\textit{a
     \begin{itemize}
       \item batimetria e morfologia del fondale;
       \item rotte navali che possono influenzare la diffusione;
-      \item profili di velocità del suono (\textit{sound speed profiles});
+      \item profili di velocità del suono;
       \item ostacoli naturali come coste e isole.
     \end{itemize}
   \item \textbf{Calcolo dei livelli di rumore} lungo ogni linea radiale, in \(\mathrm{dB_{SPL}}\). Questa unità di misura rappresenta il livello di pressione sonora. È una misura logaritmica della pressione acustica relativa a un valore di riferimento, usato per quantificare l'intensità del suono. \cite{db-spl-definition}
@@ -22,7 +22,7 @@ L'obiettivo del modello è stimare come il rumore emesso da un \textit{\textit{a
 
 \subsection{Output generati}
 
-Il modello produce un file contenente coordinate GPS, livelli di pressione sonora e informazioni ambientali. In particolare, i dati presenti sono i seguenti:
+Il modello produce un file testuale, contenente coordinate GPS, livelli di pressione sonora e informazioni ambientali. In particolare, i dati presenti sono i seguenti:
 
 \begin{itemize}
   \item coordinate GPS dei punti campionati;
@@ -31,45 +31,44 @@ Il modello produce un file contenente coordinate GPS, livelli di pressione sonor
   \item etichette di settore per ogni punto.
 \end{itemize}
 
-Questi dati possono essere elaborati ulteriormente con il fine di visualizzare i dati contenuti sotto forma di rappresentazioni grafiche significative. Il contributo al progetto si è focalizzato su quest'ultimo aspetto, ossia rappresentare decine di migliaia di \textit{datapoints} su una mappa digitale, permettendo un'interazione dinamica. Si veda un esempio di rappresentazione grafica in Figura \ref{fig:preview-heatmap}.
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.75\linewidth]{images/heatmap.png}
-    \caption{Visualizzazione dei dati generati su mappa (HeatMap)}
-    \label{fig:preview-heatmap}
-\end{figure}
-
-Una breve anteprima dei dati testuali generati:
-
-\begin{table}[ht]
+\begin{table}[H]
 \centering
-\label{tab:data}
+\label{tab:airgunModelOutput}
+\caption{Breve estratto dei dati generati dal modello}
 \begin{tabular}{
-    S[table-format=2.15]
+    S[table-format=2.5]
     S[table-format=-2.1]
-    S[table-format=2.15]
+    S[table-format=2.5]
     S[table-format=4.0]
-    S[table-format=4.15]
-    S[table-format=1.1]
+    S[table-format=4.2]
+    S[table-format=1.0]
 }
 \toprule
 {Latitude} & {Longitude} & {Value} & {Bathy1} & {Bathy2} & {Sector} \\
 \midrule
-37.25897980148502 & -59.3 & 88.04606789424417 & 1003 & 5163.03076171875  & 0.0 \\
-37.24995686563234 & -59.3 & 88.04978137920247 & 2007 & 5167.09033203125  & 0.0 \\
-37.24093392977967 & -59.3 & 88.05349035487939 & 3011 & 5166.5244140625   & 0.0 \\
-37.231910993927   & -59.3 & 88.05719509329765 & 4015 & 5166.5576171875   & 0.0 \\
-37.22288805807432 & -59.3 & 88.06089653237328 & 5019 & 5166.21142578125  & 0.0 \\
-37.21386512222165 & -59.3 & 88.06459277272671 & 6022 & 5161.037109375    & 0.0 \\
-37.20484218636896 & -59.3 & 88.06828474014407 & 7026 & 5158.3720703125   & 0.0 \\
+37.25898 & -59.3 & 88.04607 & 1003 & 5163.03 & 0 \\
+37.24996 & -59.3 & 88.04978 & 2007 & 5167.09 & 0 \\
+37.24093 & -59.3 & 88.05349 & 3011 & 5166.52 & 0 \\
+37.23191 & -59.3 & 88.05720 & 4015 & 5166.56 & 0 \\
+37.22289 & -59.3 & 88.06090 & 5019 & 5166.21 & 0 \\
+37.21387 & -59.3 & 88.06459 & 6022 & 5161.04 & 0 \\
+37.20484 & -59.3 & 88.06828 & 7026 & 5158.37 & 0 \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\noindent Questi dati possono essere elaborati ulteriormente al fine di visualizzare i dati contenuti sotto forma di rappresentazioni grafiche significative. Il contributo al progetto si è focalizzato su quest'ultimo aspetto, ossia rappresentare decine di migliaia di \textit{datapoints} su una mappa digitale, permettendo un'interazione dinamica. Si veda un esempio di rappresentazione grafica in Figura \ref{fig:preview-heatmap}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\linewidth]{images/heatmap.png}
+    \caption{Dati generati nei pressi di Bermuda}
+    \label{fig:preview-heatmap}
+\end{figure}
 
 \subsection{Utilità principale}
 
 I risultati generati dal modello permettono di stimare con precisione le aree di maggiore impatto acustico attorno alla sorgente, evidenziando come il rumore si attenui con la distanza seguendo le leggi della propagazione sott'acqua. \cite{airgun_marine_life} 
 Grazie all'inclusione di rotte navali e dettagli morfologici come isole, coste e batimetria, il modello è in grado di identificare sia zone con un livello di rumore più elevato, sia zone \say{d'ombra} dove il suono risulta attenuato rispetto all'ambiente circostante.
 
-\noindent In sintesi, il modello trasforma una simulazione fisica complessa in un output geografico e operativo, utile per la gestione responsabile dell'inquinamento acustico marino.
+\noindent In sintesi, il modello trasforma una simulazione fisica complessa in un output geografico e operativo.

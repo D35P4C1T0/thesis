@@ -3,9 +3,9 @@
 
 \section{Obiettivo del progetto}
 
-Il presente elaborato descrive le fasi di progettazione e sviluppo del frontend web di un sistema interattivo per la visualizzazione dei dati prodotti da un modello di simulazione del rumore subacqueo
-L'obiettivo specifico di questa tesi era fornire al team di ricerca uno strumento accessibile via web che permettesse di caricare i risultati del modello, costituiti da grandi volumi di dati geospaziali, di rappresentarli in maniera chiara su mappa interattiva e consentire un'esplorazione dinamica dei dati, con filtri e livelli di dettaglio variabile.
-Il frontend doveva quindi fungere da veste grafica per i risultati del modello, offrendo un'esperienza utente fluida, veloce e comprensibile anche a non esperti in tecnologie web o GIS.
+Il presente elaborato descrive le fasi di progettazione e sviluppo del front-end web di un sistema interattivo per la visualizzazione dei dati prodotti da un modello di simulazione del rumore subacqueo (M-NAT).
+L'obiettivo specifico di questa tesi era fornire al team di ricerca uno strumento accessibile via web che permettesse di caricare i risultati del modello, costituiti da grandi volumi di dati geospaziali, rappresentarli in maniera chiara su una mappa interattiva e consentire un'esplorazione dinamica dei dati, con filtri e livelli di dettaglio variabile.
+Il front-end doveva quindi fungere da veste grafica per i risultati del modello, offrendo un'esperienza utente fluida, veloce e comprensibile anche a non esperti in tecnologie web o GIS.
 
 
 % ## Perchè flask ##
@@ -42,7 +42,6 @@ Nel contesto di questo progetto, tale caratteristica ha permesso di concentrare 
 
 \subsubsection*{Modularità e facilità di integrazione}
 Flask si contraddistingue per un sistema modulare che consente di estendere il comportamento dell'applicazione in modo selettivo. \cite{flask-docs}
-
 Questa flessibilità ha rappresentato un vantaggio significativo, poiché ha consentito l'integrazione fluida con il progetto sviluppato dal collaboratore.
 
 \section{Sfide tecniche e problematiche affrontate}
@@ -55,7 +54,7 @@ Durante lo sviluppo, è stato evidente come la quantità e complessità dei dati
   \item la compatibilità con diversi browser, dispositivi e risoluzioni.
 \end{itemize}
 
-A queste problematiche si è aggiunta la difficoltà di conciliare un'interfaccia ricca di funzionalità con un impatto visivo semplice e pulito, mantenendo al contempo un'elevata responsività dell'applicazione.
+\noindent A queste problematiche si è aggiunta la difficoltà di conciliare un'interfaccia ricca di funzionalità con un impatto visivo semplice e pulito, mantenendo al contempo un'elevata responsività dell'applicazione.
 
 \subsection{Impatto delle dimensioni del DOM sulle performance}
 

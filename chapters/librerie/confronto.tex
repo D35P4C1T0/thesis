@@ -8,13 +8,13 @@ Il fulcro di questa architettura di test è rappresentato da un'istanza di Flask
 
 Nello specifico:
 \begin{itemize}
-      \item Server-Side Rendering (SSR): Il contenuto HTML completo viene generato sul server e inviato al client. Questo approccio consente una visualizzazione immediata del contenuto e una migliore indicizzazione da parte dei motori di ricerca.\cite{peerdh-ssr-csr-comparison}
+      \item Server-Side Rendering (SSR): Il contenuto HTML completo viene generato sul server e inviato al client. Questo approccio consente una visualizzazione immediata del contenuto e una migliore indicizzazione da parte dei motori di ricerca. \cite{peerdh-ssr-csr-comparison}
 
-    \item Client-Side Rendering (CSR): Il server invia una struttura HTML minima, e il browser del client utilizza JavaScript per costruire dinamicamente l'interfaccia utente. Questo può comportare un ritardo nella visualizzazione iniziale del contenuto e richiede che il browser esegua ulteriori elaborazioni.\cite{devto-csr-vs-ssr}
+    \item Client-Side Rendering (CSR): Il server invia una struttura HTML minima, e il browser del client utilizza JavaScript per costruire dinamicamente l'interfaccia utente. Questo può comportare un ritardo nella visualizzazione iniziale del contenuto e richiede che il browser esegua ulteriori elaborazioni. \cite{devto-csr-vs-ssr}
 \end{itemize}
   
 
-Il processo di benchmarking si articola nelle seguenti fasi operative fondamentali:
+\noindent Il processo di benchmarking si articola nelle seguenti fasi operative fondamentali:
 
 \begin{itemize}[leftmargin=*]
     \item \textbf{Caricamento Iterativo e Contestualizzato delle Mappe:}
@@ -91,7 +91,7 @@ Il sistema di \textit{benchmarking} automatizzato esegue 50 iterazioni per ciasc
     \item \textbf{Tempo Totale di Caricamento}: Rappresenta la somma del tempo di recupero dati e del tempo di inizializzazione e rendering, fornendo una metrica complessiva dell'esperienza utente.
 \end{itemize}
 
-Riassumendo, ogni iterazione di questo test viene eseguita in un \textit{iframe} isolato per evitare interferenze tra le diverse esecuzioni. Le metriche vengono raccolte lato client attraverso un evento personalizzato \texttt{benchmarkMetricsReady} che viene \textit{dispatchato} al completamento di ogni ciclo di \textit{rendering}. I dati raccolti vengono quindi aggregati e salvati in un file CSV per l'analisi successiva. Questo approccio metodico assicura che le misurazioni siano rappresentative delle reali prestazioni di ciascuna libreria in un contesto applicativo reale.
+\noindent Riassumendo, ogni iterazione di questo test viene eseguita in un \textit{iframe} isolato per evitare interferenze tra le diverse esecuzioni. Le metriche vengono raccolte lato client attraverso un evento personalizzato \texttt{benchmarkMetricsReady} che viene \textit{dispatchato} al completamento di ogni ciclo di \textit{rendering}. I dati raccolti vengono quindi aggregati e salvati in un file CSV per l'analisi successiva. Questo approccio metodico assicura che le misurazioni siano rappresentative delle reali prestazioni di ciascuna libreria in un contesto applicativo reale.
 
 
 \subsection{Analisi sulla Correlazione delle Metriche}
@@ -108,9 +108,9 @@ Nello specifico, il grafico mette a confronto i seguenti dati rilevati:
     \end{itemize}
     
 
-L'asse \textbf{verticale} rappresenta il tempo in millisecondi impiegato, mentre l'asse \textbf{orizzontale} categorizza la sequenza di rilevazioni ottenute.
+\noindent L'asse \textbf{verticale} rappresenta il tempo in millisecondi impiegato, mentre l'asse \textbf{orizzontale} categorizza la sequenza di rilevazioni ottenute.
 
-Si osserva che le librerie Deck.gl e MapBox/MapLibre eccellono particolarmente nel tempo di inizializzazione e rendering, seguite da Leaflet, registrando i valori più bassi, il che le rende una scelta ottimale per scenari in cui tale aspetto è critico. Al contrario, la libreria OpenLayers mostra prestazioni meno competitive nello stesso ambito, suggerendo aree che richiedono potenziale ottimizzazione o che la rendono meno adatta per carichi di lavoro specifici.
+Si osserva che le librerie Deck.gl e Mapbox/MapLibre eccellono particolarmente nel tempo di inizializzazione e rendering, seguite da Leaflet, registrando i valori più bassi, il che le rende una scelta ottimale per scenari in cui tale aspetto è critico. Al contrario, la libreria OpenLayers mostra prestazioni meno competitive nello stesso ambito, suggerendo aree che richiedono potenziale ottimizzazione o che la rendono meno adatta per carichi di lavoro specifici.
 
 È interessante notare come Leaflet e Deck.gl mostrino prestazioni simili e costantemente basse per il tempo di rendering e OpenLayers presenti una variabilità maggiore per il tempo totale di caricamento. Questo potrebbe indicare fattori architetturali comuni, diverse strategie di ottimizzazione, o impatti di terze parti meno controllabili.
 

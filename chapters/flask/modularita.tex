@@ -1,15 +1,15 @@
 \section{Modularità e Riusabilità}
 
-L'idea di fondo dell'intero progetto è quella di creare un sistema riusabile e facilmente integrabile in altri progetti. A questo scopo, la funzione \texttt{register\_heatmap()}, già apparsa nel frammento di codice nel Listing \ref{lst:csv_reading_serialization}, offre un'interfaccia semplificata che permette di integrare il progetto in una qualsiasi applicazione Flask già esistente, senza dover modificare nulla a livello di struttura.
-
+L'idea di fondo dell'intero progetto è quella di creare un sistema riutilizzabile e facilmente integrabile in altri progetti. A questo scopo, la funzione \texttt{register\_heatmap()}, già apparsa nel frammento di codice nel Listing \ref{lst:register_hm}, offre un'interfaccia semplificata che permette di integrare il progetto in qualsiasi applicazione Flask già esistente, senza dover modificare nulla a livello di struttura.
 Ogni \textit{blueprint} mantiene il proprio namespace isolato, evitando conflitti tra percorsi API e risorse statiche. Questa separazione si è dimostrata particolarmente utile nella fase di integrazione di questo modulo con un'applicazione già esistente, poiché non è stato necessario modificare le rotte precedenti.
 
 \subsection{Architettura e Funzionamento}
 
 La versatilità di \texttt{register\_heatmap()} si manifesta attraverso diversi livelli di integrazione.
-Seguono esempi di utilizzi di tale funzione per definire una o più istanze di una mappa.
+Per esempio, nel Listing \ref{lst:register_heatmap_def} si può notare come venga creata una Blueprint a partire da una configurazione data. In particolare, viene chiamata la funzione \texttt{create\_heatmap\_blueprint()} (riga 12); tale funzione accetta una configurazione (\texttt{HeatmapConfig} o \texttt{dict}) e restituisce un \textit{blueprint} Flask configurato per la visualizzazione delle heatmap. 
+Al suo interno viene creato un oggetto \texttt{Blueprint}; i parametri necessari per la creazione di una Blueprint sono illustrati nel Listing \ref{lst:create_heatmap_blueprint}. All'interno dello stesso file vengono dichiarate anche le rotte del blueprint. 
 
-\begin{listing}[H]
+\begin{listing}[h]
 \caption{Definizione della funzione \texttt{register\_heatmap()}}
 \label{lst:register_heatmap_def}
 \begin{minted}{python}
@@ -30,11 +30,8 @@ def register_heatmap(app, **config_kwargs):
 \end{minted}
 \end{listing}
 
-All'interno di \texttt{register\_heatmap()} viene chiamata la funzione \texttt{create\_heatmap\_blueprint()} (riga 12); tale funzione accetta una configurazione (\texttt{HeatmapConfig} o \texttt{dict}) e restituisce un \textit{blueprint} Flask configurato per la visualizzazione di heatmap.
-
-Al suo interno viene creato un oggetto \texttt{Blueprint}:
-
-\begin{listing}[H]
+\begin{listing}[h]
+\caption{Creazione di una Blueprint}
 \label{lst:create_heatmap_blueprint}
 \begin{minted}{python}
     # Create blueprint
@@ -47,9 +44,14 @@ Al suo interno viene creato un oggetto \texttt{Blueprint}:
         static_url_path=f'{config.URL_PREFIX}/static'
     )
 \end{minted}
+\end{listing}
 
-Nello stesso file vengono dichiarate le rotte del blueprint. Seguono degli esempi di rotte dichiarate tramite decoratore \texttt{'@'}. Nella rotta \say{\texttt{/data}} si fa uso di diverse funzionalità offerte da Flask: per una stessa funzione \texttt{get\_data()} vengono definite due rotte (\texttt{/data} e \texttt{/data/<csv\_key>}), semplificando il codice e rendendolo più leggibile. In aggiunta, il parametro opzionale \texttt{<csv\_key>} viene estratto dall'URI in maniera elegante e minimale (riga 6) e viene passato al corpo della funzione \texttt{get\_data()}.
+Dal punto di vista dell'utente, la rotta coincide con l'URL digitato nella barra degli indirizzi o richiamato da un'applicazione. Tuttavia, tecnicamente, la rotta non punta a un file fisico sul server (come avveniva nel vecchio web statico con i file \texttt{.html}), bensì a un endpoint. È un \say{segnapolo} logico che istruisce il framework (Flask, in questo caso) su quale specifica porzione di codice deve "rispondere" a una determinata chiamata.
 
+
+\begin{listing}[H]
+\caption{Dichiarazione di rotte del \textit{blueprint}}
+\label{lst:blueprint_routes}
 \begin{minted}{python}
     @bp.route('/')                              # rotta principale
     def index():
@@ -67,6 +69,8 @@ Nello stesso file vengono dichiarate le rotte del blueprint. Seguono degli esemp
 
 \end{minted}
 \end{listing}
+
+Nel Listing \ref{lst:blueprint_routes} sono illustrati esempi di rotte dichiarate tramite il decoratore \texttt{'@'}. Nella rotta \say{\texttt{/data}} si fa uso di diverse funzionalità offerte da Flask: per una stessa funzione \texttt{get\_data()} vengono definite due rotte (\texttt{/data} e \texttt{/data/<csv\_key>}), semplificando il codice e rendendolo più leggibile. In aggiunta, il parametro opzionale \texttt{<csv\_key>} viene estratto dall'URI in maniera elegante e minimale (riga 6) e viene passato al corpo della funzione \texttt{get\_data()}.
 
 Il termine URI sta per \textit{Uniform Resource Identifier}. È una stringa di caratteri che identifica in modo univoco una risorsa su una rete (in questo caso, il web).
 Quando parliamo di URI in Flask, ci riferiamo principalmente al percorso (path) della risorsa all'interno dell'URL. 
