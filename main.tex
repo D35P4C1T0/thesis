@@ -11,11 +11,7 @@
   bottom=2cm
 ]{geometry}
 \usepackage{fancyhdr}
-\fancypagestyle{plain}{
-  \fancyhf{}
-  \fancyfoot[C]{\thepage}
-  \renewcommand{\headrulewidth}{0pt}
-}
+\fancypagestyle{plain}{ \fancyhf{} \fancyfoot[C]{\thepage} \renewcommand{\headrulewidth}{0pt} }
 % Chapter
 \usepackage{titlesec}
 \singlespacing
@@ -32,7 +28,6 @@
 \exhyphenpenalty=1000
 \pretolerance=2000
 \tolerance=3000
-
 
 % load xcolor before pdfx to avoid errors
 \usepackage{xcolor}
@@ -64,10 +59,7 @@
 % Hyperlink
 \usepackage{xurl} % improves URL line breaks
 
-\hypersetup{
-  hidelinks
-}
-
+\hypersetup{hidelinks}
 
 % \hypersetup{breaklinks=false}
 
@@ -83,11 +75,7 @@
 
 \usepackage{booktabs}
 \usepackage{siunitx}
-\sisetup{
-    output-exponent-marker=\ensuremath{\mathrm{E}},
-    exponent-product={},
-    retain-explicit-plus
-}
+\sisetup{ output-exponent-marker=\ensuremath{\mathrm{E}}, exponent-product={}, retain-explicit-plus }
 
 % Snippet di codice
 \usepackage{listings}
@@ -104,12 +92,11 @@
 % short space character fix
 % \DeclareUnicodeCharacter{202F}{FIX ME!!!!}
 
-\usepackage{subcaption}  % Add to preamble
+\usepackage{subcaption} % Add to preamble
 \usepackage{caption}
 
 % better quotes
 \usepackage{dirtytalk}
-
 
 \newenvironment{longlisting}{\captionsetup{type=listing}}{}
 
@@ -118,17 +105,16 @@
 % minted style
 \usemintedstyle{bw}
 
-\setminted{
-    linenos=true,               % Mostra i numeri di riga
-    breaklines=true,            % Abilita il wrapping delle righe lunghe
-    autogobble=true,            % Rimuove l'indentazione comune
-    frame=lines,                % Aggiunge una cornice attorno al codice
-    framesep=2mm,               % Spaziatura tra la cornice e il codice
-    % frameround=B,               % Angoli arrotondati (opzionale)
-    fontsize=\small,            % Dimensione del font per il codice
-    % fontseries=tt,              % Tipo di font (monospace)
-    obeytabs=true,              % Rispetta i tab
-    tabsize=4,                  % Dimensione dei tab
+\setminted{ linenos=true, % Mostra i numeri di riga
+breaklines=true, % Abilita il wrapping delle righe lunghe
+autogobble=true, % Rimuove l'indentazione comune
+frame=lines, % Aggiunge una cornice attorno al codice
+framesep=2mm, % Spaziatura tra la cornice e il codice
+% frameround=B,               % Angoli arrotondati (opzionale)
+fontsize=\small, % Dimensione del font per il codice
+% fontseries=tt,              % Tipo di font (monospace)
+obeytabs=true, % Rispetta i tab
+tabsize=4, % Dimensione dei tab
 }
 
 % \usepackage{parskip}
