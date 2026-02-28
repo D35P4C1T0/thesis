@@ -1,15 +1,21 @@
-\documentclass[a4paper, 11pt, titlepage, twoside, openany]{book}
+\documentclass[a4paper, 11pt, titlepage, oneside, openany]{book}
 \usepackage{plain}
 \usepackage{setspace}
 % Layout
 \usepackage[
   paperheight=29.7cm,
   paperwidth=21cm,
-  outer=1.5cm,
-  inner=2.5cm,
+  left=2cm,
+  right=2cm,
   top=2cm,
   bottom=2cm
 ]{geometry}
+\usepackage{fancyhdr}
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \fancyfoot[C]{\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+}
 % Chapter
 \usepackage{titlesec}
 \singlespacing
@@ -110,7 +116,7 @@
 % code snipper syntax highlight
 \usepackage{minted}
 % minted style
-\usemintedstyle{manni}
+\usemintedstyle{bw}
 
 \setminted{
     linenos=true,               % Mostra i numeri di riga
