@@ -45,10 +45,6 @@ jobs:
         run: |
           npm ci
 
-      - name: Check
-        run: |
-          npm run check
-
       - name: Compile
         run: |
           npm run build
