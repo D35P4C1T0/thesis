@@ -12,8 +12,8 @@ struttura facilmente gestibile dal resto dell'applicazione.
   [H]
   \caption{Costruttore della classe \texttt{HeatmapConfig}}
   \label{lst:heatmap_config}
-  \begin{minted}
-    {python} class HeatmapConfig: def __init__(self, kwargs): # Load global configuration
+  \begin{minted}{python}
+    class HeatmapConfig: def __init__(self, kwargs): # Load global configuration
     defaults first global_defaults = self._load_global_defaults()
 
     # CSV file configuration - supports both single file and multiple files self.INPUT_CSV_FILE
@@ -67,8 +67,8 @@ nel Listing \ref{lst:config_json}.
   [H]
   \caption{Metodi per inizializzare la mappa}
   \label{lst:register_hm}
-  \begin{minted}
-    {python} # Istanza che usa config.json come base register_heatmap(app,
+  \begin{minted}{python}
+    # Istanza che usa config.json come base register_heatmap(app,
     url_prefix='/global')
 
     # Istanza che override specifici parametri register_heatmap( app, CSV_FILES={'Custom': 'data/custom.csv'},
@@ -105,8 +105,8 @@ uniforme.
   [H]
   \caption{Dizionario multi-CSV} % Aggiunta una didascalia descrittiva
   \label{lst:csv_normalization} % Un'altra etichetta univoca
-  \begin{minted}
-    {python} csv_files = { 'Primary Dataset' : 'data/data.csv', 'Secondary Dataset': 'data/data2.csv', 'Third Dataset' : 'data/data3.csv' }
+  \begin{minted}{python}
+    csv_files = { 'Primary Dataset' : 'data/data.csv', 'Secondary Dataset': 'data/data2.csv', 'Third Dataset' : 'data/data3.csv' }
   \end{minted}
 \end{listing}
 
@@ -140,8 +140,8 @@ Di seguito viene mostrata la struttura del file \texttt{config.json}:
   [H]
   \caption{Contenuto del file \texttt{config.json}}
   \label{lst:config_json} % Added a label for cross-referencing
-  \begin{minted}
-    {json} { "INPUT_CSV_FILE": "data/data.csv", "STATIC_FOLDER": "static", "FRONTEND_TEMPLATE": "index.html", "REQUIRED_COLUMNS": ["Latitude", "Longitude", "Value"], "DEFAULT_MAP_OPACITY": 0.75, "INITIAL_HEATMAP_RADIUS": 40, "INITIAL_HEATMAP_INTENSITY": 1.5, "INITIAL_HEATMAP_THRESHOLD": 0.00 }
+  \begin{minted}{json}
+    { "INPUT_CSV_FILE": "data/data.csv", "STATIC_FOLDER": "static", "FRONTEND_TEMPLATE": "index.html", "REQUIRED_COLUMNS": ["Latitude", "Longitude", "Value"], "DEFAULT_MAP_OPACITY": 0.75, "INITIAL_HEATMAP_RADIUS": 40, "INITIAL_HEATMAP_INTENSITY": 1.5, "INITIAL_HEATMAP_THRESHOLD": 0.00 }
   \end{minted}
 \end{listing}
 

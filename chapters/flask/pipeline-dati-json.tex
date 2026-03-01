@@ -105,8 +105,8 @@ backend:
   [H]
   \caption{Lettura e serializzazione dei dati CSV}
   \label{lst:csv_reading_serialization} % Ho aggiunto un'etichetta per riferimento
-  \begin{minted}
-    {python} df = pd.read_csv(csv_file, index_col=0) data = df[config.REQUIRED_COLUMNS].to_dict(orient='records')
+  \begin{minted}{python}
+    df = pd.read_csv(csv_file, index_col=0) data = df[config.REQUIRED_COLUMNS].to_dict(orient='records')
 
     response_data =
     { 'data': data, 'valueRange': value_range, 'colorScale': colors, 'csvKey': csv_key, 'csvFile': csv_file }
@@ -124,8 +124,8 @@ formato JSON:
   [H]
   \caption{Formato semplificato JSON}
   \label{lst:simplified_json_format} % Added a label for reference
-  \begin{minted}
-    {json} { "Latitude": 37.2589, "Longitude": -59.3, "Value": 88.046 }
+  \begin{minted}{json}
+    { "Latitude": 37.2589, "Longitude": -59.3, "Value": 88.046 }
   \end{minted}
 \end{listing}
 
@@ -140,8 +140,8 @@ GeoJSON introduce un sovraccarico strutturale (\textit{overhead}) non necessario
   [H]
   \caption{Struttura GeoJSON equivalente}
   \label{lst:geojson_equivalent_structure} % Added a label for reference
-  \begin{minted}
-    {json} { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-59.3, 37.2589] }, "properties": { "Value": 88.046 } }
+  \begin{minted}{json}
+    { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-59.3, 37.2589] }, "properties": { "Value": 88.046 } }
   \end{minted}
 \end{listing}
 

@@ -14,8 +14,8 @@ codice per la creazione di una heatmap risulta un buon esempio di tale compatibi
   [H]
   \caption{Integrazione dati flat con Deck.gl}
   \label{lst:deckgl_heatmap_layer} % Ho aggiunto un'etichetta per riferimento
-  \begin{minted}
-    {javascript} const heatmapLayer = new deck.HeatmapLayer({ id: 'heatmap', data: data, getPosition: d => [d.Longitude, d.Latitude], getWeight: d => d.Value });
+  \begin{minted}{javascript}
+    const heatmapLayer = new deck.HeatmapLayer({ id: 'heatmap', data: data, getPosition: d => [d.Longitude, d.Latitude], getWeight: d => d.Value });
   \end{minted}
 \end{listing}
 
@@ -52,8 +52,8 @@ concetti.
   [H]
   \caption{Codice CSS per uno stile Glassmorphism}
   \label{lst:css_glassmorphism} % Ho aggiunto un'etichetta per riferimento
-  \begin{minted}
-    {css} .glass
+  \begin{minted}{css}
+    .glass
     { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.25); box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.45); }
 
     .glass-dark

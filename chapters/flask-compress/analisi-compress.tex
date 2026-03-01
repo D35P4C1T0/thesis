@@ -20,8 +20,8 @@ Il codice Python per l'applicazione è il seguente:
 \begin{longlisting}
   \caption{Codice dell'applicazione Flask per il test di compressione}
   \label{lst:flask_compression_app} % Ho aggiunto un'etichetta utile per riferimenti
-  \begin{minted}
-    {python} from flask import Flask, jsonify, make_response from flask_compress
+  \begin{minted}{python}
+    from flask import Flask, jsonify, make_response from flask_compress
     import Compress import random import string import json import os
 
     app = Flask(__name__) # Inizializza Flask-Compress # Di default, Flask-Compress
@@ -112,8 +112,8 @@ Il codice dello script Bash è il seguente:
 \begin{longlisting}
   \caption{Script Bash per confrontare gli endpoint}
   \label{lst:bash_compare_endpoints}
-  \begin{minted}
-    {bash} #!/bin/bash
+  \begin{minted}{bash}
+    #!/bin/bash
 
     # Indirizzo base della tua applicazione Flask FLASK_APP_URL="http://127.0.0.1:5000"
 

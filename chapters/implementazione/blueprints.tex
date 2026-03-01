@@ -45,8 +45,8 @@ Ciò significa che il percorso completo di una rotta interna dipende da dove è 
   \caption{Codice del file \texttt{simple\_page.py} che descrive un blueprint in
   Flask}
   \label{lst:flask-blueprint} % Il label va all'interno dell'ambiente listing o subito dopo la caption
-  \begin{minted}
-    {python} from flask import Blueprint, render_template, abort from jinja2 import
+  \begin{minted}{python}
+    from flask import Blueprint, render_template, abort from jinja2 import
     TemplateNotFound
 
     simple_page = Blueprint('simple_page', __name__, template_folder='templates')
@@ -66,8 +66,8 @@ un disaccoppiamento che favorisce la modularità e la riusabilità \cite{palets_
   [!ht]
   \caption{Blueprint \texttt{simple\_page} montata in /pages}
   \label{lst:python_blueprint_registration} % Aggiunto un nuovo label per questo secondo blocco
-  \begin{minted}
-    {python} from flask import Flask from simple_page import simple_page
+  \begin{minted}{python}
+    from flask import Flask from simple_page import simple_page
 
     app = Flask(__name__) app.register_blueprint(simple_page, url_PREFIX='/pages')
   \end{minted}
@@ -93,8 +93,8 @@ del modulo heatmap.
   \caption{Esempio di Integrazione Semplificata della Heatmap in un Progetto
   Flask}
   \label{lst:heatmap_simple_integration}
-  \begin{minted}
-    {python} from flask import Flask from heatmap_blueprint import register_heatmap
+  \begin{minted}{python}
+    from flask import Flask from heatmap_blueprint import register_heatmap
 
     app = Flask(__name__)
 

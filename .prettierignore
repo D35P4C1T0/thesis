@@ -2,3 +2,12 @@
 **/node_modules/
 **/package-lock.json
 /.gitattributes
+# prettier-plugin-latex currently breaks minted blocks in these files
+chapters/introduzione.tex
+chapters/flask-compress/analisi-compress.tex
+chapters/flask/modularita.tex
+chapters/flask/pipeline-dati-json.tex
+chapters/implementazione/blueprints.tex
+chapters/implementazione/configurazione.tex
+chapters/implementazione/frontend.tex
+chapters/librerie/confronto.tex

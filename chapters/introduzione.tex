@@ -40,8 +40,8 @@ si rivela uno strumento estremamente efficace.
   [H]
   \caption{Codice che inizializza un'istanza minimale di Flask}
   \label{lst:minimal-flask} % Il label va all'interno dell'ambiente listing o subito dopo la caption
-  \begin{minted}
-    {python} from flask import Flask app = Flask(__name__)
+  \begin{minted}{python}
+    from flask import Flask app = Flask(__name__)
 
     @app.route('/') def hello(): return 'Hello, World!'
 
